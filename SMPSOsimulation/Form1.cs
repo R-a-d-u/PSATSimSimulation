@@ -7,19 +7,31 @@ namespace SMPSOsimulation
     public partial class Form1 : Form
 
     {
-        PSATsimSimulationFunctions pSATsimSimulationFunctions = new PSATsimSimulationFunctions(); 
+        PSATsimSimulationFunctions functii = new PSATsimSimulationFunctions();
         public Form1()
         {
             InitializeComponent();
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        private void StartSimulation_click(object sender, EventArgs e)
         {
-            pSATsimSimulationFunctions.RunProcess("-m");
-            //pSATsimSimulationFunctions.StartSimulator();
-            //pSATsimSimulationFunctions.
-            
+            functii.StartSimulator();
+            //E:\PSATSIM\psatsim_con.exe FisierConfigBun.xml output.xml
+        }
+
+        private void SimulationOptionsButton_Click(object sender, EventArgs e)
+        {
+            String command=SimulationOptions_TextBox.Text;
+            functii.SimulationOptionsFunction(command);
+            //E:\PSATSIM\psatsim_con.exe FisierConfigBun.xml output.xml (orice: -m, -a, -A, etc)
+
+        }
+
+        private void SimulationOptions_TextBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -14,7 +14,7 @@ namespace SMPSOsimulation
 
 
         private string exePath = @"E:\PSATSIM\psatsim_con.exe";
-        private string configFile = "default_cfg.xml";
+        private string configFile = "FisierConfigBun.xml";
         private string outputFile = "output.xml";
         private string workingDirectory = @"E:\PSATSIM";
 
@@ -22,6 +22,11 @@ namespace SMPSOsimulation
         public void StartSimulator()
         {
             RunProcess($"{configFile} {outputFile}");
+        }
+
+        public void SimulationOptionsFunction(String command)
+        {
+            RunProcess($"{configFile} {outputFile} -{command}");
         }
 
         // Function to set thread count
