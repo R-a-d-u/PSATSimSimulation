@@ -3,7 +3,7 @@ using System.Windows.Forms;
 
 namespace SMPSOsimulation
 {
-    internal class PSATsimSimulationFunctions
+    internal class PSAtSimFunctions
     {
         private string exePath = @"E:\PSATSIM\psatsim_con.exe";
         private string configFile = "Test.xml";

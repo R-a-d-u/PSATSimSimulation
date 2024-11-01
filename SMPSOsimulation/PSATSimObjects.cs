@@ -1,6 +1,6 @@
 ﻿using SMPSOsimulation;
 
-public static class ConfigurationFactory
+public static class PSATSimObjects
 {
     public static List<Configuration> CreateConfigurations()
     {

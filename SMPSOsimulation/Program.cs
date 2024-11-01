@@ -18,7 +18,7 @@ namespace SMPSOsimulation
             Application.Run(new Form1());
 
             //import fisier configuri
-            var configurations = ConfigurationFactory.CreateConfigurations();
+            var configurations = PSATSimObjects.CreateConfigurations();
             var psatSim = new PsatSim { Configurations = configurations };
            
             //sterge versiune xml si altele

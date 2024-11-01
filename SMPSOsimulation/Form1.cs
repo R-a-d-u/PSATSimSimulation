@@ -7,7 +7,7 @@ namespace SMPSOsimulation
     public partial class Form1 : Form
 
     {
-        PSATsimSimulationFunctions functii = new PSATsimSimulationFunctions();
+        PSAtSimFunctions functii = new PSAtSimFunctions();
         public Form1()
         {
             InitializeComponent();
