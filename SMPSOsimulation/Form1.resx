@@ -121,7 +121,9 @@
     <value>17, 17</value>
   </metadata>
   <data name="richTextBox1.Text" xml:space="preserve">
-    <value> -t [thread count] : Number of simultaneous threads (default=1)
+    <value>!!!! Introduceti doar litera !!!! 
+
+-t [thread count] : Number of simultaneous threads (default=1)
 -cgmua : Print Options (default=a)
 -c Print configuration sections
 -C Suppress configuration sections

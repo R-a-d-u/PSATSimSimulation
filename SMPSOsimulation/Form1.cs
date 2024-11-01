@@ -15,16 +15,16 @@ namespace SMPSOsimulation
         }
 
 
-        private void StartSimulation_click(object sender, EventArgs e)
+        private async void StartSimulation_click(object sender, EventArgs e)
         {
-            functii.StartSimulator();
+            await Task.Run(() => functii.StartSimulator());
             //E:\PSATSIM\psatsim_con.exe FisierConfigBun.xml output.xml
         }
 
-        private void SimulationOptionsButton_Click(object sender, EventArgs e)
+        private async void SimulationOptionsButton_Click(object sender, EventArgs e)
         {
             String command=SimulationOptions_TextBox.Text;
-            functii.SimulationOptionsFunction(command);
+            await Task.Run(() => functii.SimulationOptionsFunction(command));
             //E:\PSATSIM\psatsim_con.exe FisierConfigBun.xml output.xml (orice: -m, -a, -A, etc)
 
         }

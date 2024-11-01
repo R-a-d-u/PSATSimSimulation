@@ -39,27 +39,27 @@
             // 
             // StartSimulationButton
             // 
-            StartSimulationButton.Location = new Point(12, 12);
+            StartSimulationButton.Location = new Point(530, 80);
             StartSimulationButton.Name = "StartSimulationButton";
-            StartSimulationButton.Size = new Size(157, 95);
+            StartSimulationButton.Size = new Size(121, 30);
             StartSimulationButton.TabIndex = 0;
-            StartSimulationButton.Text = "START SIM";
+            StartSimulationButton.Text = "Run SMSPASim";
             StartSimulationButton.UseVisualStyleBackColor = true;
             StartSimulationButton.Click += StartSimulation_click;
             // 
             // SimulationOptionsButton
             // 
-            SimulationOptionsButton.Location = new Point(530, 127);
+            SimulationOptionsButton.Location = new Point(530, 116);
             SimulationOptionsButton.Name = "SimulationOptionsButton";
-            SimulationOptionsButton.Size = new Size(121, 23);
+            SimulationOptionsButton.Size = new Size(121, 34);
             SimulationOptionsButton.TabIndex = 1;
-            SimulationOptionsButton.Text = "Options";
+            SimulationOptionsButton.Text = "Run with command";
             SimulationOptionsButton.UseVisualStyleBackColor = true;
             SimulationOptionsButton.Click += SimulationOptionsButton_Click;
             // 
             // SimulationOptions_TextBox
             // 
-            SimulationOptions_TextBox.Location = new Point(657, 128);
+            SimulationOptions_TextBox.Location = new Point(657, 123);
             SimulationOptions_TextBox.Name = "SimulationOptions_TextBox";
             SimulationOptions_TextBox.Size = new Size(131, 23);
             SimulationOptions_TextBox.TabIndex = 2;
