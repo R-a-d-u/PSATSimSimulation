@@ -2,40 +2,68 @@
 using FlaUI.Core;
 using FlaUI.UIA3;
 using FlaUI.Core.AutomationElements;
+using System;
+using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace SMPSOsimulation
 {
     internal class PSATsimSimulationFunctions
     {
-        public void startSimulator()
+
+
+
+        private string exePath = @"E:\PSATSIM\psatsim_con.exe";
+        private string configFile = "default_cfg.xml";
+        private string outputFile = "output.xml";
+        private string workingDirectory = @"E:\PSATSIM";
+
+        // Function to start the simulator with basic settings
+        public void StartSimulator()
+        {
+            RunProcess($"{configFile} {outputFile}");
+        }
+
+        // Function to set thread count
+        public void StartWithThreadCount(int threadCount)
+        {
+            RunProcess($"{configFile} {outputFile} -t {threadCount}");
+        }
+
+        // Function to print all sections
+        public void StartWithPrintAll()
+        {
+            RunProcess($"{configFile} {outputFile} -a");
+        }
+
+        // Function to suppress all print sections
+        public void StartWithSuppressAll()
+        {
+            RunProcess($"{configFile} {outputFile} -A");
+        }
+
+        // Function to run with custom print options
+        public void StartWithCustomPrintOptions(string printOptions)
+        {
+            RunProcess($"{configFile} {outputFile} {printOptions}");
+        }
+
+        // Core function to run the process with specified arguments
+        public void RunProcess(string arguments)
         {
             try
             {
-
-                // Set up process start information
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
-                    FileName = @"E:\PSATSIM\PSATSim.exe",
-                    Arguments = "",  // Replace with actual arguments
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    CreateNoWindow = false,
-                    Verb="runas",
-                    WorkingDirectory = @"E:\PSATSIM"
-
+                    FileName = "cmd.exe",
+                    Arguments = $"/K \"cd /d {workingDirectory} && {exePath} {arguments}\"",
+                    UseShellExecute = true,
+                    CreateNoWindow = false
                 };
 
-                
-                // Start the process and capture output
                 using (Process process = Process.Start(startInfo))
                 {
-                    string output = process.StandardOutput.ReadToEnd();
-                    string error = process.StandardError.ReadToEnd();
                     process.WaitForExit();
-
-                    // Display output and error messages
-                    MessageBox.Show($"Output: {output}\nError: {error}", "PSATSim Output");
                 }
             }
             catch (Exception ex)
@@ -43,23 +71,9 @@ namespace SMPSOsimulation
                 MessageBox.Show($"Error: {ex.Message}", "PSATSim Error");
             }
         }
-        public void SetSimulationParameters(string traceFilePath, string outputFilePath)
-        {
-            using (var app =FlaUI.Core.Application.Launch("E:\\PSATSIM\\PSATSim.exe"))
-            using (var automation = new UIA3Automation())
-            {
-                var window = app.GetMainWindow(automation);
-
-                var traceFileBox = window.FindFirstDescendant(cf => cf.ByAutomationId("traceFileTextBox")).AsTextBox();
-                traceFileBox.Text = traceFilePath;
-
-                var outputFileBox = window.FindFirstDescendant(cf => cf.ByAutomationId("outputFileTextBox")).AsTextBox();
-                outputFileBox.Text = outputFilePath;
-
-                var applyButton = window.FindFirstDescendant(cf => cf.ByText("Apply")).AsButton();
-                applyButton.Click();
-            }
-        }
-
     }
+
+
+
 }
+

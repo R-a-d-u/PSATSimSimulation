@@ -16,7 +16,9 @@ namespace SMPSOsimulation
 
         private void button1_Click(object sender, EventArgs e)
         {
-            pSATsimSimulationFunctions.startSimulator();
+            pSATsimSimulationFunctions.RunProcess("-m");
+            //pSATsimSimulationFunctions.StartSimulator();
+            //pSATsimSimulationFunctions.
             
         }
     }
