@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace SMPSOsimulation
 {
@@ -14,11 +13,14 @@ namespace SMPSOsimulation
         // Function to start the simulator with basic settings
         public void StartSimulator()
         {
+            Console.Write(($"{configFile} {outputFile} "));
+
             RunProcess($"{configFile} {outputFile}");
         }
 
         public void SimulationOptionsFunction(string command)
         {
+            Console.Write(($"{configFile} {outputFile} -{command}"));
             RunProcess($"{configFile} {outputFile} -{command}");
         }
 
@@ -33,6 +35,8 @@ namespace SMPSOsimulation
                 currentProcess.Dispose();
                 currentProcess = null;
             }
+            string dllPath = @"E:\PSATSIM2\GTK\bin"; // Path to where libxml2.dll is located
+            Environment.SetEnvironmentVariable("Path", dllPath + ";" + Environment.GetEnvironmentVariable("Path"));
 
             try
             {
@@ -40,8 +44,13 @@ namespace SMPSOsimulation
                 {
                     FileName = "cmd.exe",
                     Arguments = $"/K \"cd /d {workingDirectory} && {exePath} {arguments}\"",
-                    UseShellExecute = true,
-                    CreateNoWindow = false
+                    UseShellExecute = false,
+                    CreateNoWindow = false,
+                    WorkingDirectory = workingDirectory,
+                    EnvironmentVariables =
+            {
+                ["Path"] = dllPath + ";" + Environment.GetEnvironmentVariable("Path")
+            }
                 };
 
                 currentProcess = new Process { StartInfo = startInfo };
