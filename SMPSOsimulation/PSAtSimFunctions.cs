@@ -1,4 +1,6 @@
 ﻿using System.Diagnostics;
+using static SMPSOsimulation.StructPSATSimOutput;
+using System.Xml.Serialization;
 
 namespace SMPSOsimulation
 {
@@ -23,7 +25,16 @@ namespace SMPSOsimulation
             Console.Write(($"{configFile} {outputFile} -{command}"));
             RunProcess($"{configFile} {outputFile} -{command}");
         }
+        public List<Variation> LoadVariationsFromXml(string filePath)
+        {
+            var serializer = new XmlSerializer(typeof(PsatSimResults));
 
+            using (var reader = new StreamReader(filePath))
+            {
+                var psatSimResults = (PsatSimResults)serializer.Deserialize(reader);
+                return psatSimResults.Variations;
+            }
+        }
         // Core function to run the process with specified arguments
         private void RunProcess(string arguments)
         {
