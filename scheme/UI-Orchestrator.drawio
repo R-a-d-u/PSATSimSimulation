@@ -1,0 +1,40 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
+  <diagram name="Start Search" id="-3EnVT2QQhTtyvACYWjd">
+    <mxGraphModel dx="819" dy="479" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="EpcGOtR5BhhXYbNL1TRJ-1" value="UI" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="60" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="EpcGOtR5BhhXYbNL1TRJ-2" value="" style="line;strokeWidth=2;direction=south;html=1;" vertex="1" parent="1">
+          <mxGeometry x="115" y="120" width="10" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="EpcGOtR5BhhXYbNL1TRJ-3" value="Orchestrator SMPSO" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="EpcGOtR5BhhXYbNL1TRJ-4" value="" style="line;strokeWidth=2;direction=south;html=1;" vertex="1" parent="1">
+          <mxGeometry x="585" y="120" width="10" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="EpcGOtR5BhhXYbNL1TRJ-5" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.129;entryY=0.371;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" target="EpcGOtR5BhhXYbNL1TRJ-4">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="120" y="160" as="sourcePoint" />
+            <mxPoint x="220" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EpcGOtR5BhhXYbNL1TRJ-6" value="Start Search (w_IPS, w_Power)" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="EpcGOtR5BhhXYbNL1TRJ-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EpcGOtR5BhhXYbNL1TRJ-7" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.388;entryY=0.229;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.388;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="EpcGOtR5BhhXYbNL1TRJ-4" target="EpcGOtR5BhhXYbNL1TRJ-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="360" y="260" as="sourcePoint" />
+            <mxPoint x="460" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="EpcGOtR5BhhXYbNL1TRJ-8" value="Return Results (configurations)" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="EpcGOtR5BhhXYbNL1TRJ-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
