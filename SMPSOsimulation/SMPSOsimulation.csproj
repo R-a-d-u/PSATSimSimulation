@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FlaUI.Core" Version="4.0.0" />
-    <PackageReference Include="FlaUI.UIA3" Version="4.0.0" />
+    <Compile Remove="StolenJMetal\Properties\**" />
+    <EmbeddedResource Remove="StolenJMetal\Properties\**" />
+    <None Remove="StolenJMetal\Properties\**" />
   </ItemGroup>
 
 </Project>
