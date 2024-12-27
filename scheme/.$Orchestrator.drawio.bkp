@@ -1,0 +1,140 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
+  <diagram name="Main" id="mer1Q-D7QFmTRmRvZn-K">
+    <mxGraphModel dx="989" dy="578" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="9O8NbNWzuJORjY1L01Cl-1" target="JEw1piW-Nov8eNwJmhrz-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9O8NbNWzuJORjY1L01Cl-1" value="Start Search" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="340" y="30" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-1" target="JEw1piW-Nov8eNwJmhrz-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-1" value="initialize swarm" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="110" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-2" target="JEw1piW-Nov8eNwJmhrz-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-2" value="Initialize leaders archive" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="190" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-3" target="JEw1piW-Nov8eNwJmhrz-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-3" value="generation = 0" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="250" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-4" target="JEw1piW-Nov8eNwJmhrz-12">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="530" y="830" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="560" y="345" />
+              <mxPoint x="560" y="1055" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-24" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="JEw1piW-Nov8eNwJmhrz-23">
+          <mxGeometry x="-0.96" y="-1" relative="1" as="geometry">
+            <mxPoint y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-4" target="JEw1piW-Nov8eNwJmhrz-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-4" value="generation &amp;lt; maxGenerations" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330" y="310" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-5" target="JEw1piW-Nov8eNwJmhrz-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-5" value="compute speed for particle" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="470" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-6" target="JEw1piW-Nov8eNwJmhrz-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-6" value="Update position of particle" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="550" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-7" target="JEw1piW-Nov8eNwJmhrz-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-7" value="Apply chance of turbulence to particle" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="610" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-8" target="JEw1piW-Nov8eNwJmhrz-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-8" value="Evaluate particle" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="700" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-9" target="JEw1piW-Nov8eNwJmhrz-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-9" value="update leaders archive with particle" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="770" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-48" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-10" target="JEw1piW-Nov8eNwJmhrz-47">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-10" value="update particle&#39;s local best" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="830" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-11" target="JEw1piW-Nov8eNwJmhrz-4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="230" y="1000" />
+              <mxPoint x="230" y="290" />
+              <mxPoint x="400" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-11" value="generation++" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="990" width="120" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-12" value="Return leaders archive" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="1030" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-34" target="JEw1piW-Nov8eNwJmhrz-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-34" value="Iterate swarm elements -&amp;gt; particle" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="295" y="410" width="210" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-47" target="JEw1piW-Nov8eNwJmhrz-11">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="400" y="970" />
+              <mxPoint x="400" y="970" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-52" value="yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="JEw1piW-Nov8eNwJmhrz-49">
+          <mxGeometry x="-0.3602" y="3" relative="1" as="geometry">
+            <mxPoint x="7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="JEw1piW-Nov8eNwJmhrz-47" target="JEw1piW-Nov8eNwJmhrz-34">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="275" y="930" />
+              <mxPoint x="275" y="425" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-53" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="JEw1piW-Nov8eNwJmhrz-50">
+          <mxGeometry x="-0.9535" y="-3" relative="1" as="geometry">
+            <mxPoint x="-2" y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-47" value="Finished iterating all particles" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="310" y="900" width="180" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

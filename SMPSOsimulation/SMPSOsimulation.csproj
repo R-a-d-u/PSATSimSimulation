@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="StolenJMetal\Properties\**" />
-    <EmbeddedResource Remove="StolenJMetal\Properties\**" />
-    <None Remove="StolenJMetal\Properties\**" />
+    <Compile Remove="StolenJMetal\**" />
+    <EmbeddedResource Remove="StolenJMetal\**" />
+    <None Remove="StolenJMetal\**" />
   </ItemGroup>
 
 </Project>

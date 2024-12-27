@@ -22,16 +22,16 @@
             <mxPoint x="220" y="160" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="BsoEJBvmvSDkJWUUROA9-2" value="Evaluate (configuration)" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" parent="BsoEJBvmvSDkJWUUROA9-1" connectable="0" vertex="1">
+        <mxCell id="BsoEJBvmvSDkJWUUROA9-2" value="Evaluate (solution: Configuration)" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" parent="BsoEJBvmvSDkJWUUROA9-1" connectable="0" vertex="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="OTxtt1Tf0edB2KJmLMeN-1" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.527;entryY=0.34;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.523;exitY=0.78;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="HCCNLSohoiy8PqgptOFD-5" target="HCCNLSohoiy8PqgptOFD-3">
+        <mxCell id="OTxtt1Tf0edB2KJmLMeN-1" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.527;entryY=0.34;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.523;exitY=0.78;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="HCCNLSohoiy8PqgptOFD-5" target="HCCNLSohoiy8PqgptOFD-3" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="320" y="260" as="sourcePoint" />
             <mxPoint x="350" y="200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="OTxtt1Tf0edB2KJmLMeN-2" value="Return Evaluation (normalized result)" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" connectable="0" vertex="1" parent="OTxtt1Tf0edB2KJmLMeN-1">
+        <mxCell id="OTxtt1Tf0edB2KJmLMeN-2" value="Return Evaluation (score: double)" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" parent="OTxtt1Tf0edB2KJmLMeN-1" connectable="0" vertex="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
