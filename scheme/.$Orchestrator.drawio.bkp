@@ -1,13 +1,13 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2" pages="7">
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.1 Chrome/128.0.6613.186 Electron/32.2.6 Safari/537.36" version="25.0.1" pages="7">
   <diagram name="Main" id="mer1Q-D7QFmTRmRvZn-K">
-    <mxGraphModel dx="797" dy="466" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="839" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="Op-KkIhUaiCkP9ZTUG40-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="9O8NbNWzuJORjY1L01Cl-1" target="Op-KkIhUaiCkP9ZTUG40-1">
+        <mxCell id="Op-KkIhUaiCkP9ZTUG40-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="9O8NbNWzuJORjY1L01Cl-1" target="Op-KkIhUaiCkP9ZTUG40-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="9O8NbNWzuJORjY1L01Cl-1" value="Start Search" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="9O8NbNWzuJORjY1L01Cl-1" value="Start Search with one objective" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="159.94" y="20" width="120" height="50" as="geometry" />
         </mxCell>
         <mxCell id="JEw1piW-Nov8eNwJmhrz-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="JEw1piW-Nov8eNwJmhrz-1" target="JEw1piW-Nov8eNwJmhrz-2" edge="1">
@@ -19,7 +19,7 @@
         <mxCell id="JEw1piW-Nov8eNwJmhrz-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="JEw1piW-Nov8eNwJmhrz-2" target="JEw1piW-Nov8eNwJmhrz-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="JEw1piW-Nov8eNwJmhrz-2" value="Initialize leaders archive" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="JEw1piW-Nov8eNwJmhrz-2" value="Initialize leaders archive (one objective)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="149.94" y="240" width="140" height="30" as="geometry" />
         </mxCell>
         <mxCell id="JEw1piW-Nov8eNwJmhrz-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="JEw1piW-Nov8eNwJmhrz-3" target="JEw1piW-Nov8eNwJmhrz-4" edge="1">
@@ -63,61 +63,61 @@
         <mxCell id="JEw1piW-Nov8eNwJmhrz-11" value="generation++" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="159.94" y="860" width="120" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-1" target="QdyQd_z3b0H6NEa9Nn1w-2">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-1" target="QdyQd_z3b0H6NEa9Nn1w-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-1" value="Update speeds of particles" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-1" value="Update speeds of particles" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="134.94" y="460" width="170" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-2" target="QdyQd_z3b0H6NEa9Nn1w-4">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-2" target="QdyQd_z3b0H6NEa9Nn1w-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-2" value="Update positions of particles" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-2" value="Update positions of particles" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="134.94" y="520" width="170" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-4" target="QdyQd_z3b0H6NEa9Nn1w-6">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-4" target="QdyQd_z3b0H6NEa9Nn1w-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-4" value="Try applying turbulence" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-4" value="Try applying turbulence" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="134.94" y="585" width="170" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-6" target="QdyQd_z3b0H6NEa9Nn1w-8">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-6" target="QdyQd_z3b0H6NEa9Nn1w-8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-6" value="Evaluate particles" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-6" value="Evaluate particles" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="134.94" y="650" width="170" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-8" target="QdyQd_z3b0H6NEa9Nn1w-11">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-8" target="QdyQd_z3b0H6NEa9Nn1w-11" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-8" value="Update leaders archive" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-8" value="Update leaders archive" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="134.94" y="720" width="170" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-11" target="JEw1piW-Nov8eNwJmhrz-11">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="QdyQd_z3b0H6NEa9Nn1w-11" target="JEw1piW-Nov8eNwJmhrz-11" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-11" value="Update particles memories" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="QdyQd_z3b0H6NEa9Nn1w-11" value="Update particles memories" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="134.94" y="790" width="170" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="gy9hzoJ_tgm-pusf9kd0-1" value="Particle" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="gy9hzoJ_tgm-pusf9kd0-1" value="Particle" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="580" y="20" width="180" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="gy9hzoJ_tgm-pusf9kd0-2" value="position: Configuration" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="gy9hzoJ_tgm-pusf9kd0-1">
+        <mxCell id="gy9hzoJ_tgm-pusf9kd0-2" value="position: Configuration" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="gy9hzoJ_tgm-pusf9kd0-1" vertex="1">
           <mxGeometry y="30" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="gy9hzoJ_tgm-pusf9kd0-3" value="speed: double[]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="gy9hzoJ_tgm-pusf9kd0-1">
+        <mxCell id="gy9hzoJ_tgm-pusf9kd0-3" value="speed: double[]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="gy9hzoJ_tgm-pusf9kd0-1" vertex="1">
           <mxGeometry y="60" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="gy9hzoJ_tgm-pusf9kd0-4" value="personalBest: Configuration" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="gy9hzoJ_tgm-pusf9kd0-1">
+        <mxCell id="gy9hzoJ_tgm-pusf9kd0-4" value="personalBest: Configuration" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="gy9hzoJ_tgm-pusf9kd0-1" vertex="1">
           <mxGeometry y="90" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="Op-KkIhUaiCkP9ZTUG40-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Op-KkIhUaiCkP9ZTUG40-1" target="JEw1piW-Nov8eNwJmhrz-1">
+        <mxCell id="Op-KkIhUaiCkP9ZTUG40-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="Op-KkIhUaiCkP9ZTUG40-1" target="JEw1piW-Nov8eNwJmhrz-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="Op-KkIhUaiCkP9ZTUG40-1" value="Initialize results dictionary empty" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="Op-KkIhUaiCkP9ZTUG40-1" value="Initialize results dictionary empty" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="159.94" y="100" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="XtPFkoyNwsiE7fQPT80U-1" value="Return Leaders Archive" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="XtPFkoyNwsiE7fQPT80U-1" value="Return Leaders Archive" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="169.94" y="940" width="100" height="60" as="geometry" />
         </mxCell>
       </root>
@@ -182,42 +182,48 @@
     </mxGraphModel>
   </diagram>
   <diagram id="1TdvZzMyM3aP6utzr17O" name="Initialize Leaders Archive">
-    <mxGraphModel dx="819" dy="479" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="683" dy="400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="fRfRLBUCj1vt5A7RjBGE-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="fRfRLBUCj1vt5A7RjBGE-1" target="fRfRLBUCj1vt5A7RjBGE-2">
+        <mxCell id="fRfRLBUCj1vt5A7RjBGE-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="fRfRLBUCj1vt5A7RjBGE-1" target="fRfRLBUCj1vt5A7RjBGE-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="fRfRLBUCj1vt5A7RjBGE-1" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="fRfRLBUCj1vt5A7RjBGE-1" value="Start" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="320" y="20" width="70" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="ixd07KHr537AiMv113Cl-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="fRfRLBUCj1vt5A7RjBGE-2" target="ixd07KHr537AiMv113Cl-1">
+        <mxCell id="ixd07KHr537AiMv113Cl-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="fRfRLBUCj1vt5A7RjBGE-2" target="ixd07KHr537AiMv113Cl-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="fRfRLBUCj1vt5A7RjBGE-2" value="Let leadersArchive be an empty list with fixed max size archiveSize" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="fRfRLBUCj1vt5A7RjBGE-2" value="Let leadersArchive be an empty list with fixed max size archiveSize" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="282.5" y="100" width="145" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="fRfRLBUCj1vt5A7RjBGE-4" value="archiveSize from UI searchConfig call" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="fRfRLBUCj1vt5A7RjBGE-4" value="archiveSize from UI searchConfig call" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="470" y="110" width="140" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="ixd07KHr537AiMv113Cl-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ixd07KHr537AiMv113Cl-1" target="ixd07KHr537AiMv113Cl-7">
+        <mxCell id="EsEAKmMr8EwAGiMoKozd-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="ixd07KHr537AiMv113Cl-1" target="EsEAKmMr8EwAGiMoKozd-1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ixd07KHr537AiMv113Cl-1" value="For each particle in swarm" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="ixd07KHr537AiMv113Cl-1" value="For each particle in swarm" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="240" y="190" width="230" height="240" as="geometry" />
         </mxCell>
-        <mxCell id="ixd07KHr537AiMv113Cl-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="ixd07KHr537AiMv113Cl-1" source="ixd07KHr537AiMv113Cl-3" target="ixd07KHr537AiMv113Cl-4">
+        <mxCell id="ixd07KHr537AiMv113Cl-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="ixd07KHr537AiMv113Cl-1" source="ixd07KHr537AiMv113Cl-3" target="ixd07KHr537AiMv113Cl-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="ixd07KHr537AiMv113Cl-3" value="check Is Dominated for particle&#39;s configuration in the set of all configurations in swarm, given results dictionary" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="ixd07KHr537AiMv113Cl-1">
+        <mxCell id="ixd07KHr537AiMv113Cl-3" value="check Is Dominated for particle&#39;s configuration in the set of all configurations in swarm, given results dictionary" style="rounded=1;whiteSpace=wrap;html=1;" parent="ixd07KHr537AiMv113Cl-1" vertex="1">
           <mxGeometry x="20" y="40" width="190" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="ixd07KHr537AiMv113Cl-4" value="If particle&#39;s configuration is not dominated, add to leadersArchive" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="ixd07KHr537AiMv113Cl-1">
+        <mxCell id="ixd07KHr537AiMv113Cl-4" value="If particle&#39;s configuration is not dominated, add to leadersArchive" style="rounded=0;whiteSpace=wrap;html=1;" parent="ixd07KHr537AiMv113Cl-1" vertex="1">
           <mxGeometry x="20" y="140" width="190" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="ixd07KHr537AiMv113Cl-7" value="END" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="305" y="470" width="100" height="60" as="geometry" />
+        <mxCell id="ixd07KHr537AiMv113Cl-7" value="END" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="305" y="580" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="EsEAKmMr8EwAGiMoKozd-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="EsEAKmMr8EwAGiMoKozd-1" target="ixd07KHr537AiMv113Cl-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="EsEAKmMr8EwAGiMoKozd-1" value="Calculate crowding distance for leader&#39;s archive (using results dict) and store it in crowdingDistances" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="252.5" y="470" width="205" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
@@ -262,64 +268,68 @@
     </mxGraphModel>
   </diagram>
   <diagram id="WB-_jQ-c32Wue1vFlmMN" name="Update speeds of particles">
-    <mxGraphModel dx="1195" dy="698" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="839" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="drdxQC3TDGH5V-IslYzP-1">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="drdxQC3TDGH5V-IslYzP-1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="400" y="110" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="drdxQC3TDGH5V-IslYzP-1" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="drdxQC3TDGH5V-IslYzP-1" value="Start" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="360" y="30" width="80" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="xxo4gBW64KxO9hoz0uZL-4" target="xxo4gBW64KxO9hoz0uZL-22">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="xxo4gBW64KxO9hoz0uZL-4" target="xxo4gBW64KxO9hoz0uZL-22" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-4" value="For particle in swarm" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-4" value="For particle in swarm" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="230" y="110" width="340" height="610" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-5" target="xxo4gBW64KxO9hoz0uZL-8">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-5" target="xxo4gBW64KxO9hoz0uZL-8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-5" value="Pick random r1, r2 from (0, 1)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xxo4gBW64KxO9hoz0uZL-4">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-5" value="Pick random r1, r2 from (0, 1)" style="rounded=0;whiteSpace=wrap;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" vertex="1">
           <mxGeometry x="80" y="40" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-6" value="Update speed = w·speed+C1·r1 ·(xp−xi)+C2·r2 ·(xg−xi) . All operations are vectorial" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xxo4gBW64KxO9hoz0uZL-4">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-6" value="Update speed = w·speed+C1·r1 ·(xp−xi)+C2·r2 ·(xg−xi) . All operations are vectorial" style="rounded=0;whiteSpace=wrap;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" vertex="1">
           <mxGeometry x="35" y="530" width="270" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-8" target="xxo4gBW64KxO9hoz0uZL-9">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-8" target="xxo4gBW64KxO9hoz0uZL-9" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-8" value="Let xi as double[] be the Map From Config To Real Vector of particle&#39;s config" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="xxo4gBW64KxO9hoz0uZL-4">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-8" value="Let xi as double[] be the Map From Config To Real Vector of particle&#39;s config" style="rounded=1;whiteSpace=wrap;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" vertex="1">
           <mxGeometry x="30" y="100" width="280" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-9" target="xxo4gBW64KxO9hoz0uZL-11">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-9" target="xxo4gBW64KxO9hoz0uZL-11" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-9" value="Let xp as double[] be the Map From Config To Real Vector of particle&#39;s personal best" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="xxo4gBW64KxO9hoz0uZL-4">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-9" value="Let xp as double[] be the Map From Config To Real Vector of particle&#39;s personal best" style="rounded=1;whiteSpace=wrap;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" vertex="1">
           <mxGeometry x="30" y="190" width="280" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-11" target="xxo4gBW64KxO9hoz0uZL-13">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-11" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="340" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-11" value="Select random l1, l2 from leaders archive" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xxo4gBW64KxO9hoz0uZL-4">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-11" value="Select random l1, l2 from leaders archive" style="rounded=0;whiteSpace=wrap;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" vertex="1">
           <mxGeometry x="35" y="280" width="270" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-13" target="xxo4gBW64KxO9hoz0uZL-14">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-20" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" target="xxo4gBW64KxO9hoz0uZL-14" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="400" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-14" target="xxo4gBW64KxO9hoz0uZL-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-13" value="Let crowd1, crowd2 be the Crowding Distances of l1, respectively l2" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="xxo4gBW64KxO9hoz0uZL-4">
-          <mxGeometry x="35" y="340" width="270" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="xxo4gBW64KxO9hoz0uZL-4" source="xxo4gBW64KxO9hoz0uZL-14" target="xxo4gBW64KxO9hoz0uZL-6">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-14" value="Let xg as double[] be the Map of Config to Real Vector of l1 if crowd1 &amp;gt; crowd2, otherwise map of l2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xxo4gBW64KxO9hoz0uZL-4">
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-14" value="Let xg as double[] be the Map of Config to Real Vector of l1 if crowd1 &amp;gt; crowd2, otherwise map of l2" style="rounded=0;whiteSpace=wrap;html=1;" parent="xxo4gBW64KxO9hoz0uZL-4" vertex="1">
           <mxGeometry x="35" y="430" width="270" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="xxo4gBW64KxO9hoz0uZL-22" value="END" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="mj1ozXERxM6CvJweBrvC-1" value="Let crowd1, crowd2 be the Crowding Distances of l1, respectively l2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="xxo4gBW64KxO9hoz0uZL-4">
+          <mxGeometry x="60" y="340" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="xxo4gBW64KxO9hoz0uZL-22" value="END" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="350" y="750" width="100" height="60" as="geometry" />
         </mxCell>
       </root>
@@ -358,12 +368,135 @@
     </mxGraphModel>
   </diagram>
   <diagram id="JiFSUHPM6dUyjtV7e0is" name="Crowding Distance">
-    <mxGraphModel dx="683" dy="399" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1103" dy="645" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="4uXApGb6hzrbyHSut3N9-1" value="Start with params: config, config set" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="365" y="40" width="120" height="80" as="geometry" />
+        <mxCell id="_GmWn-QnmCwfYe8C5JsK-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="4uXApGb6hzrbyHSut3N9-1" target="_GmWn-QnmCwfYe8C5JsK-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="4uXApGb6hzrbyHSut3N9-1" value="Start with params: config set, results dict, number of objectives" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="157.5" y="30" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="_GmWn-QnmCwfYe8C5JsK-1" target="_GmWn-QnmCwfYe8C5JsK-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_GmWn-QnmCwfYe8C5JsK-1" value="Let crowdingDistances be an empty dictionary from Configurations to crowding distances (double)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="90" y="140" width="255" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="_GmWn-QnmCwfYe8C5JsK-3" target="NCookCJcaOnP2MxyVQ3p-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-10" value="yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="NCookCJcaOnP2MxyVQ3p-3">
+          <mxGeometry x="-0.5093" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="_GmWn-QnmCwfYe8C5JsK-3" target="NCookCJcaOnP2MxyVQ3p-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_GmWn-QnmCwfYe8C5JsK-3" value="does config set contains&lt;div&gt;&amp;nbsp;no elements&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="117.5" y="230" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-2" value="return crowdingDistances" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="240" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="NCookCJcaOnP2MxyVQ3p-4" target="NCookCJcaOnP2MxyVQ3p-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-11" value="yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="NCookCJcaOnP2MxyVQ3p-8">
+          <mxGeometry x="-0.2889" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-22" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="NCookCJcaOnP2MxyVQ3p-4" target="NCookCJcaOnP2MxyVQ3p-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-4" value="does config set contains&lt;div&gt;&amp;nbsp;one element&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="117.5" y="330" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="NCookCJcaOnP2MxyVQ3p-6" target="NCookCJcaOnP2MxyVQ3p-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-6" value="set crowdingDistances of that element to +infinity" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="340" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-7" value="return crowdingDistances" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="340" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="NCookCJcaOnP2MxyVQ3p-12" target="NCookCJcaOnP2MxyVQ3p-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-24" value="yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="NCookCJcaOnP2MxyVQ3p-23">
+          <mxGeometry x="-0.2613" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="NCookCJcaOnP2MxyVQ3p-12" target="NCookCJcaOnP2MxyVQ3p-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-12" value="does config set contains&lt;div&gt;&amp;nbsp;two elements&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="117.5" y="430" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="NCookCJcaOnP2MxyVQ3p-14" target="NCookCJcaOnP2MxyVQ3p-18">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-14" value="set crowdingDistances of first and last elements to +infinity" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="440" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-18" value="return crowdingDistances" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="580" y="440" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="NCookCJcaOnP2MxyVQ3p-26" target="NCookCJcaOnP2MxyVQ3p-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-26" value="set all crowding distances to 0" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="102.5" y="540" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="NCookCJcaOnP2MxyVQ3p-28" target="vQDk6ukUJKBHr8L-VZoq-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="NCookCJcaOnP2MxyVQ3p-28" value="for each objective in [0, number of objectives)" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="57.5" y="600" width="320" height="490" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="NCookCJcaOnP2MxyVQ3p-28" source="vQDk6ukUJKBHr8L-VZoq-1" target="vQDk6ukUJKBHr8L-VZoq-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-1" value="copy config set and sort by value of current objective" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="NCookCJcaOnP2MxyVQ3p-28">
+          <mxGeometry x="10" y="40" width="300" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="NCookCJcaOnP2MxyVQ3p-28" source="vQDk6ukUJKBHr8L-VZoq-3" target="vQDk6ukUJKBHr8L-VZoq-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-3" value="extract min and max current objective values into objMin and objMax" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="NCookCJcaOnP2MxyVQ3p-28">
+          <mxGeometry x="10" y="80" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="NCookCJcaOnP2MxyVQ3p-28" source="vQDk6ukUJKBHr8L-VZoq-5" target="vQDk6ukUJKBHr8L-VZoq-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-5" value="get first and last elements of sorted set and set their crowding distance to +infinity" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="NCookCJcaOnP2MxyVQ3p-28">
+          <mxGeometry x="10" y="140" width="300" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-7" value="for i in [1, size of config set - 1)" style="swimlane;whiteSpace=wrap;html=1;startSize=30;" vertex="1" parent="NCookCJcaOnP2MxyVQ3p-28">
+          <mxGeometry x="10" y="210" width="300" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="vQDk6ukUJKBHr8L-VZoq-7" source="vQDk6ukUJKBHr8L-VZoq-8" target="vQDk6ukUJKBHr8L-VZoq-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-8" value="let distance = current objective of copy config set [i + 1] - current objective of copy config set [i - 1]" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="vQDk6ukUJKBHr8L-VZoq-7">
+          <mxGeometry x="12" y="40" width="278" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="vQDk6ukUJKBHr8L-VZoq-7" source="vQDk6ukUJKBHr8L-VZoq-9" target="vQDk6ukUJKBHr8L-VZoq-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-9" value="distance = distance / (objMax - objMin)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="vQDk6ukUJKBHr8L-VZoq-7">
+          <mxGeometry x="10" y="110" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-10" value="increment crowding distance of copy config set [i] with distance" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="vQDk6ukUJKBHr8L-VZoq-7">
+          <mxGeometry x="45" y="170" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="vQDk6ukUJKBHr8L-VZoq-15" value="return crowdingDistances" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="500" y="815" width="140" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
