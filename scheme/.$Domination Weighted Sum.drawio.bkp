@@ -1,0 +1,76 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.1 Chrome/128.0.6613.186 Electron/32.2.6 Safari/537.36" version="25.0.1" pages="2">
+  <diagram name="Is Dominated" id="T57sPEavWM-8U6eZejtW">
+    <mxGraphModel dx="956" dy="559" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Bef32-IjlYLSnNJMjLJv-2" target="Bef32-IjlYLSnNJMjLJv-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-2" value="Start with params:&lt;br&gt;result to check, set of results to check against" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="326.25" y="20" width="170" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="Bef32-IjlYLSnNJMjLJv-4" target="Bef32-IjlYLSnNJMjLJv-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-4" value="For curentResult in set of results to check against" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="260" y="130" width="302.5" height="450" as="geometry">
+            <mxRectangle x="227.5" y="140" width="220" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-8" value="Return &quot;is dominated&quot;" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="Bef32-IjlYLSnNJMjLJv-4">
+          <mxGeometry x="101.25" y="360" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="Bef32-IjlYLSnNJMjLJv-4" source="Bef32-IjlYLSnNJMjLJv-13" target="Bef32-IjlYLSnNJMjLJv-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-13" value="Calculate sumToCheck = w_CPI * result to check&#39;s CPI + w_Power * result to check&#39;s power&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="Bef32-IjlYLSnNJMjLJv-4">
+          <mxGeometry x="46.75" y="50" width="209" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="Bef32-IjlYLSnNJMjLJv-4" source="Bef32-IjlYLSnNJMjLJv-15" target="Bef32-IjlYLSnNJMjLJv-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-15" value="Calculate currentSum = w_CPI * currentResult&#39;s CPI + w_Power * currentResult&#39;s Power" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="Bef32-IjlYLSnNJMjLJv-4">
+          <mxGeometry x="46.75" y="140" width="209" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-19" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="Bef32-IjlYLSnNJMjLJv-4" source="Bef32-IjlYLSnNJMjLJv-17" target="Bef32-IjlYLSnNJMjLJv-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-20" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Bef32-IjlYLSnNJMjLJv-19">
+          <mxGeometry x="-0.55" y="1" relative="1" as="geometry">
+            <mxPoint x="-1" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-17" value="sumToCheck &amp;gt; currentSum" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="Bef32-IjlYLSnNJMjLJv-4">
+          <mxGeometry x="86.25" y="240" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Bef32-IjlYLSnNJMjLJv-12" value="Return &quot;is not dominated&quot;" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="361.25" y="630" width="100" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="D4VtSXmT0bjkZEDWt419" name="Init">
+    <mxGraphModel dx="1434" dy="839" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="r9lcjFv17J73TUQlaACV-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="r9lcjFv17J73TUQlaACV-1" target="r9lcjFv17J73TUQlaACV-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r9lcjFv17J73TUQlaACV-1" value="Start with params&lt;div&gt;w_CPI, w_Power&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="30" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="r9lcjFv17J73TUQlaACV-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="r9lcjFv17J73TUQlaACV-2" target="r9lcjFv17J73TUQlaACV-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r9lcjFv17J73TUQlaACV-2" value="Copy w_CPI and w_Power locally" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="r9lcjFv17J73TUQlaACV-3" value="" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="270" width="100" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
