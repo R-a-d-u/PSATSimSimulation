@@ -30,13 +30,16 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="KmM_sv1nXnaMjT5lubwb-4" value="Domination Provider" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="340" y="370" width="200" height="200" as="geometry" />
+          <mxGeometry x="340" y="370" width="200" height="220" as="geometry" />
         </mxCell>
         <mxCell id="KmM_sv1nXnaMjT5lubwb-5" value="SMPSO Domination" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="KmM_sv1nXnaMjT5lubwb-4">
           <mxGeometry x="40" y="40" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="KmM_sv1nXnaMjT5lubwb-6" value="Weighted Sum Domination" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="KmM_sv1nXnaMjT5lubwb-4">
           <mxGeometry x="40" y="90" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="KmM_sv1nXnaMjT5lubwb-8" value="Lexicographic Domination" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="KmM_sv1nXnaMjT5lubwb-4">
+          <mxGeometry x="40" y="150" width="120" height="40" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
