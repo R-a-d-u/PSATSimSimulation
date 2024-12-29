@@ -1,0 +1,114 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2" pages="2">
+  <diagram name="Evaluate" id="anMU6pZ38rH_e_HbcyIy">
+    <mxGraphModel dx="683" dy="399" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cWHnZJWbIwPgVO1LG2Uv-1" target="cWHnZJWbIwPgVO1LG2Uv-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-1" value="Start with params:&lt;div&gt;configs as list of Configurations&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="352" y="10" width="147" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cWHnZJWbIwPgVO1LG2Uv-2" target="cWHnZJWbIwPgVO1LG2Uv-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-2" value="Let results be an array of double[2] of same size as configs" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="333" y="130" width="185" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="cWHnZJWbIwPgVO1LG2Uv-4" target="cWHnZJWbIwPgVO1LG2Uv-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-4" value="Let toEvaluate be a list of tuples (config, index); init empty" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="318" y="230" width="214" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cWHnZJWbIwPgVO1LG2Uv-6" target="cWHnZJWbIwPgVO1LG2Uv-17">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-6" value="for config, i in config" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="226.25" y="330" width="397.5" height="420" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="cWHnZJWbIwPgVO1LG2Uv-6" source="cWHnZJWbIwPgVO1LG2Uv-8" target="cWHnZJWbIwPgVO1LG2Uv-9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-8" value="Calculate the SHA256 of the config" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="cWHnZJWbIwPgVO1LG2Uv-6">
+          <mxGeometry x="99.13" y="50" width="200.25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-12" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="cWHnZJWbIwPgVO1LG2Uv-6" source="cWHnZJWbIwPgVO1LG2Uv-9" target="cWHnZJWbIwPgVO1LG2Uv-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-9" value="Search in database for the hash of the config" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="cWHnZJWbIwPgVO1LG2Uv-6">
+          <mxGeometry x="84.13" y="110" width="230.25" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="cWHnZJWbIwPgVO1LG2Uv-6" source="cWHnZJWbIwPgVO1LG2Uv-10" target="cWHnZJWbIwPgVO1LG2Uv-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="cWHnZJWbIwPgVO1LG2Uv-6" source="cWHnZJWbIwPgVO1LG2Uv-10" target="cWHnZJWbIwPgVO1LG2Uv-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-10" value="Hit in database" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="cWHnZJWbIwPgVO1LG2Uv-6">
+          <mxGeometry x="158.75" y="200" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-13" value="results[i] = results from database" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="cWHnZJWbIwPgVO1LG2Uv-6">
+          <mxGeometry x="23.75" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-15" value="toEvaluate add (config, i)" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="cWHnZJWbIwPgVO1LG2Uv-6">
+          <mxGeometry x="253.75" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="cWHnZJWbIwPgVO1LG2Uv-17" target="cWHnZJWbIwPgVO1LG2Uv-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-17" value="Run PSATSim Evaluate with toEvaluate and config and store the result in newEvaluations" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="323" y="800" width="205" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-28" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="cWHnZJWbIwPgVO1LG2Uv-19" target="cWHnZJWbIwPgVO1LG2Uv-27">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-19" value="For newResult, i in newEvaluations" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="250" y="900" width="350" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="cWHnZJWbIwPgVO1LG2Uv-19" source="cWHnZJWbIwPgVO1LG2Uv-21" target="cWHnZJWbIwPgVO1LG2Uv-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-21" value="results[i] = newResult" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="cWHnZJWbIwPgVO1LG2Uv-19">
+          <mxGeometry x="114.5" y="50" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="cWHnZJWbIwPgVO1LG2Uv-19" source="cWHnZJWbIwPgVO1LG2Uv-22" target="cWHnZJWbIwPgVO1LG2Uv-24">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-22" value="Calculate the SHA256 of the config[i]" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="cWHnZJWbIwPgVO1LG2Uv-19">
+          <mxGeometry x="74.88" y="120" width="200.25" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-24" value="Set in database a new entry for above hash to newResult" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="cWHnZJWbIwPgVO1LG2Uv-19">
+          <mxGeometry x="67.25" y="190" width="215.5" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="cWHnZJWbIwPgVO1LG2Uv-27" value="Return results" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="375" y="1270" width="100" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="iOAJDrRpIGX-QKGYTHQk" name="Init">
+    <mxGraphModel dx="819" dy="479" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="G7J01NahCkvnEGDJDuwk-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="G7J01NahCkvnEGDJDuwk-1" target="G7J01NahCkvnEGDJDuwk-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G7J01NahCkvnEGDJDuwk-1" value="Start with param&lt;div&gt;env: EnvironmentConfig&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="365" y="40" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="G7J01NahCkvnEGDJDuwk-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="G7J01NahCkvnEGDJDuwk-2" target="G7J01NahCkvnEGDJDuwk-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G7J01NahCkvnEGDJDuwk-2" value="set local env to given env" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="365" y="180" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="G7J01NahCkvnEGDJDuwk-4" value="END" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="375" y="300" width="100" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

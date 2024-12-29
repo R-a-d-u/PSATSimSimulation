@@ -165,7 +165,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="DvbdqieHHknr5DbnnIH0" name="Initialize Swarm">
-    <mxGraphModel dx="1434" dy="838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="957" dy="479" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -175,13 +175,13 @@
         <mxCell id="yQ3MBcs3mOTVq_82O27H-1" value="Start initialization of swarm" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="320" y="20" width="120" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="pUz4ezTDpapkke-n0O7A-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="yQ3MBcs3mOTVq_82O27H-2" target="k931aRLgWhVeED5Lz_6K-1" edge="1">
+        <mxCell id="pUz4ezTDpapkke-n0O7A-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="yQ3MBcs3mOTVq_82O27H-2" target="k931aRLgWhVeED5Lz_6K-1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="yQ3MBcs3mOTVq_82O27H-2" value="let swarm be a list of swarmSize particles with random configurations" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="310" y="130" width="140" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="pUz4ezTDpapkke-n0O7A-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="MawIRmo5o7hxTb80F0-O-4" target="MawIRmo5o7hxTb80F0-O-16" edge="1">
+        <mxCell id="pUz4ezTDpapkke-n0O7A-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="MawIRmo5o7hxTb80F0-O-4" target="MawIRmo5o7hxTb80F0-O-16">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="MawIRmo5o7hxTb80F0-O-4" value="For each particle in Swarm" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -208,13 +208,13 @@
         <mxCell id="b4PnMtemHFmzvL3poBeY-1" value="The randomization must respect MinLimits and MaxLimits" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="480" y="122.5" width="270" height="75" as="geometry" />
         </mxCell>
-        <mxCell id="MawIRmo5o7hxTb80F0-O-7" value="Results Evaluator" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="MawIRmo5o7hxTb80F0-O-7" value="PSATSim Wrapper" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="510" y="380" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="MawIRmo5o7hxTb80F0-O-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=classicThin;endFill=1;startArrow=classicThin;startFill=1;" parent="1" source="MawIRmo5o7hxTb80F0-O-7" target="MawIRmo5o7hxTb80F0-O-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="pUz4ezTDpapkke-n0O7A-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="MawIRmo5o7hxTb80F0-O-6" target="MawIRmo5o7hxTb80F0-O-4" edge="1">
+        <mxCell id="pUz4ezTDpapkke-n0O7A-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MawIRmo5o7hxTb80F0-O-6" target="MawIRmo5o7hxTb80F0-O-4">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="MawIRmo5o7hxTb80F0-O-6" value="Evaluate the above copy of configurations&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
