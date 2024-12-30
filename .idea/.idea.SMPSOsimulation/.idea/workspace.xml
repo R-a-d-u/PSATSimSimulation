@@ -7,7 +7,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c88e21e3-3570-48b5-b6b5-21c3793f6e9b" name="Changes" comment="" />
+    <list default="true" id="c88e21e3-3570-48b5-b6b5-21c3793f6e9b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SMPSOsimulation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMPSOsimulation/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SMPSOsimulation/PSAtSimFunctions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SMPSOsimulation/PSAtSimFunctions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheme/.$UI-Orchestrator.drawio.bkp" beforeDir="false" afterPath="$PROJECT_DIR$/scheme/.$UI-Orchestrator.drawio.bkp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheme/Configuration Struct.ods" beforeDir="false" afterPath="$PROJECT_DIR$/scheme/Configuration Struct.ods" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheme/UI-Orchestrator.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/scheme/UI-Orchestrator.drawio" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -41,6 +47,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.codegpt.prompts&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -74,6 +81,7 @@
       <updated>1735063353133</updated>
       <workItem from="1735063354184" duration="1277000" />
       <workItem from="1735064637739" duration="28000" />
+      <workItem from="1735570041089" duration="2591000" />
     </task>
     <servers />
   </component>
@@ -84,5 +92,9 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
