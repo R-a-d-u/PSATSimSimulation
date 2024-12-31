@@ -21,6 +21,7 @@ public class EnvironmentConfig
     public int L2Latency { get; set; }
     public int SystemMemLatency { get; set; }
     public string Trace {get; set;}
+    public int MaxFrequency { get; set; }
 
     public EnvironmentConfig(
         double vdd,
@@ -32,7 +33,8 @@ public class EnvironmentConfig
         float l2Hitrate,
         int l2Latency,
         int systemMemLatency,
-        string trace)
+        string trace,
+        int maxFrequency)
     {
         if (vdd <= 0)
             throw new ArgumentException("Vdd must be greater than 0.");
@@ -68,5 +70,6 @@ public class EnvironmentConfig
         L2Latency = l2Latency;
         SystemMemLatency = systemMemLatency;
         Trace = trace;
+        MaxFrequency = maxFrequency;
     }
 }
