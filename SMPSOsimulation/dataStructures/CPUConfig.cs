@@ -1,3 +1,7 @@
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
+
 namespace SMPSOsimulation.dataStructures;
 
 public class CPUConfig
@@ -17,12 +21,12 @@ public class CPUConfig
     public int Branch { get; set; }
     public int Load { get; set; }
     public int Store { get; set; }
-    public float Freq { get; set; }
+    public int Freq { get; set; }
 
     // Constructor to initialize the properties
     public CPUConfig(int superscalar, int rename, int reorder, RsbArchitectureType rsbArchitecture, bool separateDispatch,
                     int iadd, int imult, int idiv, int fpadd, int fpmult, int fpdiv, int fpsqrt, int branch,
-                    int load, int store, float freq)
+                    int load, int store, int freq)
     {
         Superscalar = superscalar;
         Rename = rename;
@@ -61,6 +65,25 @@ public class CPUConfig
         if (Load < 1 || Load > 8) throw new ArgumentOutOfRangeException(nameof(Load));
         if (Store < 1 || Store > 8) throw new ArgumentOutOfRangeException(nameof(Store));
         if (Freq <= 0) throw new ArgumentOutOfRangeException(nameof(Freq));
+    }
+
+    public string CalculateSha256()
+    {
+        // Serialize the object to JSON
+        string serializedConfig = JsonSerializer.Serialize(this);
+
+        // Compute the SHA-256 hash
+        using var sha256 = SHA256.Create();
+        byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(serializedConfig));
+
+        // Convert the hash to a hex string
+        StringBuilder hashString = new StringBuilder();
+        foreach (byte b in hashBytes)
+        {
+            hashString.Append(b.ToString("x2"));
+        }
+
+        return hashString.ToString();
     }
 }
 
