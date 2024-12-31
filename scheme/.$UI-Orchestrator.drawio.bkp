@@ -116,7 +116,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="7tRPP2ITW5wygUKhVotG" name="VEGA">
-    <mxGraphModel dx="1434" dy="838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="714" dy="838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -147,7 +147,7 @@
             <mxPoint x="460" y="260" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="pXw0qbNZs9MNTRqa0eIa-8" value="Return Result (globalBest: Configuration)" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" parent="pXw0qbNZs9MNTRqa0eIa-7" connectable="0" vertex="1">
+        <mxCell id="pXw0qbNZs9MNTRqa0eIa-8" value="Return Result (population: list of Configuration)" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" parent="pXw0qbNZs9MNTRqa0eIa-7" connectable="0" vertex="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="pXw0qbNZs9MNTRqa0eIa-9" value="searchConfigVEGA" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -166,12 +166,12 @@
           <mxGeometry y="120" width="230" height="30" as="geometry" />
         </mxCell>
         <mxCell id="pXw0qbNZs9MNTRqa0eIa-16" value="EnvironmentConfig" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="310" y="490" width="230" height="330" as="geometry" />
+          <mxGeometry x="310" y="490" width="230" height="360" as="geometry" />
         </mxCell>
         <mxCell id="pXw0qbNZs9MNTRqa0eIa-17" value="vdd: floating &amp;gt; 0" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="pXw0qbNZs9MNTRqa0eIa-16" vertex="1">
           <mxGeometry y="30" width="230" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="cQA8GfdOamWq95VICX_X-1" value="freq: float &amp;gt; 0" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="pXw0qbNZs9MNTRqa0eIa-16">
+        <mxCell id="cQA8GfdOamWq95VICX_X-1" value="MaxFrequency: float &amp;gt; 0" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="pXw0qbNZs9MNTRqa0eIa-16" vertex="1">
           <mxGeometry y="60" width="230" height="30" as="geometry" />
         </mxCell>
         <mxCell id="pXw0qbNZs9MNTRqa0eIa-18" value="memoryArch: system or l1 or l2" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="pXw0qbNZs9MNTRqa0eIa-16" vertex="1">
@@ -197,6 +197,9 @@
         </mxCell>
         <mxCell id="pXw0qbNZs9MNTRqa0eIa-25" value="systemMemLatency: int &amp;gt; 0" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="pXw0qbNZs9MNTRqa0eIa-16" vertex="1">
           <mxGeometry y="300" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="tohS9RpQBTguS6tIS5Et-1" value="trace: string &amp;gt; 0" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="pXw0qbNZs9MNTRqa0eIa-16" vertex="1">
+          <mxGeometry y="330" width="230" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

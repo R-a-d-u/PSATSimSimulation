@@ -85,6 +85,105 @@ public class CPUConfig
 
         return hashString.ToString();
     }
+
+    public static class CPUConfigLimits
+    {
+        public const int SuperscalarMin = 1;
+        public const int RenameMin = 1;
+        public const int ReorderMin = 1;
+        public const int IaddMin = 1;
+        public const int ImultMin = 1;
+        public const int IdivMin = 1;
+        public const int FpaddMin = 1;
+        public const int FpmultMin = 1;
+        public const int FpdivMin = 1;
+        public const int FpsqrtMin = 1;
+        public const int BranchMin = 1;
+        public const int LoadMin = 1;
+        public const int StoreMin = 1;
+
+        public const int SuperscalarMax = 16;
+        public const int RenameMax = 512;
+        public const int ReorderMax = 512;
+        public const int IaddMax = 8;
+        public const int ImultMax = 8;
+        public const int IdivMax = 8;
+        public const int FpaddMax = 8;
+        public const int FpmultMax = 8;
+        public const int FpdivMax = 8;
+        public const int FpsqrtMax = 8;
+        public const int BranchMax = 8;
+        public const int LoadMax = 8;
+        public const int StoreMax = 8;
+
+        public static int GetMin(int index)
+        {
+            switch (index)
+            {
+                case 0: return SuperscalarMin;
+                case 1: return RenameMin;
+                case 2: return ReorderMin;
+                case 5: return IaddMin;
+                case 6: return ImultMin;
+                case 7: return IdivMin;
+                case 8: return FpaddMin;
+                case 9: return FpmultMin;
+                case 10: return FpdivMin;
+                case 11: return FpsqrtMin;
+                case 12: return BranchMin;
+                case 13: return LoadMin;
+                case 14: return StoreMin;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+        
+        public static int GetMax(int index)
+        {
+            switch (index)
+            {
+                case 0: return SuperscalarMax;
+                case 1: return RenameMax;
+                case 2: return ReorderMax;
+                case 5: return IaddMax;
+                case 6: return ImultMax;
+                case 7: return IdivMax;
+                case 8: return FpaddMax;
+                case 9: return FpmultMax;
+                case 10: return FpdivMax;
+                case 11: return FpsqrtMax;
+                case 12: return BranchMax;
+                case 13: return LoadMax;
+                case 14: return StoreMax;
+                default: throw new ArgumentOutOfRangeException(nameof(index));
+            }
+        }
+    }
+
+    public static CPUConfig GenerateRandom(int maxFrequency)
+    {
+        Random random = new Random();
+
+        int superscalar = random.Next(CPUConfigLimits.SuperscalarMin, CPUConfigLimits.SuperscalarMax + 1);
+        int rename = random.Next(CPUConfigLimits.RenameMin, CPUConfigLimits.RenameMax + 1);
+        int reorder = random.Next(CPUConfigLimits.ReorderMin, CPUConfigLimits.ReorderMax + 1);
+        RsbArchitectureType rsbArchitecture = (RsbArchitectureType)random.Next(0, Enum.GetValues(typeof(RsbArchitectureType)).Length);
+        bool separateDispatch = random.Next(0, 2) == 1; // Randomly true or false
+
+        int iadd = random.Next(CPUConfigLimits.IaddMin, CPUConfigLimits.IaddMax + 1);
+        int imult = random.Next(CPUConfigLimits.ImultMin, CPUConfigLimits.ImultMax + 1);
+        int idiv = random.Next(CPUConfigLimits.IdivMin, CPUConfigLimits.IdivMax + 1);
+        int fpadd = random.Next(CPUConfigLimits.FpaddMin, CPUConfigLimits.FpaddMax + 1);
+        int fpmult = random.Next(CPUConfigLimits.FpmultMin, CPUConfigLimits.FpmultMax + 1);
+        int fpdiv = random.Next(CPUConfigLimits.FpdivMin, CPUConfigLimits.FpdivMax + 1);
+        int fpsqrt = random.Next(CPUConfigLimits.FpsqrtMin, CPUConfigLimits.FpsqrtMax + 1);
+        int branch = random.Next(CPUConfigLimits.BranchMin, CPUConfigLimits.BranchMax + 1);
+        int load = random.Next(CPUConfigLimits.LoadMin, CPUConfigLimits.LoadMax + 1);
+        int store = random.Next(CPUConfigLimits.StoreMin, CPUConfigLimits.StoreMax + 1);
+        int freq = random.Next(1, maxFrequency + 1); // Frequency should be between 1 and maxFrequency
+
+        return new CPUConfig(superscalar, rename, reorder, rsbArchitecture, separateDispatch,
+            iadd, imult, idiv, fpadd, fpmult, fpdiv, fpsqrt, branch, load, store, freq);
+    }
 }
 
 // Enum for RsbArchitecture

@@ -1,10 +1,10 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
   <diagram name="Page-1" id="vLqC30bx6TdA4_hb8m4A">
-    <mxGraphModel dx="819" dy="479" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="714" dy="838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="tM715aQ2O9wHuVtdNEMo-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="K_5MX-ocr5_CAAl9noTx-1" target="tM715aQ2O9wHuVtdNEMo-3">
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-1" target="tM715aQ2O9wHuVtdNEMo-3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="K_5MX-ocr5_CAAl9noTx-1" value="Start with param configVEGA from UI call" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -36,7 +36,7 @@
         <mxCell id="K_5MX-ocr5_CAAl9noTx-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="K_5MX-ocr5_CAAl9noTx-14" target="K_5MX-ocr5_CAAl9noTx-16" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="K_5MX-ocr5_CAAl9noTx-14" value="For i in [1, populationSize/2]" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-14" value="Until population gets to populationSize * 3/2" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="270" y="400" width="300" height="220" as="geometry" />
         </mxCell>
         <mxCell id="K_5MX-ocr5_CAAl9noTx-9" value="Select 2 random parents from population" style="rounded=0;whiteSpace=wrap;html=1;" parent="K_5MX-ocr5_CAAl9noTx-14" vertex="1">
@@ -119,16 +119,16 @@
         <mxCell id="K_5MX-ocr5_CAAl9noTx-44" value="Return population" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="370.5" y="1370" width="100" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="tM715aQ2O9wHuVtdNEMo-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;dashed=1;" edge="1" parent="1" source="tM715aQ2O9wHuVtdNEMo-3" target="tM715aQ2O9wHuVtdNEMo-4">
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;dashed=1;" parent="1" source="tM715aQ2O9wHuVtdNEMo-3" target="tM715aQ2O9wHuVtdNEMo-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="tM715aQ2O9wHuVtdNEMo-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="tM715aQ2O9wHuVtdNEMo-3" target="K_5MX-ocr5_CAAl9noTx-2">
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="tM715aQ2O9wHuVtdNEMo-3" target="K_5MX-ocr5_CAAl9noTx-2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="tM715aQ2O9wHuVtdNEMo-3" value="Init Result Evaluator with given env" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-3" value="Init Result Evaluator with given env" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="330.5" y="140" width="180" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="tM715aQ2O9wHuVtdNEMo-4" value="Results Evaluator" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-4" value="Results Evaluator" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="565" y="150" width="60" height="30" as="geometry" />
         </mxCell>
       </root>
