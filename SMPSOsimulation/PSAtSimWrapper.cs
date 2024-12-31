@@ -28,12 +28,12 @@ namespace SMPSOsimulation
             this.exePath = exePath;
             this.workingDirectory = Path.GetDirectoryName(exePath)!;
             
-            if (string.IsNullOrWhiteSpace(dllPath) || !File.Exists(dllPath))
+            if (string.IsNullOrWhiteSpace(dllPath) || !Directory.Exists(dllPath))
             {
                 throw new ArgumentException("This is not a valid path to a dll folder! I'm not dealing with this nonsense!");
             }
 
-            this.dllPath = exePath;
+            this.dllPath = dllPath;
         }
 
         private void RunPSATSimWithArguments(string? arguments = null)
@@ -135,7 +135,7 @@ namespace SMPSOsimulation
                     writer.WriteAttributeString("seed", "0");
                     writer.WriteAttributeString("trace", environmentConfig.Trace);
                     writer.WriteAttributeString("vdd", environmentConfig.Vdd.ToString());
-                    writer.WriteAttributeString("freq", cpuConfig.Freq.ToString());
+                    writer.WriteAttributeString("frequency", cpuConfig.Freq.ToString());
                     writer.WriteEndElement();
                     
                     writer.WriteStartElement("execution");
@@ -190,19 +190,26 @@ namespace SMPSOsimulation
                 currentProcess.Dispose();
                 currentProcess = null;
             }
-            
+
+            string currentPath = Environment.GetEnvironmentVariable("Path");
+
             try
             {
+                
+                string updatedPath = currentPath + ";" + dllPath;
+                Environment.SetEnvironmentVariable("Path", updatedPath);
+
+
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
-                    Arguments = $"/K \"cd /d {workingDirectory} && {exePath} {arguments}\"",
+                    Arguments = $"/K \"cd /d {workingDirectory} && {exePath} {arguments} && exit\"",
                     UseShellExecute = false,
-                    CreateNoWindow = false,
+                    CreateNoWindow = true,
                     WorkingDirectory = workingDirectory,
                     EnvironmentVariables =
                     {
-                        ["Path"] = dllPath + ";" + Environment.GetEnvironmentVariable("Path")
+                        ["Path"] =  Environment.GetEnvironmentVariable("Path") + ";" + dllPath
                     }
                 };
 
@@ -212,6 +219,10 @@ namespace SMPSOsimulation
             catch (Exception ex)
             {
                 throw new ApplicationException($"Error: {ex.Message}, PSATSim Error");
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable("Path", currentPath);
             }
         }
     }

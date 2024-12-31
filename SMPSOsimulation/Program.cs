@@ -18,7 +18,7 @@ namespace SMPSOsimulation
             l2Hitrate: 0.3713664058038628f,
             l2Latency: 53,
             systemMemLatency: 39,
-            trace: @"C:\Users\Ionut\IdeaProjects\DesignSpaceExplorer\Traces\compress.tra"
+            trace: @"C:\PSATSim\Traces\compress.tra"
         );
 
         // Create a list to hold CPU configurations
@@ -31,8 +31,8 @@ namespace SMPSOsimulation
         cpuConfigs.Add(new Tuple<CPUConfig, int>(new CPUConfig(5, 51, 23, RsbArchitectureType.hybrid, true, 5, 4, 1, 7, 1, 3, 7, 6, 2, 2, 600), 3));
 
         // Initialize PSAtSimWrapper with paths to the executable and DLL
-        string exePath = @"path\to\psatsim_con.exe"; // Replace with actual path
-        string dllPath = @"E:\PSATSIM2\GTK\bin"; // Replace with actual path
+        string exePath = @"C:\PSATSim\psatsim_con.exe"; // Replace with actual path
+        string dllPath = @"C:\GTK\bin"; // Replace with actual path
         PSAtSimWrapper psatSimWrapper = new PSAtSimWrapper(exePath, dllPath);
 
         // Evaluate the configurations and get results
@@ -43,7 +43,7 @@ namespace SMPSOsimulation
         {
             double[] metrics = result.Item1;
             int configIndex = result.Item2;
-            Console.WriteLine($"Configuration {configIndex}: IPC = {metrics[0]}, Energy = {metrics[1]}");
+            Console.WriteLine($"Configuration {configIndex}: IPC = {1 / metrics[0]}, Energy = {metrics[1]}");
         }
     }
     }
