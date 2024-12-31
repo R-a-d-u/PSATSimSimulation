@@ -112,8 +112,8 @@ public class VEGAOrchestrator
             }
             else if (i == 15)
             {
-                childGene1 = Math.Max(Math.Min(childGene1, maxFrequency), 0);
-                childGene2 = Math.Max(Math.Min(childGene2, maxFrequency), 0);
+                childGene1 = Math.Max(Math.Min(childGene1, maxFrequency), 1);
+                childGene2 = Math.Max(Math.Min(childGene2, maxFrequency), 1);
             }
             else
             {
@@ -185,7 +185,7 @@ public class VEGAOrchestrator
             }
             
             List<Individual> children = new List<Individual>();
-            while (population.Count < searchConfig.populationSize * 3 / 2)
+            while (population.Count + children.Count < searchConfig.populationSize * 3 / 2)
             {
                 int index1 = random.Next(population.Count);
                 int index2;

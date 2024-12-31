@@ -15,6 +15,13 @@ public class ResultsProvider
         this.psatsim = new PSAtSimWrapper(psatsimExePath, gtkBinPath);
     }
 
+    private bool BreaksConstraints(CPUConfig config)
+    {
+        if (config.RsbArchitecture == RsbArchitectureType.distributed && config.Load != config.Store)
+            return true;
+        return false;
+    }
+
     public double[][] Evaluate(List<CPUConfig> configs)
     {
         double[][] results = new double[configs.Count][];
@@ -28,6 +35,10 @@ public class ResultsProvider
             if (dbhit is not null)
             {
                 results[i] = [dbhit.Value.CPI, dbhit.Value.Energy];
+            }
+            else if(BreaksConstraints(config))
+            {
+                results[i] = [0, 0];
             }
             else
             {
