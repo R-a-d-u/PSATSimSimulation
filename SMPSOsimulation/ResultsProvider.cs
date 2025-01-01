@@ -38,7 +38,7 @@ public class ResultsProvider
             }
             else if(BreaksConstraints(config))
             {
-                results[i] = [0, 0];
+                results[i] = [double.PositiveInfinity, double.PositiveInfinity];
             }
             else
             {
