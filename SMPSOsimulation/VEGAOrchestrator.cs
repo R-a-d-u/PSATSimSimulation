@@ -12,51 +12,13 @@ public class VEGAOrchestrator
 
         public Individual(CPUConfig config)
         {
-            genes = new int[]
-            {
-                config.Superscalar,
-                config.Rename,
-                config.Reorder,
-                (int)config.RsbArchitecture,
-                config.SeparateDispatch ? 1 : 0,
-                config.Iadd,
-                config.Imult,
-                config.Idiv,
-                config.Fpadd,
-                config.Fpmult,
-                config.Fpdiv,
-                config.Fpsqrt,
-                config.Branch,
-                config.Load,
-                config.Store,
-                config.Freq
-            };
+            genes = config.GetVectorFormInt();
             result = new double[2];
         }
 
         public CPUConfig GetConfig()
         {
-            // Map the genes back to a CPUConfig
-            int superscalar = genes[0];
-            int rename = genes[1];
-            int reorder = genes[2];
-            RsbArchitectureType rsbArchitecture = (RsbArchitectureType)genes[3];
-            bool separateDispatch = genes[4] == 1; // Convert back to boolean
-            int iadd = genes[5];
-            int imult = genes[6];
-            int idiv = genes[7];
-            int fpadd = genes[8];
-            int fpmult = genes[9];
-            int fpdiv = genes[10];
-            int fpsqrt = genes[11];
-            int branch = genes[12];
-            int load = genes[13];
-            int store = genes[14];
-            int freq = genes[15];
-
-            // Create and return a new CPUConfig object
-            return new CPUConfig(superscalar, rename, reorder, rsbArchitecture, separateDispatch,
-                iadd, imult, idiv, fpadd, fpmult, fpdiv, fpsqrt, branch, load, store, freq);
+            return CPUConfig.GetConfigFromVectorInt(genes);
         }
     }
 
@@ -166,7 +128,7 @@ public class VEGAOrchestrator
         }
     }
 
-    public List<CPUConfig> StartSearch(SearchConfigVEGA searchConfig, string psatsimExePath, string gtkLibPath)
+    public List<(CPUConfig, double[])> StartSearch(SearchConfigVEGA searchConfig, string psatsimExePath, string gtkLibPath)
     {
         ResultsProvider resultsProvider = new ResultsProvider(searchConfig.environment, psatsimExePath, gtkLibPath);
         int subPopSize = searchConfig.populationSize / 2;
@@ -238,9 +200,9 @@ public class VEGAOrchestrator
                 .ToList(); // Convert back to a list
         }
         
-        List<CPUConfig> returnedConfigs = new List<CPUConfig>();
+        List<(CPUConfig, double[])> returnedConfigs = new List<(CPUConfig, double[])>();
         foreach (var individual in population)
-            returnedConfigs.Add(individual.GetConfig());
+            returnedConfigs.Add((individual.GetConfig(), individual.result));
 
         return returnedConfigs;
     }

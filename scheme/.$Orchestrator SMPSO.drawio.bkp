@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2" pages="10">
   <diagram name="Main" id="mer1Q-D7QFmTRmRvZn-K">
-    <mxGraphModel dx="1434" dy="838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="714" dy="838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -98,7 +98,7 @@
         <mxCell id="gy9hzoJ_tgm-pusf9kd0-2" value="positionWithResult: PositionWithResult" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="gy9hzoJ_tgm-pusf9kd0-1" vertex="1">
           <mxGeometry y="30" width="300" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="gy9hzoJ_tgm-pusf9kd0-3" value="speed: double[17]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="gy9hzoJ_tgm-pusf9kd0-1" vertex="1">
+        <mxCell id="gy9hzoJ_tgm-pusf9kd0-3" value="speed: double[16]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="gy9hzoJ_tgm-pusf9kd0-1" vertex="1">
           <mxGeometry y="60" width="300" height="30" as="geometry" />
         </mxCell>
         <mxCell id="gy9hzoJ_tgm-pusf9kd0-4" value="personalBest: PositionWithResult" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="gy9hzoJ_tgm-pusf9kd0-1" vertex="1">
@@ -110,11 +110,10 @@
         <mxCell id="CcpYXkqNeWHHpjf-c1Jl-1" value="maxGenerations from UI call" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="450.11" y="640" width="190" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="DMipOT66YE0y_2yzG4A0-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="l73e2cAJVaDvfHCNKtZE-1" target="DMipOT66YE0y_2yzG4A0-2" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="l73e2cAJVaDvfHCNKtZE-1" value="Set MaxLimits for Frequency&#39;s index to given&amp;nbsp;&lt;span style=&quot;text-align: left;&quot;&gt;maxFrequency from UI call&lt;/span&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="99.91" y="230" width="240" height="40" as="geometry" />
+        <mxCell id="DMipOT66YE0y_2yzG4A0-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="CJpW-dEF2FkyN9vKHG7K-1" target="DMipOT66YE0y_2yzG4A0-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="220" y="280" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="DMipOT66YE0y_2yzG4A0-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="DMipOT66YE0y_2yzG4A0-2" target="JEw1piW-Nov8eNwJmhrz-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
@@ -125,10 +124,10 @@
         <mxCell id="JHp8HWL1XByZFpylusa7-2" value="PositionWithResult" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="580" y="200" width="240" height="90" as="geometry" />
         </mxCell>
-        <mxCell id="JHp8HWL1XByZFpylusa7-3" value="position: double[17]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="JHp8HWL1XByZFpylusa7-2" vertex="1">
+        <mxCell id="JHp8HWL1XByZFpylusa7-3" value="position: double[16]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="JHp8HWL1XByZFpylusa7-2" vertex="1">
           <mxGeometry y="30" width="240" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="JHp8HWL1XByZFpylusa7-4" value="result: double[2] (0 - CPI, 1 - Power, smaller values are better)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="JHp8HWL1XByZFpylusa7-2" vertex="1">
+        <mxCell id="JHp8HWL1XByZFpylusa7-4" value="result: double[2] (0 - CPI, 1 - Energy, smaller values are better)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="JHp8HWL1XByZFpylusa7-2" vertex="1">
           <mxGeometry y="60" width="240" height="30" as="geometry" />
         </mxCell>
         <mxCell id="UiEMEwibkXtTi5Aak75y-6" value="Results Evaluator" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -149,9 +148,6 @@
         <mxCell id="UiEMEwibkXtTi5Aak75y-10" value="get copy of configurations by Mapping From Real Vector To Configuration&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="135.05" y="920" width="170" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="CJpW-dEF2FkyN9vKHG7K-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="CJpW-dEF2FkyN9vKHG7K-1" target="l73e2cAJVaDvfHCNKtZE-1" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="CJpW-dEF2FkyN9vKHG7K-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;dashed=1;" parent="1" source="CJpW-dEF2FkyN9vKHG7K-1" target="CJpW-dEF2FkyN9vKHG7K-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -165,7 +161,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="DvbdqieHHknr5DbnnIH0" name="Initialize Swarm">
-    <mxGraphModel dx="957" dy="479" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="838" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -175,13 +171,13 @@
         <mxCell id="yQ3MBcs3mOTVq_82O27H-1" value="Start initialization of swarm" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="320" y="20" width="120" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="pUz4ezTDpapkke-n0O7A-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="yQ3MBcs3mOTVq_82O27H-2" target="k931aRLgWhVeED5Lz_6K-1">
+        <mxCell id="pUz4ezTDpapkke-n0O7A-1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="yQ3MBcs3mOTVq_82O27H-2" target="k931aRLgWhVeED5Lz_6K-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="yQ3MBcs3mOTVq_82O27H-2" value="let swarm be a list of swarmSize particles with random configurations" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="310" y="130" width="140" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="pUz4ezTDpapkke-n0O7A-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="MawIRmo5o7hxTb80F0-O-4" target="MawIRmo5o7hxTb80F0-O-16">
+        <mxCell id="pUz4ezTDpapkke-n0O7A-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="MawIRmo5o7hxTb80F0-O-4" target="MawIRmo5o7hxTb80F0-O-16" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="MawIRmo5o7hxTb80F0-O-4" value="For each particle in Swarm" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -208,13 +204,13 @@
         <mxCell id="b4PnMtemHFmzvL3poBeY-1" value="The randomization must respect MinLimits and MaxLimits" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="480" y="122.5" width="270" height="75" as="geometry" />
         </mxCell>
-        <mxCell id="MawIRmo5o7hxTb80F0-O-7" value="PSATSim Wrapper" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="MawIRmo5o7hxTb80F0-O-7" value="Results Evaluator" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="510" y="380" width="120" height="30" as="geometry" />
         </mxCell>
         <mxCell id="MawIRmo5o7hxTb80F0-O-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=classicThin;endFill=1;startArrow=classicThin;startFill=1;" parent="1" source="MawIRmo5o7hxTb80F0-O-7" target="MawIRmo5o7hxTb80F0-O-6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="pUz4ezTDpapkke-n0O7A-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="MawIRmo5o7hxTb80F0-O-6" target="MawIRmo5o7hxTb80F0-O-4">
+        <mxCell id="pUz4ezTDpapkke-n0O7A-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="MawIRmo5o7hxTb80F0-O-6" target="MawIRmo5o7hxTb80F0-O-4" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="MawIRmo5o7hxTb80F0-O-6" value="Evaluate the above copy of configurations&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">

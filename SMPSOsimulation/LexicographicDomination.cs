@@ -1,11 +1,13 @@
+using static SMPSOsimulation.dataStructures.DominationConfig;
+
 namespace SMPSOsimulation;
 
 public class LexicographicDomination : DominationProvider
 {
-    private int preferredObjective;
+    private PrefferedObjective preferredObjective;
     private double tolerance;
 
-    public LexicographicDomination(int preferredObjective, double tolerance)
+    public LexicographicDomination(PrefferedObjective preferredObjective, double tolerance)
     {
         this.preferredObjective = preferredObjective;
         this.tolerance = tolerance;
@@ -15,14 +17,19 @@ public class LexicographicDomination : DominationProvider
     {
         foreach (var currentResult in resultsToCheckAgainst)
         {
-            var nonPrefferedObjective = 1 - preferredObjective;
+            var prefferedObjectiveIndex = (int)preferredObjective;
 
-            if (Math.Abs(resultToCheck[preferredObjective] - currentResult[preferredObjective]) < tolerance)
+            if (prefferedObjectiveIndex != 0 && prefferedObjectiveIndex != 1)
+                throw new Exception("You need to rethink IsDominated in lexicographic");
+
+            var nonPrefferedObjective = 1 - prefferedObjectiveIndex;
+
+            if (Math.Abs(resultToCheck[prefferedObjectiveIndex] - currentResult[prefferedObjectiveIndex]) < tolerance)
             {
                 if (resultToCheck[nonPrefferedObjective] > currentResult[nonPrefferedObjective])
                     return true;
             }
-            else if (resultToCheck[preferredObjective] > currentResult[preferredObjective])
+            else if (resultToCheck[prefferedObjectiveIndex] > currentResult[prefferedObjectiveIndex])
                 return true;
         }
 

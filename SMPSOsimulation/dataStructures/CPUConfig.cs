@@ -1,4 +1,6 @@
+using System.Drawing;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 
@@ -183,6 +185,83 @@ public class CPUConfig
 
         return new CPUConfig(superscalar, rename, reorder, rsbArchitecture, separateDispatch,
             iadd, imult, idiv, fpadd, fpmult, fpdiv, fpsqrt, branch, load, store, freq);
+    }
+
+    public double[] GetVectorFormDouble()
+    {
+        return new double[]
+        {
+                Superscalar,
+                Rename,
+                Reorder,
+                (int)RsbArchitecture,
+                SeparateDispatch ? 1 : 0,
+                Iadd,
+                Imult,
+                Idiv,
+                Fpadd,
+                Fpmult,
+                Fpdiv,
+                Fpsqrt,
+                Branch,
+                Load,
+                Store,
+                Freq
+        };
+    }
+
+    public int[] GetVectorFormInt()
+    {
+        return new int[]
+        {
+                Superscalar,
+                Rename,
+                Reorder,
+                (int)RsbArchitecture,
+                SeparateDispatch ? 1 : 0,
+                Iadd,
+                Imult,
+                Idiv,
+                Fpadd,
+                Fpmult,
+                Fpdiv,
+                Fpsqrt,
+                Branch,
+                Load,
+                Store,
+                Freq
+        };
+    }
+
+    public static CPUConfig GetConfigFromVectorInt(int[] vector)
+    {
+        // Map the genes back to a CPUConfig
+        int superscalar = vector[0];
+        int rename = vector[1];
+        int reorder = vector[2];
+        RsbArchitectureType rsbArchitecture = (RsbArchitectureType)vector[3];
+        bool separateDispatch = vector[4] == 1; // Convert back to boolean
+        int iadd = vector[5];
+        int imult = vector[6];
+        int idiv = vector[7];
+        int fpadd = vector[8];
+        int fpmult = vector[9];
+        int fpdiv = vector[10];
+        int fpsqrt = vector[11];
+        int branch = vector[12];
+        int load = vector[13];
+        int store = vector[14];
+        int freq = vector[15];
+
+        // Create and return a new CPUConfig object
+        return new CPUConfig(superscalar, rename, reorder, rsbArchitecture, separateDispatch,
+            iadd, imult, idiv, fpadd, fpmult, fpdiv, fpsqrt, branch, load, store, freq);
+    }
+
+    public static CPUConfig GetConfigFromVectorDouble(double[] vector)
+    {
+        int[] intArray = vector.Select(d => (int)Math.Round(d)).ToArray();
+        return GetConfigFromVectorInt(intArray);
     }
 }
 

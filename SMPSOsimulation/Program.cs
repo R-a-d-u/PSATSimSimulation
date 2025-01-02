@@ -32,7 +32,7 @@ namespace SMPSOsimulation
 
 
             var orchestrator = new VEGAOrchestrator();
-            var searchConfig = new SearchConfigVEGA(50, 200, 0.05, environmentConfig);
+            var searchConfig = new SearchConfigVEGA(100, 200, 0.05, environmentConfig);
             
             orchestrator.StartSearch(searchConfig, exePath, dllPath);
         }
