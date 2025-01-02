@@ -63,6 +63,11 @@ namespace SMPSOsimulation
             return false;
         }
 
+        private bool TruePositionOfParticleAlreadyInLeaders(Particle particleToCheck, List<PositionWithResult> leaders)
+        {
+            return TruePositionAlreadyIn(particleToCheck.positionWithResult.position, leaders.Select(leader => leader.position).ToList());
+        }
+
         private bool TruePositionOfParticleAlreadyInParticles(Particle particleToCheck, List<Particle> particles)
         {
             return TruePositionAlreadyIn(particleToCheck.positionWithResult.position,
@@ -229,10 +234,84 @@ namespace SMPSOsimulation
 
                     for (int i = 0; i < particle.positionWithResult.position.Length; i++)
                     {
-
+                        var minLimit = CPUConfig.CPUConfigLimits.GetMin(i);
+                        var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
+                        if (particle.positionWithResult.position[i] > maxLimit)
+                        {
+                            particle.speed[i] *= -1;
+                            particle.positionWithResult.position[i] = maxLimit;
+                        }
+                        else if (particle.positionWithResult.position[i] < minLimit)
+                        {
+                            particle.speed[i] *= -1;
+                            particle.positionWithResult.position[i] = minLimit;
+                        }
                     }
                 }
+                
+                // try applying turbulence
+                for (int particleIndex = 0; particleIndex < swarm.Count; particleIndex++)
+                {
+                    if (particleIndex % 6 == 0)
+                    {
+                        var particle = swarm[particleIndex];
+                        for (int i = 0; i < particle.positionWithResult.position.Length; i++)
+                        {
+                            var p = random.NextDouble();
+                            if (p < searchConfig.turbulenceRate)
+                            {
+                                var min = CPUConfig.CPUConfigLimits.GetMin(i);
+                                var max = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
+                                var distributionIndex = 20;
+                                particle.positionWithResult.position[i] = Math.Max(Math.Min(
+                                    JMetalPolynomialTurbulence(particle.positionWithResult.position[i]), max), min);
+                            }
+                        }
+                    }
+                }
+                
+                // evaluate swarm
+                results = resultsProvider.Evaluate(GetConfigsFromSwarm(swarm));
+                for (int i = 0; i < results.Length; i++)
+                {
+                    swarm[i].positionWithResult.result = results[i];
+                }
+                
+                // update leaders archive
+                foreach (var leader in leadersArchive)
+                {
+                    if (domination.IsDominated(leader, swarm))
+                        leadersArchive.Remove(leader);
+                }
+                foreach (var particle in swarm)
+                {
+                    if (domination.IsDominated(particle, leadersArchive) == false &&
+                        TruePositionOfParticleAlreadyInLeaders(particle, leadersArchive) == false)
+                    {
+                        leadersArchive.Add(particle.positionWithResult);
+                    }
+                }
+                crowdingDistances = GetCrowdingDistances(leadersArchive);
+                if (leadersArchive.Count > searchConfig.archiveSize)
+                {
+                    var sortedLeaders = leadersArchive.OrderBy(leader => crowdingDistances[leadersArchive.IndexOf(leader)]).ToList();
+                    for (int i = 0; i < leadersArchive.Count - searchConfig.archiveSize; i++)
+                    {
+                        leadersArchive.Remove(sortedLeaders[i]);
+                    }
+                    crowdingDistances = GetCrowdingDistances(leadersArchive);
+                }
+
+                foreach (var particle in swarm)
+                {
+                    if (domination.IsDominated(particle.personalBest.result, [particle.positionWithResult.result]))
+                        particle.personalBest = particle.positionWithResult;
+                }
+
+                generation++;
             }
+
+            return leadersArchive.Select(leader => (leader.GetConfigFromPosition(), leader.result)).ToList();
         }
     }
 }

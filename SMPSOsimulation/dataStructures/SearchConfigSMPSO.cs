@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SMPSOsimulation.dataStructures
 {
-    internal class SearchConfigSMPSO
+    public class SearchConfigSMPSO
     {
         public int swarmSize, archiveSize;
         public int maxGenerations;
