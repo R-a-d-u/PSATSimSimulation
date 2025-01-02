@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace SMPSOsimulation.dataStructures;
 
-public class CPUConfig
+public class CPUConfig : IEquatable<CPUConfig?>
 {
     public int Superscalar { get; set; }
     public int Rename { get; set; }
@@ -125,6 +125,8 @@ public class CPUConfig
                 case 0: return SuperscalarMin;
                 case 1: return RenameMin;
                 case 2: return ReorderMin;
+                case 3: return 0;
+                case 4: return 0;
                 case 5: return IaddMin;
                 case 6: return ImultMin;
                 case 7: return IdivMin;
@@ -135,17 +137,20 @@ public class CPUConfig
                 case 12: return BranchMin;
                 case 13: return LoadMin;
                 case 14: return StoreMin;
+                case 15: return 1;
                 default: throw new ArgumentOutOfRangeException(nameof(index));
             }
         }
         
-        public static int GetMax(int index)
+        public static int GetMax(int index, int maxFrequency)
         {
             switch (index)
             {
                 case 0: return SuperscalarMax;
                 case 1: return RenameMax;
                 case 2: return ReorderMax;
+                case 3: return Enum.GetValues(typeof(RsbArchitectureType)).Length - 1;
+                case 4: return 1;
                 case 5: return IaddMax;
                 case 6: return ImultMax;
                 case 7: return IdivMax;
@@ -156,6 +161,7 @@ public class CPUConfig
                 case 12: return BranchMax;
                 case 13: return LoadMax;
                 case 14: return StoreMax;
+                case 15: return maxFrequency;
                 default: throw new ArgumentOutOfRangeException(nameof(index));
             }
         }
@@ -262,6 +268,32 @@ public class CPUConfig
     {
         int[] intArray = vector.Select(d => (int)Math.Round(d)).ToArray();
         return GetConfigFromVectorInt(intArray);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        return Equals(obj as CPUConfig);
+    }
+
+    public bool Equals(CPUConfig? other)
+    {
+        return other is not null &&
+               Superscalar == other.Superscalar &&
+               Rename == other.Rename &&
+               Reorder == other.Reorder &&
+               RsbArchitecture == other.RsbArchitecture &&
+               SeparateDispatch == other.SeparateDispatch &&
+               Iadd == other.Iadd &&
+               Imult == other.Imult &&
+               Idiv == other.Idiv &&
+               Fpadd == other.Fpadd &&
+               Fpmult == other.Fpmult &&
+               Fpdiv == other.Fpdiv &&
+               Fpsqrt == other.Fpsqrt &&
+               Branch == other.Branch &&
+               Load == other.Load &&
+               Store == other.Store &&
+               Freq == other.Freq;
     }
 }
 

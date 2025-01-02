@@ -22,7 +22,7 @@ public class VEGAOrchestrator
         }
     }
 
-    private (Individual, Individual) Crossover(Individual parent1, Individual parent2, float maxFrequency)
+    private (Individual, Individual) Crossover(Individual parent1, Individual parent2, int maxFrequency)
     {
         // Constants for SBX (can be adjusted)
         double eta = 15.0; // Distribution index (controls the spread of the offspring around the parents)
@@ -61,27 +61,8 @@ public class VEGAOrchestrator
             double childGene1 = 0.5 * ((gene1 + gene2) - beta * delta);
             double childGene2 = 0.5 * ((gene1 + gene2) + beta * delta);
 
-            // Convert the continuous offspring genes back to integers
-            if (i == 3)
-            {
-                childGene1 = Math.Max(Math.Min(childGene1, Enum.GetValues(typeof(RsbArchitectureType)).Length - 1), 0);
-                childGene2 = Math.Max(Math.Min(childGene2, Enum.GetValues(typeof(RsbArchitectureType)).Length - 1), 0);
-            }
-            else if (i == 4)
-            {
-                childGene1 = Math.Max(Math.Min(childGene1, 1), 0);
-                childGene2 = Math.Max(Math.Min(childGene2, 1), 0);
-            }
-            else if (i == 15)
-            {
-                childGene1 = Math.Max(Math.Min(childGene1, maxFrequency), 1);
-                childGene2 = Math.Max(Math.Min(childGene2, maxFrequency), 1);
-            }
-            else
-            {
-                childGene1 = Math.Max(Math.Min(childGene1, CPUConfig.CPUConfigLimits.GetMax(i)), CPUConfig.CPUConfigLimits.GetMin(i));
-                childGene2 = Math.Max(Math.Min(childGene2, CPUConfig.CPUConfigLimits.GetMax(i)), CPUConfig.CPUConfigLimits.GetMin(i));
-            }
+            childGene1 = Math.Max(Math.Min(childGene1, CPUConfig.CPUConfigLimits.GetMax(i, maxFrequency)), CPUConfig.CPUConfigLimits.GetMin(i));
+            childGene2 = Math.Max(Math.Min(childGene2, CPUConfig.CPUConfigLimits.GetMax(i, maxFrequency)), CPUConfig.CPUConfigLimits.GetMin(i));
             child1.genes[i] = (int)Math.Round(childGene1);
             child2.genes[i] = (int)Math.Round(childGene2);
         }
@@ -112,7 +93,7 @@ public class VEGAOrchestrator
                 }
                 else
                 {
-                    individual.genes[i] = random.Next(CPUConfig.CPUConfigLimits.GetMin(i), CPUConfig.CPUConfigLimits.GetMax(i) + 1);
+                    individual.genes[i] = random.Next(CPUConfig.CPUConfigLimits.GetMin(i), CPUConfig.CPUConfigLimits.GetMax(i, maxFrequency) + 1);
                 }
             }
         }
