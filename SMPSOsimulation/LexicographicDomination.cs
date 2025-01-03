@@ -24,7 +24,7 @@ public class LexicographicDomination : DominationProvider
 
             var nonPrefferedObjective = 1 - prefferedObjectiveIndex;
 
-            if (Math.Abs(resultToCheck[prefferedObjectiveIndex] - currentResult[prefferedObjectiveIndex]) < tolerance)
+            if (resultToCheck[prefferedObjectiveIndex].Equals(currentResult[prefferedObjectiveIndex]))
             {
                 if (resultToCheck[nonPrefferedObjective] > currentResult[nonPrefferedObjective])
                     return true;

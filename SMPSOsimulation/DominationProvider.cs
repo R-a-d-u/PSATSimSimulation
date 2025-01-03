@@ -21,4 +21,9 @@ public interface DominationProvider
     {
         return IsDominated(particle.positionWithResult.result, leadersArchive.Select(leader => leader.result).ToList());
     }
+
+    bool IsDominated(PositionWithResult leader, List<PositionWithResult> leadersArchive)
+    {
+        return IsDominated(leader.result, leadersArchive.Select(leader => leader.result).ToList());
+    }
 }

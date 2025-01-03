@@ -9,10 +9,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c88e21e3-3570-48b5-b6b5-21c3793f6e9b" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SMPSOsimulation/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SMPSOsimulation/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SMPSOsimulation/PSAtSimFunctions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SMPSOsimulation/PSAtSimFunctions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheme/.$UI-Orchestrator.drawio.bkp" beforeDir="false" afterPath="$PROJECT_DIR$/scheme/.$UI-Orchestrator.drawio.bkp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheme/Configuration Struct.ods" beforeDir="false" afterPath="$PROJECT_DIR$/scheme/Configuration Struct.ods" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheme/UI-Orchestrator.drawio" beforeDir="false" afterPath="$PROJECT_DIR$/scheme/UI-Orchestrator.drawio" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SMPSOsimulation/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SMPSOsimulation/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SMPSOsimulation/SMPSOOrchestrator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/SMPSOsimulation/SMPSOOrchestrator.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,9 +20,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///home/cepoiuradu/currentstorage/Documents/Projects/an4smpso/PSATSimSimulation/SMPSOsimulation/Program.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="SWEA" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -34,23 +35,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Project.SMPSOsimulation.executor&quot;: &quot;Run&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;sa-apucat-cepoaia&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.codegpt.prompts&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Project.SMPSOsimulation.executor": "Run",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "sa-apucat-cepoaia",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "settings.codegpt.services.custom",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="SMPSOsimulation" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -81,8 +82,81 @@
       <updated>1735063353133</updated>
       <workItem from="1735063354184" duration="1277000" />
       <workItem from="1735064637739" duration="28000" />
-      <workItem from="1735570041089" duration="2591000" />
+      <workItem from="1735570041089" duration="5090000" />
+      <workItem from="1735575240004" duration="729000" />
+      <workItem from="1735590870972" duration="10752000" />
+      <workItem from="1735605566395" duration="3238000" />
+      <workItem from="1735639968289" duration="1488000" />
+      <workItem from="1735643474506" duration="1547000" />
+      <workItem from="1735646496439" duration="7670000" />
+      <workItem from="1735738776198" duration="514000" />
+      <workItem from="1735852778733" duration="5543000" />
     </task>
+    <task id="LOCAL-00001" summary="Removed exploration on frequency">
+      <option name="closed" value="true" />
+      <created>1735572752812</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1735572752812</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Refactor `PSAtSimFunctions` to accept an executable path and validate it, ensuring better encapsulation and error handling.">
+      <option name="closed" value="true" />
+      <created>1735573076572</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1735573076572</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Remove obsolete `PSAtSimFunctions` class, add `CPUConfig`, `EnvironmentConfig`, and `PSAtSimWrapper` classes. Update `Program` to utilize new configurations for CPU and environment.">
+      <option name="closed" value="true" />
+      <created>1735601950508</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1735601950508</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add MaxFrequency property to EnvironmentConfig class&#10;&#10;Introduce a new MaxFrequency property to the EnvironmentConfig class to enhance configuration options. Update the constructor to accept and assign the MaxFrequency parameter.">
+      <option name="closed" value="true" />
+      <created>1735643535939</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1735643535939</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add SHA-256 hashing method and update frequency type in CPUConfig class&#10;&#10;- Introduce `CalculateSha256` method to compute the SHA-256 hash of the CPU configuration serialized as JSON.&#10;- Change the type of `Freq` property from `float` to `int` for precision in configuration representation.&#10;- Ensure proper validation for `Freq` in the constructor.">
+      <option name="closed" value="true" />
+      <created>1735643558628</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1735643558628</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Add SQLite database support for CPU configuration caching&#10;&#10;- Include `System.Data.SQLite` package in the project file.&#10;- Implement `ResultsDB` class to manage database interactions for CPU config cache.&#10;- Create methods to initialize the database and add/retrieve CPU configuration entries.&#10;- Introduce `ResultsProvider` class to leverage `ResultsDB` and evaluate CPU configurations, checking cache before performing evaluations.">
+      <option name="closed" value="true" />
+      <created>1735643575106</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1735643575106</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Updated docs">
+      <option name="closed" value="true" />
+      <created>1735643593160</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1735643593160</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Implement CPU configuration evaluation and domination checks in simulation&#10;&#10;- Refactor CPU configuration initialization to use array syntax for better readability.&#10;- Add new domination classes: SMPSODomination, WeightedSumDomination, and LexicographicDomination with their respective implementations of domination logic.&#10;- Enhance result evaluation process in Main method to include domination assessments based on different criteria.&#10;- Update output formatting for clarity and consistency in displaying results and dominations.">
+      <option name="closed" value="true" />
+      <created>1735646522713</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1735646522713</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -92,6 +166,15 @@
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+    <MESSAGE value="Removed exploration on frequency" />
+    <MESSAGE value="Refactor `PSAtSimFunctions` to accept an executable path and validate it, ensuring better encapsulation and error handling." />
+    <MESSAGE value="Remove obsolete `PSAtSimFunctions` class, add `CPUConfig`, `EnvironmentConfig`, and `PSAtSimWrapper` classes. Update `Program` to utilize new configurations for CPU and environment." />
+    <MESSAGE value="Add MaxFrequency property to EnvironmentConfig class&#10;&#10;Introduce a new MaxFrequency property to the EnvironmentConfig class to enhance configuration options. Update the constructor to accept and assign the MaxFrequency parameter." />
+    <MESSAGE value="Add SHA-256 hashing method and update frequency type in CPUConfig class&#10;&#10;- Introduce `CalculateSha256` method to compute the SHA-256 hash of the CPU configuration serialized as JSON.&#10;- Change the type of `Freq` property from `float` to `int` for precision in configuration representation.&#10;- Ensure proper validation for `Freq` in the constructor." />
+    <MESSAGE value="Add SQLite database support for CPU configuration caching&#10;&#10;- Include `System.Data.SQLite` package in the project file.&#10;- Implement `ResultsDB` class to manage database interactions for CPU config cache.&#10;- Create methods to initialize the database and add/retrieve CPU configuration entries.&#10;- Introduce `ResultsProvider` class to leverage `ResultsDB` and evaluate CPU configurations, checking cache before performing evaluations." />
+    <MESSAGE value="Updated docs" />
+    <MESSAGE value="Implement CPU configuration evaluation and domination checks in simulation&#10;&#10;- Refactor CPU configuration initialization to use array syntax for better readability.&#10;- Add new domination classes: SMPSODomination, WeightedSumDomination, and LexicographicDomination with their respective implementations of domination logic.&#10;- Enhance result evaluation process in Main method to include domination assessments based on different criteria.&#10;- Update output formatting for clarity and consistency in displaying results and dominations." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implement CPU configuration evaluation and domination checks in simulation&#10;&#10;- Refactor CPU configuration initialization to use array syntax for better readability.&#10;- Add new domination classes: SMPSODomination, WeightedSumDomination, and LexicographicDomination with their respective implementations of domination logic.&#10;- Enhance result evaluation process in Main method to include domination assessments based on different criteria.&#10;- Update output formatting for clarity and consistency in displaying results and dominations." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

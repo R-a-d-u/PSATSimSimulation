@@ -58,7 +58,7 @@ namespace SMPSOsimulation.dataStructures
 
         public static DominationConfig GetLexicographicDominationConfig(PrefferedObjective prefferedObjective, double tolerance)
         {
-            return new DominationConfig(DominationType.SMPSO, null, null, prefferedObjective, tolerance);
+            return new DominationConfig(DominationType.LEXICOGRAPHIC, null, null, prefferedObjective, tolerance);
         }
 
     }

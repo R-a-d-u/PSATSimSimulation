@@ -1,10 +1,12 @@
 ﻿using SMPSOsimulation.dataStructures;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SMPSOsimulation
 {
@@ -25,6 +27,24 @@ namespace SMPSOsimulation
             {
                 this.position = config.GetVectorFormDouble();
                 this.result = result;
+            }
+
+            public PositionWithResult Copy()
+            {
+                double[] copyPosition = new double[this.position.Length];
+                double[] copyResult = new double[this.result.Length];
+
+                for (int i = 0; i < this.position.Length; i++)
+                {
+                    copyPosition[i] = this.position[i];
+                }
+
+                for (int i = 0; i < this.result.Length; i++)
+                {
+                    copyResult[i] = this.result[i];
+                }
+
+                return new PositionWithResult(copyPosition, copyResult);
             }
 
             public CPUConfig GetConfigFromPosition()
@@ -68,10 +88,9 @@ namespace SMPSOsimulation
             return TruePositionAlreadyIn(particleToCheck.positionWithResult.position, leaders.Select(leader => leader.position).ToList());
         }
 
-        private bool TruePositionOfParticleAlreadyInParticles(Particle particleToCheck, List<Particle> particles)
+        private bool TrueLeaderAlreadyInLeaders(PositionWithResult particleToCheck, List<PositionWithResult> leaders)
         {
-            return TruePositionAlreadyIn(particleToCheck.positionWithResult.position,
-                particles.Select(particle => particle.positionWithResult.position).ToList());
+            return TruePositionAlreadyIn(particleToCheck.position, leaders.Select(leader => leader.position).ToList());
         }
 
         private List<double> GetCrowdingDistances(List<PositionWithResult> leaders)
@@ -128,29 +147,8 @@ namespace SMPSOsimulation
             return crowdingDistances;
         }
 
-
-        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, string gtkLibPath)
+        private List<Particle> InitSwarm (Random random, SearchConfigSMPSO searchConfig, ResultsProvider resultsProvider)
         {
-            Random random = new Random();
-
-            ResultsProvider resultsProvider = new ResultsProvider(searchConfig.environment, psatsimExePath, gtkLibPath);
-            DominationProvider domination;
-            switch (searchConfig.domination.dominationType)
-            {
-                case DominationConfig.DominationType.SMPSO:
-                    domination = new SMPSODomination();
-                    break;
-                case DominationConfig.DominationType.WEIGHT:
-                    domination = new WeightedSumDomination(searchConfig.domination.wCPI!.Value, searchConfig.domination.wEnergy!.Value);
-                    break;
-                case DominationConfig.DominationType.LEXICOGRAPHIC:
-                    domination = new LexicographicDomination(searchConfig.domination.prefferedObjective!.Value, searchConfig.domination.tolerance!.Value);
-                    break;
-                default:
-                    throw new Exception("StartSearch init of domination provider; how did we get here??");
-            }
-
-            // init swarm
             List<Particle> swarm = new List<Particle>();
             for (int i = 0; i < searchConfig.swarmSize; i++)
             {
@@ -168,150 +166,242 @@ namespace SMPSOsimulation
                 particle.personalBest.result = results[i];
             }
 
-            // init leaders archive
+            return swarm;
+        }
+        private List<PositionWithResult> InitLeadersArchive (List<Particle> swarm, SearchConfigSMPSO searchConfig, DominationProvider domination)
+        {
             List<PositionWithResult> leadersArchive = new List<PositionWithResult>(searchConfig.archiveSize);
             foreach (var particle in swarm)
             {
                 if (domination.IsDominated(particle, swarm) == false &&
-                    TruePositionOfParticleAlreadyInParticles(particle, swarm) == false)
-                    leadersArchive.Add(particle.positionWithResult);
+                    TruePositionOfParticleAlreadyInLeaders(particle, leadersArchive) == false)
+                    leadersArchive.Add(particle.positionWithResult.Copy());
             }
-            List<double> crowdingDistances = GetCrowdingDistances(leadersArchive);
+            return leadersArchive;
+        }
 
+        private DominationProvider InitDomination(SearchConfigSMPSO searchConfig)
+        {
+            DominationProvider domination;
+            switch (searchConfig.domination.dominationType)
+            {
+                case DominationConfig.DominationType.SMPSO:
+                    domination = new SMPSODomination();
+                    break;
+                case DominationConfig.DominationType.WEIGHT:
+                    domination = new WeightedSumDomination(searchConfig.domination.wCPI!.Value, searchConfig.domination.wEnergy!.Value);
+                    break;
+                case DominationConfig.DominationType.LEXICOGRAPHIC:
+                    domination = new LexicographicDomination(searchConfig.domination.prefferedObjective!.Value, searchConfig.domination.tolerance!.Value);
+                    break;
+                default:
+                    throw new Exception("StartSearch init of domination provider; how did we get here??");
+            }
+
+            return domination;
+        }
+
+        private void UpdateSwarmSpeeds(List<Particle> swarm, Random random, List<PositionWithResult> leadersArchive, List<double> crowdingDistances, SearchConfigSMPSO searchConfig)
+        {
+            foreach (var particle in swarm)
+            {
+                double r1 = random.NextDouble();
+                double r2 = random.NextDouble();
+
+                var xi = particle.positionWithResult.position;
+                var xp = particle.personalBest.position;
+
+                var l1Index = random.Next(leadersArchive.Count);
+                var l2Index = random.Next(leadersArchive.Count);
+                var l1 = leadersArchive[l1Index];
+                var l2 = leadersArchive[l2Index];
+
+                var crowd1 = crowdingDistances[l1Index];
+                var crowd2 = crowdingDistances[l2Index];
+                var xg = crowd1 > crowd2 ? l1.position : l2.position;
+
+                double c1 = 1.5 + random.NextDouble();
+                double c2 = 1.5 + random.NextDouble();
+                double w = 0.1;
+
+                particle.speed = VectorTools.AddArrays(
+                    VectorTools.Multiply(w, particle.speed),
+                    VectorTools.Multiply(c1 * r1, VectorTools.AddArrays(xp, VectorTools.Multiply(-1, xi))),
+                    VectorTools.Multiply(c2 * r2, VectorTools.AddArrays(xg, VectorTools.Multiply(-1, xi)))
+                );
+
+                double phi = c1 + c2 > 4 ? c1 + c2 : 0;
+                double rho = 2 / (2 - phi - Math.Sqrt(phi * phi - 4 * phi));
+                particle.speed = VectorTools.Multiply(rho, particle.speed);
+
+                for (int i = 0; i < particle.speed.Length; i++)
+                {
+                    var minLimit = CPUConfig.CPUConfigLimits.GetMin(i);
+                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
+                    double delta = (maxLimit - minLimit) / 2.0;
+
+                    if (particle.speed[i] > delta) particle.speed[i] = delta;
+                    if (particle.speed[i] <= -delta) particle.speed[i] = -delta;
+                }
+            }
+        }
+
+        private void UpdateSwarmPositions(List<Particle> swarm, Random random, SearchConfigSMPSO searchConfig)
+        {
+            foreach (var particle in swarm)
+            {
+                particle.positionWithResult.position = VectorTools.AddArrays(
+                    particle.positionWithResult.position,
+                    particle.speed
+                );
+
+                for (int i = 0; i < particle.positionWithResult.position.Length; i++)
+                {
+                    var minLimit = CPUConfig.CPUConfigLimits.GetMin(i);
+                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
+                    if (particle.positionWithResult.position[i] > maxLimit)
+                    {
+                        particle.speed[i] *= -1;
+                        particle.positionWithResult.position[i] = maxLimit;
+                    }
+                    else if (particle.positionWithResult.position[i] < minLimit)
+                    {
+                        particle.speed[i] *= -1;
+                        particle.positionWithResult.position[i] = minLimit;
+                    }
+                }
+            }
+
+            // try applying turbulence
+            for (int particleIndex = 0; particleIndex < swarm.Count; particleIndex++)
+            {
+                if (particleIndex % 6 == 0)
+                {
+                    var particle = swarm[particleIndex];
+                    for (int i = 0; i < particle.positionWithResult.position.Length; i++)
+                    {
+                        var p = random.NextDouble();
+                        if (p < searchConfig.turbulenceRate)
+                        {
+                            var min = CPUConfig.CPUConfigLimits.GetMin(i);
+                            var max = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
+                            particle.positionWithResult.position[i] =
+                                JMetalPolynomialTurbulence(particle.positionWithResult.position[i], i,
+                                    searchConfig.environment.MaxFrequency, random);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void UpdateSwarmResults(List<Particle> swarm, ResultsProvider resultsProvider, DominationProvider domination)
+        {
+            var results = resultsProvider.Evaluate(GetConfigsFromSwarm(swarm));
+            for (int i = 0; i < results.Length; i++)
+            {
+                swarm[i].positionWithResult.result = results[i];
+            }
+
+            foreach (var particle in swarm)
+            {
+                if (domination.IsDominated(particle.personalBest.result, [particle.positionWithResult.result]))
+                    particle.personalBest = particle.positionWithResult;
+            }
+        }
+
+        public void UpdateLeadersArchiveAndCrowdingDistances(List<PositionWithResult> leadersArchive, List<double> crowdingDistances, List<Particle> swarm, DominationProvider domination, SearchConfigSMPSO searchConfig)
+        {
+            List<PositionWithResult> allPositions = new List<PositionWithResult>(leadersArchive);
+            allPositions.AddRange(swarm.Select(particle => particle.positionWithResult).ToList());
+            leadersArchive.Clear();
+            foreach (var particle in allPositions)
+            {
+                if (domination.IsDominated(particle, allPositions) == false &&
+                    TrueLeaderAlreadyInLeaders(particle, leadersArchive) == false)
+                {
+                    leadersArchive.Add(particle.Copy());
+                }
+            }
+            crowdingDistances.Clear();
+            crowdingDistances.AddRange(GetCrowdingDistances(leadersArchive));
+            if (leadersArchive.Count > searchConfig.archiveSize)
+            {
+                var sortedLeaders = leadersArchive.OrderBy(leader => crowdingDistances[leadersArchive.IndexOf(leader)]).ToList();
+                var prevCount = leadersArchive.Count;
+                for (int i = 0; i < prevCount - searchConfig.archiveSize; i++)
+                {
+                    leadersArchive.Remove(sortedLeaders[i]);
+                }
+                crowdingDistances.Clear();
+                crowdingDistances.AddRange(GetCrowdingDistances(leadersArchive));
+            }
+        }
+
+
+        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, string gtkLibPath)
+        {
+            Random random = new Random();
+            ResultsProvider resultsProvider = new ResultsProvider(searchConfig.environment, psatsimExePath, gtkLibPath);
+            var domination = InitDomination(searchConfig);
+            var swarm = InitSwarm(random, searchConfig, resultsProvider);
+            var leadersArchive = InitLeadersArchive(swarm, searchConfig, domination);
+            var crowdingDistances = GetCrowdingDistances(leadersArchive);
             int generation = 0;
             while (generation < searchConfig.maxGenerations)
             {
-                // update speeds of particles
-                foreach (var particle in swarm)
+                UpdateSwarmSpeeds(swarm, random, leadersArchive, crowdingDistances, searchConfig);
+                UpdateSwarmPositions(swarm, random, searchConfig);
+                UpdateSwarmResults(swarm, resultsProvider, domination);
+                UpdateLeadersArchiveAndCrowdingDistances(leadersArchive, crowdingDistances, swarm, domination, searchConfig);
+                if (crowdingDistances.Count != leadersArchive.Count)
                 {
-                    double r1 = random.NextDouble();
-                    double r2 = random.NextDouble();
-
-                    var xi = particle.positionWithResult.position;
-                    var xp = particle.personalBest.position;
-
-                    var l1Index = random.Next(leadersArchive.Count);
-                    var l2Index = random.Next(leadersArchive.Count);
-                    var l1 = leadersArchive[l1Index];
-                    var l2 = leadersArchive[l2Index];
-
-                    var crowd1 = crowdingDistances[l1Index];
-                    var crowd2 = crowdingDistances[l2Index];
-                    var xg = crowd1 > crowd2 ? l1.position : l2.position;
-
-                    double c1 = 1.5 + random.NextDouble();
-                    double c2 = 1.5 + random.NextDouble();
-                    double w = 0.1;
-
-                    particle.speed = VectorTools.AddArrays(
-                        VectorTools.Multiply(w, particle.speed),
-                        VectorTools.Multiply(c1 * r1, VectorTools.AddArrays(xp, VectorTools.Multiply(-1, xi))),
-                        VectorTools.Multiply(c2 * r2, VectorTools.AddArrays(xg, VectorTools.Multiply(-1, xi)))
-                    );
-
-                    double phi = c1 + c2 > 4 ? c1 + c2 : 0;
-                    double rho = 2 / (2 - phi - Math.Sqrt(phi * phi - 4 * phi));
-                    particle.speed = VectorTools.Multiply(rho, particle.speed);
-
-                    for (int i = 0; i < particle.speed.Length; i++)
-                    {
-                        var minLimit = CPUConfig.CPUConfigLimits.GetMin(i);
-                        var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
-                        double delta = (maxLimit - minLimit) / 2.0;
-
-                        if (particle.speed[i] > delta) particle.speed[i] = delta;
-                        if (particle.speed[i] <= -delta) particle.speed[i] = -delta;
-                    }
+                    Console.WriteLine($"Crowding distance {crowdingDistances.Count} != leaders archive {leadersArchive.Count}");
                 }
-
-                // update positions of particles
-                foreach (var particle in swarm)
+                Console.WriteLine("Generation: " + generation);
+                foreach (var leader in leadersArchive.OrderBy(leader => leader.result[0]))
                 {
-                    particle.positionWithResult.position = VectorTools.AddArrays(
-                        particle.positionWithResult.position,
-                        particle.speed
-                    );
-
-                    for (int i = 0; i < particle.positionWithResult.position.Length; i++)
-                    {
-                        var minLimit = CPUConfig.CPUConfigLimits.GetMin(i);
-                        var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
-                        if (particle.positionWithResult.position[i] > maxLimit)
-                        {
-                            particle.speed[i] *= -1;
-                            particle.positionWithResult.position[i] = maxLimit;
-                        }
-                        else if (particle.positionWithResult.position[i] < minLimit)
-                        {
-                            particle.speed[i] *= -1;
-                            particle.positionWithResult.position[i] = minLimit;
-                        }
-                    }
+                    Console.WriteLine($"{leader.result[0]} {leader.result[1]}");
                 }
-                
-                // try applying turbulence
-                for (int particleIndex = 0; particleIndex < swarm.Count; particleIndex++)
-                {
-                    if (particleIndex % 6 == 0)
-                    {
-                        var particle = swarm[particleIndex];
-                        for (int i = 0; i < particle.positionWithResult.position.Length; i++)
-                        {
-                            var p = random.NextDouble();
-                            if (p < searchConfig.turbulenceRate)
-                            {
-                                var min = CPUConfig.CPUConfigLimits.GetMin(i);
-                                var max = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
-                                var distributionIndex = 20;
-                                particle.positionWithResult.position[i] = Math.Max(Math.Min(
-                                    JMetalPolynomialTurbulence(particle.positionWithResult.position[i]), max), min);
-                            }
-                        }
-                    }
-                }
-                
-                // evaluate swarm
-                results = resultsProvider.Evaluate(GetConfigsFromSwarm(swarm));
-                for (int i = 0; i < results.Length; i++)
-                {
-                    swarm[i].positionWithResult.result = results[i];
-                }
-                
-                // update leaders archive
-                foreach (var leader in leadersArchive)
-                {
-                    if (domination.IsDominated(leader, swarm))
-                        leadersArchive.Remove(leader);
-                }
-                foreach (var particle in swarm)
-                {
-                    if (domination.IsDominated(particle, leadersArchive) == false &&
-                        TruePositionOfParticleAlreadyInLeaders(particle, leadersArchive) == false)
-                    {
-                        leadersArchive.Add(particle.positionWithResult);
-                    }
-                }
-                crowdingDistances = GetCrowdingDistances(leadersArchive);
-                if (leadersArchive.Count > searchConfig.archiveSize)
-                {
-                    var sortedLeaders = leadersArchive.OrderBy(leader => crowdingDistances[leadersArchive.IndexOf(leader)]).ToList();
-                    for (int i = 0; i < leadersArchive.Count - searchConfig.archiveSize; i++)
-                    {
-                        leadersArchive.Remove(sortedLeaders[i]);
-                    }
-                    crowdingDistances = GetCrowdingDistances(leadersArchive);
-                }
-
-                foreach (var particle in swarm)
-                {
-                    if (domination.IsDominated(particle.personalBest.result, [particle.positionWithResult.result]))
-                        particle.personalBest = particle.positionWithResult;
-                }
-
                 generation++;
+                
             }
 
             return leadersArchive.Select(leader => (leader.GetConfigFromPosition(), leader.result)).ToList();
+        }
+
+        private double JMetalPolynomialTurbulence(double gene, int geneIndex, int maxFrequency, Random random)
+        {
+            const double eta_m = 20;
+            double min = CPUConfig.CPUConfigLimits.GetMin(geneIndex);
+            double max = CPUConfig.CPUConfigLimits.GetMax(geneIndex, maxFrequency);
+            double delta1 = (gene - min) / (max - min);
+            double delta2 = (max - gene) / (max - min);
+            double mut_pow = 1.0 / (eta_m + 1.0);
+            double rnd = random.NextDouble();
+            double deltaq, xy, val;
+            if (rnd <= 0.5)
+            {
+                xy = 1.0 - delta1;
+                val = 2.0 * rnd + (1.0 - 2.0 * rnd) * (Math.Pow(xy, (eta_m + 1.0)));
+                deltaq = Math.Pow(val, mut_pow) - 1.0;
+            }
+            else
+            {
+                xy = 1.0 - delta2;
+                val = 2.0 * (1.0 - rnd) + 2.0 * (rnd - 0.5) * (Math.Pow(xy, (eta_m + 1.0)));
+                deltaq = 1.0 - (Math.Pow(val, mut_pow));
+            }
+            gene = gene + deltaq * (max - min);
+            if (gene < min)
+            {
+                gene = min;
+            }
+            if (gene > max)
+            {
+                gene = max;
+            }
+
+            return gene;
         }
     }
 }

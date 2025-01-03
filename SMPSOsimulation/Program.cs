@@ -6,8 +6,9 @@ namespace SMPSOsimulation
 {
     internal static class Program
     {
-		public static void Main(string[] args)
+        public static void Main(string[] args)
         {
+
             // Create the environment configuration
             EnvironmentConfig environmentConfig = new EnvironmentConfig(
                 vdd: 2.2,
@@ -22,7 +23,7 @@ namespace SMPSOsimulation
                 trace: @"C:\PSATSim\Traces\compress.tra",
                 maxFrequency: 10000
             );
-            
+
 
             // Create CPU configurations based on the provided XML data
 
@@ -31,9 +32,11 @@ namespace SMPSOsimulation
             string dllPath = @"C:\GTK\bin"; // Replace with actual path
 
 
-            var orchestrator = new VEGAOrchestrator();
-            var searchConfig = new SearchConfigVEGA(100, 200, 0.05, environmentConfig);
-            
+            var orchestrator = new SMPSOOrchestrator();
+            var domination =
+                DominationConfig.GetSMPSODominationConfig();
+            var searchConfig = new SearchConfigSMPSO(300, 7, 100, 0.2, environmentConfig, domination);
+
             orchestrator.StartSearch(searchConfig, exePath, dllPath);
         }
     }
