@@ -1,6 +1,9 @@
 namespace SMPSOsimulation.dataStructures;
 
 using System;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 
 public enum MemoryArchEnum
 {
@@ -20,8 +23,6 @@ public class EnvironmentConfig
     public float L2Hitrate { get; set; }
     public int L2Latency { get; set; }
     public int SystemMemLatency { get; set; }
-    public string Trace {get; set;}
-    public int MaxFrequency { get; set; }
 
     public EnvironmentConfig(
         double vdd,
@@ -32,13 +33,11 @@ public class EnvironmentConfig
         int l1DataLatency,
         float l2Hitrate,
         int l2Latency,
-        int systemMemLatency,
-        string trace,
-        int maxFrequency)
+        int systemMemLatency)
     {
         if (vdd <= 0)
             throw new ArgumentException("Vdd must be greater than 0.");
-        
+
         if (l1CodeHitrate <= 0 || l1CodeHitrate >= 1)
             throw new ArgumentException("L1CodeHitrate must be between 0 and 1 (exclusive).");
 
@@ -69,7 +68,23 @@ public class EnvironmentConfig
         L2Hitrate = l2Hitrate;
         L2Latency = l2Latency;
         SystemMemLatency = systemMemLatency;
-        Trace = trace;
-        MaxFrequency = maxFrequency;
+    }
+
+    public string CalculateSha256()
+    {
+        // Serialize the object to JSON
+        string serializedConfig = JsonSerializer.Serialize(this);
+
+        // Compute the SHA-256 hash
+        byte[] hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(serializedConfig));
+
+        // Convert the hash to a hex string
+        StringBuilder hashString = new();
+        foreach (byte b in hashBytes)
+        {
+            hashString.Append(b.ToString("x2"));
+        }
+
+        return hashString.ToString();
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SMPSOsimulation.dataStructures
+﻿namespace SMPSOsimulation.dataStructures
 {
     public class DominationConfig
     {
@@ -34,7 +28,7 @@ namespace SMPSOsimulation.dataStructures
             return true;
         }
 
-        private DominationConfig (DominationType dominationType, double? wCPI, double? wEnergy, PrefferedObjective? prefferedObjective, double? tolerance)
+        private DominationConfig(DominationType dominationType, double? wCPI, double? wEnergy, PrefferedObjective? prefferedObjective, double? tolerance)
         {
             this.dominationType = dominationType;
             this.wCPI = wCPI;

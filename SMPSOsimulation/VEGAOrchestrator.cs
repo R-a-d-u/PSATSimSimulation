@@ -1,20 +1,13 @@
-using System.Security.Cryptography;
 using SMPSOsimulation.dataStructures;
 
 namespace SMPSOsimulation;
 
 public class VEGAOrchestrator
 {
-    private class Individual
+    private class Individual(CPUConfig config)
     {
-        public int[] genes;
-        public double[] result;
-
-        public Individual(CPUConfig config)
-        {
-            genes = config.GetVectorFormInt();
-            result = new double[2];
-        }
+        public int[] genes = config.GetVectorFormInt();
+        public double[] result = new double[2];
 
         public CPUConfig GetConfig()
         {
@@ -22,15 +15,15 @@ public class VEGAOrchestrator
         }
     }
 
-    private (Individual, Individual) Crossover(Individual parent1, Individual parent2, int maxFrequency)
+    private static (Individual, Individual) Crossover(Individual parent1, Individual parent2, int maxFrequency)
     {
         // Constants for SBX (can be adjusted)
         double eta = 15.0; // Distribution index (controls the spread of the offspring around the parents)
-        Random random = new Random();
+        Random random = new();
 
         // Create offspring
-        Individual child1 = new Individual(parent1.GetConfig());
-        Individual child2 = new Individual(parent2.GetConfig());
+        Individual child1 = new(parent1.GetConfig());
+        Individual child2 = new(parent2.GetConfig());
 
         for (int i = 0; i < parent1.genes.Length; i++)
         {
@@ -71,7 +64,7 @@ public class VEGAOrchestrator
     }
 
 
-    private void Mutate(Individual individual, Random random, double mutationProbability, int maxFrequency)
+    private static void Mutate(Individual individual, Random random, double mutationProbability, int maxFrequency)
     {
         // Loop through each gene in the individual
         for (int i = 0; i < individual.genes.Length; i++)
@@ -98,7 +91,7 @@ public class VEGAOrchestrator
             }
         }
     }
-    
+
     private static void Shuffle<T>(List<T> list, Random random)
     {
         for (int i = list.Count - 1; i > 0; i--)
@@ -109,15 +102,15 @@ public class VEGAOrchestrator
         }
     }
 
-    public List<(CPUConfig, double[])> StartSearch(SearchConfigVEGA searchConfig, string psatsimExePath, string gtkLibPath)
+    public static List<(CPUConfig, double[])> StartSearch(SearchConfigVEGA searchConfig, string psatsimExePath, string gtkLibPath, string tracePath)
     {
-        ResultsProvider resultsProvider = new ResultsProvider(searchConfig.environment, psatsimExePath, gtkLibPath);
+        ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, gtkLibPath, tracePath);
         int subPopSize = searchConfig.populationSize / 2;
-        List<Individual> population = new List<Individual>();
-        Random random = new Random();
+        List<Individual> population = [];
+        Random random = new();
         for (int i = 0; i < searchConfig.populationSize; i++)
-            population.Add(new Individual(CPUConfig.GenerateRandom(searchConfig.environment.MaxFrequency)));
-        
+            population.Add(new Individual(CPUConfig.GenerateRandom(searchConfig.MaxFrequency)));
+
         for (int generation = 0; generation < searchConfig.maxGenerations; generation++)
         {
             //DEbug
@@ -126,8 +119,8 @@ public class VEGAOrchestrator
             {
                 Console.WriteLine($"{individual.result[0]} {individual.result[1]}");
             }
-            
-            List<Individual> children = new List<Individual>();
+
+            List<Individual> children = [];
             while (population.Count + children.Count < searchConfig.populationSize * 3 / 2)
             {
                 int index1 = random.Next(population.Count);
@@ -141,22 +134,22 @@ public class VEGAOrchestrator
 
                 var parent1 = population[index1];
                 var parent2 = population[index2];
-                
-                var (child1, child2) = Crossover(parent1, parent2, searchConfig.environment.MaxFrequency);
-                
-                Mutate(child1, random, searchConfig.mutationProbability, searchConfig.environment.MaxFrequency);
-                Mutate(child2, random, searchConfig.mutationProbability, searchConfig.environment.MaxFrequency);
-                
+
+                var (child1, child2) = Crossover(parent1, parent2, searchConfig.MaxFrequency);
+
+                Mutate(child1, random, searchConfig.mutationProbability, searchConfig.MaxFrequency);
+                Mutate(child2, random, searchConfig.mutationProbability, searchConfig.MaxFrequency);
+
                 children.Add(child1);
                 children.Add(child2);
             }
-            
+
             foreach (var child in children)
                 population.Add(child);
-            
+
             Shuffle(population, random);
-            
-            List<CPUConfig> individualsConfigs = new List<CPUConfig>();
+
+            List<CPUConfig> individualsConfigs = [];
             foreach (var individual in population)
                 individualsConfigs.Add(individual.GetConfig());
             var results = resultsProvider.Evaluate(individualsConfigs);
@@ -169,7 +162,7 @@ public class VEGAOrchestrator
                 .OrderBy(ind => ind.result[0]) // Sort by CPI (result[0]) in ascending order
                 .Take(subPopSize) // Take the top 'subPopSize' individuals
                 .ToList();
-        
+
             List<Individual> bestEnergy = population
                 .OrderBy(ind => ind.result[1]) // Sort by CPI (result[0]) in ascending order
                 .Take(subPopSize) // Take the top 'subPopSize' individuals
@@ -180,8 +173,8 @@ public class VEGAOrchestrator
                 .Distinct() // Ensure no duplicates in case an individual is in both lists
                 .ToList(); // Convert back to a list
         }
-        
-        List<(CPUConfig, double[])> returnedConfigs = new List<(CPUConfig, double[])>();
+
+        List<(CPUConfig, double[])> returnedConfigs = [];
         foreach (var individual in population)
             returnedConfigs.Add((individual.GetConfig(), individual.result));
 

@@ -1,7 +1,6 @@
 namespace SMPSOsimulation;
 
 using System;
-using System.Data;
 using System.Data.SQLite;
 using System.IO;
 
@@ -34,9 +33,11 @@ public class ResultsDB
             {
                 command.CommandText = @"
                     CREATE TABLE IF NOT EXISTS CpuConfigCache (
-                        Hash TEXT PRIMARY KEY,
+                        Hash TEXT NOT NULL,
+                        EnvironmentHash TEXT NOT NULL,
                         CPI REAL NOT NULL,
-                        Energy REAL NOT NULL
+                        Energy REAL NOT NULL,
+                        PRIMARY KEY (Hash, EnvironmentHash)
                     );
                 ";
                 command.ExecuteNonQuery();
@@ -44,7 +45,7 @@ public class ResultsDB
         }
     }
 
-    public void AddEntry(string hash, double cpi, double energy)
+    public void AddEntry(string hash, string environmentHash, double cpi, double energy)
     {
         using (var connection = new SQLiteConnection(_connectionString))
         {
@@ -52,10 +53,11 @@ public class ResultsDB
             using (var command = connection.CreateCommand())
             {
                 command.CommandText = @"
-                    INSERT OR REPLACE INTO CpuConfigCache (Hash, CPI, Energy)
-                    VALUES (@Hash, @CPI, @Energy);
+                    INSERT OR REPLACE INTO CpuConfigCache (Hash, EnvironmentHash, CPI, Energy)
+                    VALUES (@Hash, @EnvironmentHash, @CPI, @Energy);
                 ";
                 command.Parameters.AddWithValue("@Hash", hash);
+                command.Parameters.AddWithValue("@EnvironmentHash", environmentHash);
                 command.Parameters.AddWithValue("@CPI", cpi);
                 command.Parameters.AddWithValue("@Energy", energy);
                 command.ExecuteNonQuery();
@@ -63,7 +65,7 @@ public class ResultsDB
         }
     }
 
-    public (double CPI, double Energy)? GetEntry(string hash)
+    public (double CPI, double Energy)? GetEntry(string hash, string environmentHash)
     {
         using (var connection = new SQLiteConnection(_connectionString))
         {
@@ -73,9 +75,10 @@ public class ResultsDB
                 command.CommandText = @"
                     SELECT CPI, Energy
                     FROM CpuConfigCache
-                    WHERE Hash = @Hash;
+                    WHERE Hash = @Hash AND EnvironmentHash = @EnvironmentHash;
                 ";
                 command.Parameters.AddWithValue("@Hash", hash);
+                command.Parameters.AddWithValue("@EnvironmentHash", environmentHash);
 
                 using (var reader = command.ExecuteReader())
                 {

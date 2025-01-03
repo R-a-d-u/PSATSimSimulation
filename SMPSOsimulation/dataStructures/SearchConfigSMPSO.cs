@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SMPSOsimulation.dataStructures
+﻿namespace SMPSOsimulation.dataStructures
 {
     public class SearchConfigSMPSO
     {
@@ -13,6 +7,7 @@ namespace SMPSOsimulation.dataStructures
         public double turbulenceRate;
         public EnvironmentConfig environment;
         public DominationConfig domination;
+        internal readonly int MaxFrequency;
 
         public bool IsRespectingConstraints()
         {
@@ -24,7 +19,7 @@ namespace SMPSOsimulation.dataStructures
             return true;
         }
 
-        public SearchConfigSMPSO (int swarmSize, int archiveSize, int maxGenerations, double turbulenceRate, EnvironmentConfig environment, DominationConfig domination)
+        public SearchConfigSMPSO(int swarmSize, int archiveSize, int maxGenerations, double turbulenceRate, int maxFrequency, EnvironmentConfig environment, DominationConfig domination)
         {
             this.swarmSize = swarmSize;
             this.archiveSize = archiveSize;
@@ -32,6 +27,7 @@ namespace SMPSOsimulation.dataStructures
             this.turbulenceRate = turbulenceRate;
             this.environment = environment;
             this.domination = domination;
+            this.MaxFrequency = maxFrequency;
 
             if (!this.IsRespectingConstraints())
                 throw new Exception("SearchCOnfigSMPSO does not respect constraints");

@@ -1,12 +1,4 @@
 ﻿using SMPSOsimulation.dataStructures;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Core.Mapping;
-using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace SMPSOsimulation
 {
@@ -53,26 +45,19 @@ namespace SMPSOsimulation
             }
         }
 
-        public class Particle
+        public class Particle(SMPSOOrchestrator.PositionWithResult positionWithResult, double[] speed, SMPSOOrchestrator.PositionWithResult personalBest)
         {
-            public PositionWithResult positionWithResult;
-            public double[] speed; // size 16
-            public PositionWithResult personalBest;
-
-            public Particle(PositionWithResult positionWithResult, double[] speed, PositionWithResult personalBest)
-            {
-                this.positionWithResult = positionWithResult;
-                this.speed = speed;
-                this.personalBest = personalBest;
-            }
+            public PositionWithResult positionWithResult = positionWithResult;
+            public double[] speed = speed; // size 16
+            public PositionWithResult personalBest = personalBest;
         }
 
-        private List<CPUConfig> GetConfigsFromSwarm(List<Particle> swarm)
+        private static List<CPUConfig> GetConfigsFromSwarm(List<Particle> swarm)
         {
             return swarm.Select(particle => CPUConfig.GetConfigFromVectorDouble(particle.positionWithResult.position)).ToList();
         }
 
-        private bool TruePositionAlreadyIn(double[] position, List<double[]> destinationList)
+        private static bool TruePositionAlreadyIn(double[] position, List<double[]> destinationList)
         {
             foreach (var destination in destinationList)
             {
@@ -83,19 +68,19 @@ namespace SMPSOsimulation
             return false;
         }
 
-        private bool TruePositionOfParticleAlreadyInLeaders(Particle particleToCheck, List<PositionWithResult> leaders)
+        private static bool TruePositionOfParticleAlreadyInLeaders(Particle particleToCheck, List<PositionWithResult> leaders)
         {
             return TruePositionAlreadyIn(particleToCheck.positionWithResult.position, leaders.Select(leader => leader.position).ToList());
         }
 
-        private bool TrueLeaderAlreadyInLeaders(PositionWithResult particleToCheck, List<PositionWithResult> leaders)
+        private static bool TrueLeaderAlreadyInLeaders(PositionWithResult particleToCheck, List<PositionWithResult> leaders)
         {
             return TruePositionAlreadyIn(particleToCheck.position, leaders.Select(leader => leader.position).ToList());
         }
 
-        private List<double> GetCrowdingDistances(List<PositionWithResult> leaders)
+        private static List<double> GetCrowdingDistances(List<PositionWithResult> leaders)
         {
-            List<double> crowdingDistances = new List<double>();
+            List<double> crowdingDistances = [];
             if (leaders.Count == 0)
                 return crowdingDistances;
 
@@ -122,7 +107,7 @@ namespace SMPSOsimulation
             if (leaders[0].result.Length == 1)
             {
                 for (int i = 0; i < crowdingDistances.Count; i++)
-                    crowdingDistances [i] = double.PositiveInfinity;
+                    crowdingDistances[i] = double.PositiveInfinity;
                 return crowdingDistances;
             }
 
@@ -130,16 +115,16 @@ namespace SMPSOsimulation
             {
                 var leadersOrderedByObjective = leaders.OrderBy(leader => leader.result[objective]).ToList();
                 var objMinIndex = leadersOrderedByObjective[0];
-                var objMaxIndex = leadersOrderedByObjective[leadersOrderedByObjective.Count - 1];
+                var objMaxIndex = leadersOrderedByObjective[^1];
                 crowdingDistances[leaders.IndexOf(objMinIndex)] = double.PositiveInfinity;
                 crowdingDistances[leaders.IndexOf(objMaxIndex)] = double.PositiveInfinity;
                 double objMin = leadersOrderedByObjective[0].result[objective];
-                double objMax = leadersOrderedByObjective[leadersOrderedByObjective.Count - 1].result[objective];
+                double objMax = leadersOrderedByObjective[^1].result[objective];
 
                 for (int i = 1; i < leadersOrderedByObjective.Count - 1; i++)
                 {
                     double distance = leadersOrderedByObjective[i + 1].result[objective] - leadersOrderedByObjective[i - 1].result[objective];
-                    distance = distance / (objMax - objMin);
+                    distance /= (objMax - objMin);
                     crowdingDistances[leaders.IndexOf(leadersOrderedByObjective[i])] += distance;
                 }
             }
@@ -147,12 +132,12 @@ namespace SMPSOsimulation
             return crowdingDistances;
         }
 
-        private List<Particle> InitSwarm (Random random, SearchConfigSMPSO searchConfig, ResultsProvider resultsProvider)
+        private static List<Particle> InitSwarm(SearchConfigSMPSO searchConfig, ResultsProvider resultsProvider)
         {
-            List<Particle> swarm = new List<Particle>();
+            List<Particle> swarm = [];
             for (int i = 0; i < searchConfig.swarmSize; i++)
             {
-                var randomPositionWithResult = new PositionWithResult(CPUConfig.GenerateRandom(searchConfig.environment.MaxFrequency), [double.PositiveInfinity, double.PositiveInfinity]);
+                var randomPositionWithResult = new PositionWithResult(CPUConfig.GenerateRandom(searchConfig.MaxFrequency), [double.PositiveInfinity, double.PositiveInfinity]);
                 var speed = new double[16];
                 swarm.Add(new Particle(randomPositionWithResult, speed, randomPositionWithResult));
             }
@@ -168,9 +153,9 @@ namespace SMPSOsimulation
 
             return swarm;
         }
-        private List<PositionWithResult> InitLeadersArchive (List<Particle> swarm, SearchConfigSMPSO searchConfig, DominationProvider domination)
+        private static List<PositionWithResult> InitLeadersArchive(List<Particle> swarm, SearchConfigSMPSO searchConfig, DominationProvider domination)
         {
-            List<PositionWithResult> leadersArchive = new List<PositionWithResult>(searchConfig.archiveSize);
+            List<PositionWithResult> leadersArchive = new(searchConfig.archiveSize);
             foreach (var particle in swarm)
             {
                 if (domination.IsDominated(particle, swarm) == false &&
@@ -180,28 +165,19 @@ namespace SMPSOsimulation
             return leadersArchive;
         }
 
-        private DominationProvider InitDomination(SearchConfigSMPSO searchConfig)
+        private static DominationProvider InitDomination(SearchConfigSMPSO searchConfig)
         {
-            DominationProvider domination;
-            switch (searchConfig.domination.dominationType)
+            DominationProvider domination = searchConfig.domination.dominationType switch
             {
-                case DominationConfig.DominationType.SMPSO:
-                    domination = new SMPSODomination();
-                    break;
-                case DominationConfig.DominationType.WEIGHT:
-                    domination = new WeightedSumDomination(searchConfig.domination.wCPI!.Value, searchConfig.domination.wEnergy!.Value);
-                    break;
-                case DominationConfig.DominationType.LEXICOGRAPHIC:
-                    domination = new LexicographicDomination(searchConfig.domination.prefferedObjective!.Value, searchConfig.domination.tolerance!.Value);
-                    break;
-                default:
-                    throw new Exception("StartSearch init of domination provider; how did we get here??");
-            }
-
+                DominationConfig.DominationType.SMPSO => new SMPSODomination(),
+                DominationConfig.DominationType.WEIGHT => new WeightedSumDomination(searchConfig.domination.wCPI!.Value, searchConfig.domination.wEnergy!.Value),
+                DominationConfig.DominationType.LEXICOGRAPHIC => new LexicographicDomination(searchConfig.domination.prefferedObjective!.Value, searchConfig.domination.tolerance!.Value),
+                _ => throw new Exception("StartSearch init of domination provider; how did we get here??"),
+            };
             return domination;
         }
 
-        private void UpdateSwarmSpeeds(List<Particle> swarm, Random random, List<PositionWithResult> leadersArchive, List<double> crowdingDistances, SearchConfigSMPSO searchConfig)
+        private static void UpdateSwarmSpeeds(List<Particle> swarm, Random random, List<PositionWithResult> leadersArchive, List<double> crowdingDistances, SearchConfigSMPSO searchConfig)
         {
             foreach (var particle in swarm)
             {
@@ -237,7 +213,7 @@ namespace SMPSOsimulation
                 for (int i = 0; i < particle.speed.Length; i++)
                 {
                     var minLimit = CPUConfig.CPUConfigLimits.GetMin(i);
-                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
+                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.MaxFrequency);
                     double delta = (maxLimit - minLimit) / 2.0;
 
                     if (particle.speed[i] > delta) particle.speed[i] = delta;
@@ -246,7 +222,7 @@ namespace SMPSOsimulation
             }
         }
 
-        private void UpdateSwarmPositions(List<Particle> swarm, Random random, SearchConfigSMPSO searchConfig)
+        private static void UpdateSwarmPositions(List<Particle> swarm, Random random, SearchConfigSMPSO searchConfig)
         {
             foreach (var particle in swarm)
             {
@@ -258,7 +234,7 @@ namespace SMPSOsimulation
                 for (int i = 0; i < particle.positionWithResult.position.Length; i++)
                 {
                     var minLimit = CPUConfig.CPUConfigLimits.GetMin(i);
-                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
+                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.MaxFrequency);
                     if (particle.positionWithResult.position[i] > maxLimit)
                     {
                         particle.speed[i] *= -1;
@@ -283,18 +259,16 @@ namespace SMPSOsimulation
                         var p = random.NextDouble();
                         if (p < searchConfig.turbulenceRate)
                         {
-                            var min = CPUConfig.CPUConfigLimits.GetMin(i);
-                            var max = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.environment.MaxFrequency);
                             particle.positionWithResult.position[i] =
                                 JMetalPolynomialTurbulence(particle.positionWithResult.position[i], i,
-                                    searchConfig.environment.MaxFrequency, random);
+                                    searchConfig.MaxFrequency, random);
                         }
                     }
                 }
             }
         }
 
-        public void UpdateSwarmResults(List<Particle> swarm, ResultsProvider resultsProvider, DominationProvider domination)
+        public static void UpdateSwarmResults(List<Particle> swarm, ResultsProvider resultsProvider, DominationProvider domination)
         {
             var results = resultsProvider.Evaluate(GetConfigsFromSwarm(swarm));
             for (int i = 0; i < results.Length; i++)
@@ -309,9 +283,9 @@ namespace SMPSOsimulation
             }
         }
 
-        public void UpdateLeadersArchiveAndCrowdingDistances(List<PositionWithResult> leadersArchive, List<double> crowdingDistances, List<Particle> swarm, DominationProvider domination, SearchConfigSMPSO searchConfig)
+        public static void UpdateLeadersArchiveAndCrowdingDistances(List<PositionWithResult> leadersArchive, List<double> crowdingDistances, List<Particle> swarm, DominationProvider domination, SearchConfigSMPSO searchConfig)
         {
-            List<PositionWithResult> allPositions = new List<PositionWithResult>(leadersArchive);
+            List<PositionWithResult> allPositions = new(leadersArchive);
             allPositions.AddRange(swarm.Select(particle => particle.positionWithResult).ToList());
             leadersArchive.Clear();
             foreach (var particle in allPositions)
@@ -338,12 +312,12 @@ namespace SMPSOsimulation
         }
 
 
-        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, string gtkLibPath)
+        public static List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, string gtkLibPath, string tracePath)
         {
-            Random random = new Random();
-            ResultsProvider resultsProvider = new ResultsProvider(searchConfig.environment, psatsimExePath, gtkLibPath);
+            Random random = new();
+            ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, gtkLibPath, tracePath);
             var domination = InitDomination(searchConfig);
-            var swarm = InitSwarm(random, searchConfig, resultsProvider);
+            var swarm = InitSwarm(searchConfig, resultsProvider);
             var leadersArchive = InitLeadersArchive(swarm, searchConfig, domination);
             var crowdingDistances = GetCrowdingDistances(leadersArchive);
             int generation = 0;
@@ -363,13 +337,13 @@ namespace SMPSOsimulation
                     Console.WriteLine($"{leader.result[0]} {leader.result[1]}");
                 }
                 generation++;
-                
+
             }
 
             return leadersArchive.Select(leader => (leader.GetConfigFromPosition(), leader.result)).ToList();
         }
 
-        private double JMetalPolynomialTurbulence(double gene, int geneIndex, int maxFrequency, Random random)
+        private static double JMetalPolynomialTurbulence(double gene, int geneIndex, int maxFrequency, Random random)
         {
             const double eta_m = 20;
             double min = CPUConfig.CPUConfigLimits.GetMin(geneIndex);
@@ -391,7 +365,7 @@ namespace SMPSOsimulation
                 val = 2.0 * (1.0 - rnd) + 2.0 * (rnd - 0.5) * (Math.Pow(xy, (eta_m + 1.0)));
                 deltaq = 1.0 - (Math.Pow(val, mut_pow));
             }
-            gene = gene + deltaq * (max - min);
+            gene += deltaq * (max - min);
             if (gene < min)
             {
                 gene = min;

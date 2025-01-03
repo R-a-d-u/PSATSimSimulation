@@ -1,17 +1,10 @@
 namespace SMPSOsimulation.dataStructures;
 
-public class SearchConfigVEGA
+public class SearchConfigVEGA(int maxGenerations, int populationSize, double mutationProbability, int maxFrequency, EnvironmentConfig environment)
 {
-    public int maxGenerations;
-    public int populationSize;
-    public double mutationProbability;
-    public EnvironmentConfig environment;
-
-    public SearchConfigVEGA(int maxGenerations, int populationSize, double mutationProbability, EnvironmentConfig environment)
-    {
-        this.maxGenerations = maxGenerations;
-        this.populationSize = populationSize;
-        this.mutationProbability = mutationProbability;
-        this.environment = environment;
-    }
+    internal readonly int MaxFrequency = maxFrequency;
+    public int maxGenerations = maxGenerations;
+    public int populationSize = populationSize;
+    public double mutationProbability = mutationProbability;
+    public EnvironmentConfig environment = environment;
 }

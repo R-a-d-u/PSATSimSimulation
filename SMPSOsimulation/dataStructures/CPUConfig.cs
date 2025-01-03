@@ -1,6 +1,4 @@
-using System.Drawing;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
 using System.Text.Json;
 
@@ -75,11 +73,10 @@ public class CPUConfig : IEquatable<CPUConfig?>
         string serializedConfig = JsonSerializer.Serialize(this);
 
         // Compute the SHA-256 hash
-        using var sha256 = SHA256.Create();
-        byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(serializedConfig));
+        byte[] hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(serializedConfig));
 
         // Convert the hash to a hex string
-        StringBuilder hashString = new StringBuilder();
+        StringBuilder hashString = new();
         foreach (byte b in hashBytes)
         {
             hashString.Append(b.ToString("x2"));
@@ -120,56 +117,56 @@ public class CPUConfig : IEquatable<CPUConfig?>
 
         public static int GetMin(int index)
         {
-            switch (index)
+            return index switch
             {
-                case 0: return SuperscalarMin;
-                case 1: return RenameMin;
-                case 2: return ReorderMin;
-                case 3: return 0;
-                case 4: return 0;
-                case 5: return IaddMin;
-                case 6: return ImultMin;
-                case 7: return IdivMin;
-                case 8: return FpaddMin;
-                case 9: return FpmultMin;
-                case 10: return FpdivMin;
-                case 11: return FpsqrtMin;
-                case 12: return BranchMin;
-                case 13: return LoadMin;
-                case 14: return StoreMin;
-                case 15: return 1;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
-            }
+                0 => SuperscalarMin,
+                1 => RenameMin,
+                2 => ReorderMin,
+                3 => 0,
+                4 => 0,
+                5 => IaddMin,
+                6 => ImultMin,
+                7 => IdivMin,
+                8 => FpaddMin,
+                9 => FpmultMin,
+                10 => FpdivMin,
+                11 => FpsqrtMin,
+                12 => BranchMin,
+                13 => LoadMin,
+                14 => StoreMin,
+                15 => 1,
+                _ => throw new ArgumentOutOfRangeException(nameof(index)),
+            };
         }
-        
+
         public static int GetMax(int index, int maxFrequency)
         {
-            switch (index)
+            return index switch
             {
-                case 0: return SuperscalarMax;
-                case 1: return RenameMax;
-                case 2: return ReorderMax;
-                case 3: return Enum.GetValues(typeof(RsbArchitectureType)).Length - 1;
-                case 4: return 1;
-                case 5: return IaddMax;
-                case 6: return ImultMax;
-                case 7: return IdivMax;
-                case 8: return FpaddMax;
-                case 9: return FpmultMax;
-                case 10: return FpdivMax;
-                case 11: return FpsqrtMax;
-                case 12: return BranchMax;
-                case 13: return LoadMax;
-                case 14: return StoreMax;
-                case 15: return maxFrequency;
-                default: throw new ArgumentOutOfRangeException(nameof(index));
-            }
+                0 => SuperscalarMax,
+                1 => RenameMax,
+                2 => ReorderMax,
+                3 => Enum.GetValues(typeof(RsbArchitectureType)).Length - 1,
+                4 => 1,
+                5 => IaddMax,
+                6 => ImultMax,
+                7 => IdivMax,
+                8 => FpaddMax,
+                9 => FpmultMax,
+                10 => FpdivMax,
+                11 => FpsqrtMax,
+                12 => BranchMax,
+                13 => LoadMax,
+                14 => StoreMax,
+                15 => maxFrequency,
+                _ => throw new ArgumentOutOfRangeException(nameof(index)),
+            };
         }
     }
 
     public static CPUConfig GenerateRandom(int maxFrequency)
     {
-        Random random = new Random();
+        Random random = new();
 
         int superscalar = random.Next(CPUConfigLimits.SuperscalarMin, CPUConfigLimits.SuperscalarMax + 1);
         int rename = random.Next(CPUConfigLimits.RenameMin, CPUConfigLimits.RenameMax + 1);
@@ -195,8 +192,8 @@ public class CPUConfig : IEquatable<CPUConfig?>
 
     public double[] GetVectorFormDouble()
     {
-        return new double[]
-        {
+        return
+        [
                 Superscalar,
                 Rename,
                 Reorder,
@@ -213,13 +210,13 @@ public class CPUConfig : IEquatable<CPUConfig?>
                 Load,
                 Store,
                 Freq
-        };
+        ];
     }
 
     public int[] GetVectorFormInt()
     {
-        return new int[]
-        {
+        return
+        [
                 Superscalar,
                 Rename,
                 Reorder,
@@ -236,7 +233,7 @@ public class CPUConfig : IEquatable<CPUConfig?>
                 Load,
                 Store,
                 Freq
-        };
+        ];
     }
 
     public static CPUConfig GetConfigFromVectorInt(int[] vector)
