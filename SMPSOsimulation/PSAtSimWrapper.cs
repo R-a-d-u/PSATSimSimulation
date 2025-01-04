@@ -126,18 +126,24 @@ namespace SMPSOsimulation
                 writer.WriteStartElement("system");
                 writer.WriteAttributeString("latency", environmentConfig.SystemMemLatency.ToString());
                 writer.WriteEndElement();
-                writer.WriteStartElement("l1_code");
-                writer.WriteAttributeString("hitrate", environmentConfig.L1CodeHitrate.ToString());
-                writer.WriteAttributeString("latency", environmentConfig.L1CodeLatency.ToString());
-                writer.WriteEndElement();
-                writer.WriteStartElement("l1_data");
-                writer.WriteAttributeString("hitrate", environmentConfig.L1DataHitrate.ToString());
-                writer.WriteAttributeString("latency", environmentConfig.L1DataLatency.ToString());
-                writer.WriteEndElement();
-                writer.WriteStartElement("l2");
-                writer.WriteAttributeString("hitrate", environmentConfig.L2Hitrate.ToString());
-                writer.WriteAttributeString("latency", environmentConfig.L2Latency.ToString());
-                writer.WriteEndElement();
+                if (environmentConfig.MemoryArch != MemoryArchEnum.system)
+                {
+                    writer.WriteStartElement("l1_code");
+                    writer.WriteAttributeString("hitrate", environmentConfig.L1CodeHitrate.ToString());
+                    writer.WriteAttributeString("latency", environmentConfig.L1CodeLatency.ToString());
+                    writer.WriteEndElement();
+                    writer.WriteStartElement("l1_data");
+                    writer.WriteAttributeString("hitrate", environmentConfig.L1DataHitrate.ToString());
+                    writer.WriteAttributeString("latency", environmentConfig.L1DataLatency.ToString());
+                    writer.WriteEndElement();
+                }
+                if (environmentConfig.MemoryArch == MemoryArchEnum.l2)
+                {
+                    writer.WriteStartElement("l2");
+                    writer.WriteAttributeString("hitrate", environmentConfig.L2Hitrate.ToString());
+                    writer.WriteAttributeString("latency", environmentConfig.L2Latency.ToString());
+                    writer.WriteEndElement();
+                }
                 writer.WriteEndElement();
 
                 writer.WriteEndElement();

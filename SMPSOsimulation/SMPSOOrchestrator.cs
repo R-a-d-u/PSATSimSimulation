@@ -4,6 +4,13 @@ namespace SMPSOsimulation
 {
     public class SMPSOOrchestrator
     {
+        public event EventHandler<List<(CPUConfig, double[])>> GenerationChanged;
+
+        public SMPSOOrchestrator()
+        {
+
+        }
+
         public class PositionWithResult
         {
             public double[] position; // size 16
@@ -171,7 +178,7 @@ namespace SMPSOsimulation
             {
                 DominationConfig.DominationType.SMPSO => new SMPSODomination(),
                 DominationConfig.DominationType.WEIGHT => new WeightedSumDomination(searchConfig.domination.wCPI!.Value, searchConfig.domination.wEnergy!.Value),
-                DominationConfig.DominationType.LEXICOGRAPHIC => new LexicographicDomination(searchConfig.domination.prefferedObjective!.Value, searchConfig.domination.tolerance!.Value),
+                DominationConfig.DominationType.LEXICOGRAPHIC => new LexicographicDomination(searchConfig.domination.prefferedObjective!.Value),
                 _ => throw new Exception("StartSearch init of domination provider; how did we get here??"),
             };
             return domination;
@@ -311,8 +318,18 @@ namespace SMPSOsimulation
             }
         }
 
+        private void SendCurrentBest(List<PositionWithResult> leaders)
+        {
+            List<(CPUConfig, double[])> results = new();
+            foreach(var leader in leaders)
+            {
+                var config = leader.GetConfigFromPosition();
+                results.Add((config, leader.result));
+            }
+            GenerationChanged.Invoke(this, results);
+        }
 
-        public static List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, string gtkLibPath, string tracePath)
+        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, string gtkLibPath, string tracePath)
         {
             Random random = new();
             ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, gtkLibPath, tracePath);
@@ -327,17 +344,8 @@ namespace SMPSOsimulation
                 UpdateSwarmPositions(swarm, random, searchConfig);
                 UpdateSwarmResults(swarm, resultsProvider, domination);
                 UpdateLeadersArchiveAndCrowdingDistances(leadersArchive, crowdingDistances, swarm, domination, searchConfig);
-                if (crowdingDistances.Count != leadersArchive.Count)
-                {
-                    Console.WriteLine($"Crowding distance {crowdingDistances.Count} != leaders archive {leadersArchive.Count}");
-                }
-                Console.WriteLine("Generation: " + generation);
-                foreach (var leader in leadersArchive.OrderBy(leader => leader.result[0]))
-                {
-                    Console.WriteLine($"{leader.result[0]} {leader.result[1]}");
-                }
+                SendCurrentBest(leadersArchive);
                 generation++;
-
             }
 
             return leadersArchive.Select(leader => (leader.GetConfigFromPosition(), leader.result)).ToList();

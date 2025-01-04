@@ -16,22 +16,22 @@ public class EnvironmentConfig
 {
     public double Vdd { get; set; }
     public MemoryArchEnum MemoryArch { get; set; }
-    public float L1CodeHitrate { get; set; }
+    public double L1CodeHitrate { get; set; }
     public int L1CodeLatency { get; set; }
-    public float L1DataHitrate { get; set; }
+    public double L1DataHitrate { get; set; }
     public int L1DataLatency { get; set; }
-    public float L2Hitrate { get; set; }
+    public double L2Hitrate { get; set; }
     public int L2Latency { get; set; }
     public int SystemMemLatency { get; set; }
 
     public EnvironmentConfig(
         double vdd,
         MemoryArchEnum memoryArch,
-        float l1CodeHitrate,
+        double l1CodeHitrate,
         int l1CodeLatency,
-        float l1DataHitrate,
+        double l1DataHitrate,
         int l1DataLatency,
-        float l2Hitrate,
+        double l2Hitrate,
         int l2Latency,
         int systemMemLatency)
     {

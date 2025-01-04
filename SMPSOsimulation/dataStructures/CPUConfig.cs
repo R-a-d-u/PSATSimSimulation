@@ -292,6 +292,28 @@ public class CPUConfig : IEquatable<CPUConfig?>
                Store == other.Store &&
                Freq == other.Freq;
     }
+
+    public override string ToString()
+    {
+        return $@"
+Superscalar: {Superscalar}
+Rename: {Rename}
+Reorder: {Reorder}
+Rsb Architecture: {RsbArchitecture}
+Separate Dispatch: {SeparateDispatch}
+IADD Units: {Iadd}
+IMULT Units: {Imult}
+IDIV Units: {Idiv}
+FPADD Units: {Fpadd}
+FPMULT Units: {Fpmult}
+FPDIV Units: {Fpdiv}
+FPSQRT Units: {Fpsqrt}
+Branch Units: {Branch}
+Load Units: {Load}
+Store Units: {Store}
+Frequency: {Freq} MHz
+";
+    }
 }
 
 // Enum for RsbArchitecture

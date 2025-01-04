@@ -9,17 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="StolenJMetal\**" />
-    <EmbeddedResource Remove="StolenJMetal\**" />
-    <None Remove="StolenJMetal\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
+    <ProjectReference Include="..\SMPSOsimulation\SMPSOsimulation.csproj" />
   </ItemGroup>
 
 </Project>

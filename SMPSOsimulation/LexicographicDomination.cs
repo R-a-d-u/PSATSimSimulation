@@ -5,12 +5,10 @@ namespace SMPSOsimulation;
 public class LexicographicDomination : DominationProvider
 {
     private PrefferedObjective preferredObjective;
-    private double tolerance;
 
-    public LexicographicDomination(PrefferedObjective preferredObjective, double tolerance)
+    public LexicographicDomination(PrefferedObjective preferredObjective)
     {
         this.preferredObjective = preferredObjective;
-        this.tolerance = tolerance;
     }
 
     public bool IsDominated(double[] resultToCheck, List<double[]> resultsToCheckAgainst)

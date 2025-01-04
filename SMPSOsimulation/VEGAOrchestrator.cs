@@ -4,6 +4,13 @@ namespace SMPSOsimulation;
 
 public class VEGAOrchestrator
 {
+    public event EventHandler<List<(CPUConfig, double[])>> GenerationChanged;
+
+    public VEGAOrchestrator()
+    {
+
+    } 
+
     private class Individual(CPUConfig config)
     {
         public int[] genes = config.GetVectorFormInt();
@@ -102,7 +109,7 @@ public class VEGAOrchestrator
         }
     }
 
-    public static List<(CPUConfig, double[])> StartSearch(SearchConfigVEGA searchConfig, string psatsimExePath, string gtkLibPath, string tracePath)
+    public List<(CPUConfig, double[])> StartSearch(SearchConfigVEGA searchConfig, string psatsimExePath, string gtkLibPath, string tracePath)
     {
         ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, gtkLibPath, tracePath);
         int subPopSize = searchConfig.populationSize / 2;
@@ -172,6 +179,8 @@ public class VEGAOrchestrator
                 .Union(bestEnergy) // Get the union of bestCPI and bestEnergy
                 .Distinct() // Ensure no duplicates in case an individual is in both lists
                 .ToList(); // Convert back to a list
+
+            SendIndividuals(population);
         }
 
         List<(CPUConfig, double[])> returnedConfigs = [];
@@ -179,5 +188,11 @@ public class VEGAOrchestrator
             returnedConfigs.Add((individual.GetConfig(), individual.result));
 
         return returnedConfigs;
+    }
+
+    private void SendIndividuals(List<Individual> individuals)
+    {
+        List<(CPUConfig, double[])> results = individuals.Select(individual => (individual.GetConfig(), individual.result)).ToList();
+        GenerationChanged.Invoke(this, results);
     }
 }
