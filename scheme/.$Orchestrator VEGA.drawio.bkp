@@ -1,0 +1,137 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/25.0.2 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="25.0.2">
+  <diagram name="Page-1" id="vLqC30bx6TdA4_hb8m4A">
+    <mxGraphModel dx="819" dy="479" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="K_5MX-ocr5_CAAl9noTx-1" target="tM715aQ2O9wHuVtdNEMo-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-1" value="Start with param configVEGA from UI call" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="360.5" y="25" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-2" target="K_5MX-ocr5_CAAl9noTx-18" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="420" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-2" value="let subpopulation size be populationSize / 2" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="298" y="220" width="245" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" target="K_5MX-ocr5_CAAl9noTx-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="420" y="310" as="sourcePoint" />
+            <Array as="points">
+              <mxPoint x="420" y="320" />
+              <mxPoint x="420" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-41" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-7" target="K_5MX-ocr5_CAAl9noTx-40" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-7" value="For iteration in maxGenerations" style="swimlane;whiteSpace=wrap;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="115" y="350" width="610" height="850" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="K_5MX-ocr5_CAAl9noTx-14" target="K_5MX-ocr5_CAAl9noTx-16" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-14" value="For i in [1, populationSize/2]" style="swimlane;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="270" y="400" width="300" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-9" value="Select 2 random parents from population" style="rounded=0;whiteSpace=wrap;html=1;" parent="K_5MX-ocr5_CAAl9noTx-14" vertex="1">
+          <mxGeometry x="23" y="40" width="254" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="K_5MX-ocr5_CAAl9noTx-14" source="K_5MX-ocr5_CAAl9noTx-11" target="K_5MX-ocr5_CAAl9noTx-19" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-11" value="Get 2 children from crossover of parents" style="rounded=1;whiteSpace=wrap;html=1;" parent="K_5MX-ocr5_CAAl9noTx-14" vertex="1">
+          <mxGeometry x="23" y="90" width="255" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="K_5MX-ocr5_CAAl9noTx-14" source="K_5MX-ocr5_CAAl9noTx-9" target="K_5MX-ocr5_CAAl9noTx-11" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-19" value="Try applying mutations on both children" style="rounded=1;whiteSpace=wrap;html=1;" parent="K_5MX-ocr5_CAAl9noTx-14" vertex="1">
+          <mxGeometry x="55" y="150" width="190" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-16" target="K_5MX-ocr5_CAAl9noTx-22" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-16" value="Add the previously found children to the population" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="273" y="660" width="295" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-18" value="Init the population with populationSize random valid individuals" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="273" y="280" width="295" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-30" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-22" target="K_5MX-ocr5_CAAl9noTx-29" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-22" value="Shuffle the population" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="293" y="720" width="254" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-24" value="Individual" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="630" y="20" width="140" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-25" value="genes: int[17]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="K_5MX-ocr5_CAAl9noTx-24" vertex="1">
+          <mxGeometry y="30" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-26" value="result: double[2]" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" parent="K_5MX-ocr5_CAAl9noTx-24" vertex="1">
+          <mxGeometry y="60" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-33" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;startArrow=classicThin;startFill=1;endArrow=classicThin;endFill=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-29" target="K_5MX-ocr5_CAAl9noTx-32" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="585" y="830" />
+              <mxPoint x="585" y="830" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-35" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-29" target="K_5MX-ocr5_CAAl9noTx-34" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-29" value="Evaluate all individuals in population and update their &#39;result&#39;s" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="273" y="800" width="295" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-32" value="Results Evaluator" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="625" y="815" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-37" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-34" target="K_5MX-ocr5_CAAl9noTx-36" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-34" value="Let bestCPI be a list of best &#39;subPopulationSize&#39; elements at CPI objective&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="293" y="900" width="255" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-39" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-36" target="K_5MX-ocr5_CAAl9noTx-38" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-36" value="Let bestPower be a list of best &#39;subPopulationSize&#39; elements at Power objective&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="293" y="1000" width="255" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-38" value="Overwrite population to be the union of bestCPI and bestPower" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="255" y="1110" width="330" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-45" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="K_5MX-ocr5_CAAl9noTx-40" target="K_5MX-ocr5_CAAl9noTx-44" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-40" value="Convert population to a list of Configurations&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="298" y="1260" width="244" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="K_5MX-ocr5_CAAl9noTx-44" value="Return population" style="ellipse;shape=doubleEllipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="370.5" y="1370" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;dashed=1;" edge="1" parent="1" source="tM715aQ2O9wHuVtdNEMo-3" target="tM715aQ2O9wHuVtdNEMo-4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="tM715aQ2O9wHuVtdNEMo-3" target="K_5MX-ocr5_CAAl9noTx-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-3" value="Init Result Evaluator with given env" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="330.5" y="140" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="tM715aQ2O9wHuVtdNEMo-4" value="Results Evaluator" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="565" y="150" width="60" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

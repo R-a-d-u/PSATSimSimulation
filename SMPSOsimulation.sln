@@ -3,7 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMPSOsimulation", "SMPSOsimulation\SMPSOsimulation.csproj", "{47302B7F-3056-4D61-B5A1-45748CB1F50D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMPSOsimulation", "SMPSOsimulation\SMPSOsimulation.csproj", "{47302B7F-3056-4D61-B5A1-45748CB1F50D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F51861BA-2D86-43E6-A190-D2ECFC5E2109}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMPSOGui", "SMPSOGui\SMPSOGui.csproj", "{0A970BD4-A4F1-4064-8A80-FF4499F25F45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +22,10 @@ Global
 		{47302B7F-3056-4D61-B5A1-45748CB1F50D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47302B7F-3056-4D61-B5A1-45748CB1F50D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47302B7F-3056-4D61-B5A1-45748CB1F50D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A970BD4-A4F1-4064-8A80-FF4499F25F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A970BD4-A4F1-4064-8A80-FF4499F25F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A970BD4-A4F1-4064-8A80-FF4499F25F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A970BD4-A4F1-4064-8A80-FF4499F25F45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

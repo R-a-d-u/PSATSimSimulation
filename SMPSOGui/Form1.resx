@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!--
-    Microsoft ResX Schema 
+    Microsoft ResX Schema
 
     Version 2.0
 
@@ -48,7 +48,7 @@
     value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
     value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
@@ -117,23 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="contextMenuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="richTextBox1.Text" xml:space="preserve">
-    <value>!!!! Introduceti doar litera !!!! 
-
--t [thread count] : Number of simultaneous threads (default=1)
--cgmua : Print Options (default=a)
--c Print configuration sections
--C Suppress configuration sections
--g Print general results sections
--G Suppress general results sections            
--m Print memory results sections
--M Suppress memory results sections
--u Print utilization results sections
--U Suppress utilization results sections
--a Print all results sections
--A Suppress all results sections</value>
-  </data>
 </root>
