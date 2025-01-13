@@ -31,6 +31,7 @@
             listBoxGeneration = new ListBox();
             listBoxLeaders = new ListBox();
             richTextBox1 = new RichTextBox();
+            button1 = new Button();
             SuspendLayout();
             // 
             // listBoxGeneration
@@ -60,11 +61,22 @@
             richTextBox1.TabIndex = 2;
             richTextBox1.Text = "";
             // 
+            // button1
+            // 
+            button1.Location = new Point(288, 367);
+            button1.Name = "button1";
+            button1.Size = new Size(150, 23);
+            button1.TabIndex = 3;
+            button1.Text = "Export Latest";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button1);
             Controls.Add(richTextBox1);
             Controls.Add(listBoxLeaders);
             Controls.Add(listBoxGeneration);
@@ -80,5 +92,6 @@
         private ListBox listBoxGeneration;
         private ListBox listBoxLeaders;
         private RichTextBox richTextBox1;
+        private Button button1;
     }
 }

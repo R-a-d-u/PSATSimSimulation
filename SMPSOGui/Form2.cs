@@ -76,5 +76,65 @@ namespace SMPSOGui
         {
             Application.Exit();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (history.Count > 0)
+                WriteHistoryTables(history[history.Count - 1]);
+        }
+
+        public static void WriteHistoryTables(List<(CPUConfig config, double[] metrics)> history)
+        {
+            if (history == null || !history.Any())
+            {
+                Console.WriteLine("History is empty. No tables will be generated.");
+                return;
+            }
+
+            // File names
+            string file1 = "Table_CPI_Energy.csv";
+            string file2 = "Table_CPUConfig.csv";
+
+            // First table: ID, CPI, Energy
+            using (StreamWriter writer = new StreamWriter(file1))
+            {
+                writer.WriteLine("ID,CPI,Energy");
+                for (int i = 0; i < history.Count; i++)
+                {
+                    var (config, metrics) = history[i];
+                    writer.WriteLine($"{i},{metrics[0]},{metrics[1]}");
+                }
+            }
+
+            // Second table: ID and CPUConfig fields
+            using (StreamWriter writer = new StreamWriter(file2))
+            {
+                // Write header
+                writer.WriteLine("ID,Superscalar,Rename,Reorder,RsbArchitecture,SeparateDispatch,Iadd,Imult,Idiv,Fpadd,Fpmult,Fpdiv,Fpsqrt,Branch,Load,Store,Freq");
+                for (int i = 0; i < history.Count; i++)
+                {
+                    var (config, metrics) = history[i];
+                    writer.WriteLine($"{i}," +
+                                     $"{config.Superscalar}," +
+                                     $"{config.Rename}," +
+                                     $"{config.Reorder}," +
+                                     $"{config.RsbArchitecture}," +
+                                     $"{config.SeparateDispatch}," +
+                                     $"{config.Iadd}," +
+                                     $"{config.Imult}," +
+                                     $"{config.Idiv}," +
+                                     $"{config.Fpadd}," +
+                                     $"{config.Fpmult}," +
+                                     $"{config.Fpdiv}," +
+                                     $"{config.Fpsqrt}," +
+                                     $"{config.Branch}," +
+                                     $"{config.Load}," +
+                                     $"{config.Store}," +
+                                     $"{config.Freq}");
+                }
+            }
+
+            Console.WriteLine($"Tables exported: {file1}, {file2}");
+        }
     }
 }
