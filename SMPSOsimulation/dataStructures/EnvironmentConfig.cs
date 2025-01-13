@@ -24,6 +24,8 @@ public class EnvironmentConfig
     public int L2Latency { get; set; }
     public int SystemMemLatency { get; set; }
 
+    public string tracefileHash { get; set; }
+
     public EnvironmentConfig(
         double vdd,
         MemoryArchEnum memoryArch,
@@ -33,7 +35,8 @@ public class EnvironmentConfig
         int l1DataLatency,
         double l2Hitrate,
         int l2Latency,
-        int systemMemLatency)
+        int systemMemLatency,
+        string tracefilePath)
     {
         if (vdd <= 0)
             throw new ArgumentException("Vdd must be greater than 0.");
@@ -68,6 +71,15 @@ public class EnvironmentConfig
         L2Hitrate = l2Hitrate;
         L2Latency = l2Latency;
         SystemMemLatency = systemMemLatency;
+
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            using (FileStream stream = File.OpenRead(tracefilePath))
+            {
+                byte[] hashBytes = sha256.ComputeHash(stream);
+                this.tracefileHash = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+            }
+        }
     }
 
     public string CalculateSha256()

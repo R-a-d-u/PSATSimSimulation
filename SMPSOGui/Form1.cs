@@ -252,7 +252,8 @@ namespace SMPSOGui
                     (int)numericL1DataLatency.Value,
                     (double)numericL2Hitrate.Value,
                     (int)numericL2Latency.Value,
-                    (int)numericSystemMemory.Value
+                    (int)numericSystemMemory.Value,
+                    tracePath
                 );
                 Form2 form2;
                 switch ((SearchType)comboBoxSearchAlgorithm.SelectedIndex)
