@@ -154,8 +154,8 @@ namespace SMPSOsimulation
             for (int i = 0; i < swarm.Count; i++)
             {
                 var particle = swarm[i];
-                particle.positionWithResult.result = results[i];
-                particle.personalBest.result = results[i];
+                particle.positionWithResult.result = new double[2] { results[i].CPI, results[i].Energy };
+                particle.personalBest.result = new double[2] { results[i].CPI, results[i].Energy };
             }
 
             return swarm;
@@ -278,9 +278,9 @@ namespace SMPSOsimulation
         public static void UpdateSwarmResults(List<Particle> swarm, ResultsProvider resultsProvider, DominationProvider domination)
         {
             var results = resultsProvider.Evaluate(GetConfigsFromSwarm(swarm));
-            for (int i = 0; i < results.Length; i++)
+            for (int i = 0; i < results.Count; i++)
             {
-                swarm[i].positionWithResult.result = results[i];
+                swarm[i].positionWithResult.result = new double[2] { results[i].CPI, results[i].Energy };
             }
 
             foreach (var particle in swarm)
@@ -329,10 +329,10 @@ namespace SMPSOsimulation
             GenerationChanged.Invoke(this, results);
         }
 
-        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, string gtkLibPath, string tracePath)
+        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, string gtkLibPath, List<string> tracePaths)
         {
             Random random = new();
-            ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, gtkLibPath, tracePath);
+            ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, gtkLibPath, tracePaths);
             var domination = InitDomination(searchConfig);
             var swarm = InitSwarm(searchConfig, resultsProvider);
             var leadersArchive = InitLeadersArchive(swarm, searchConfig, domination);

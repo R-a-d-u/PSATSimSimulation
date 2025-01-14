@@ -69,8 +69,8 @@
             labelFilePathExe = new Label();
             labelFilePickerGTK = new Label();
             buttonFilePickerGTK = new Button();
-            labelFilePathTrace = new Label();
-            buttonFilePickerTrace = new Button();
+            buttonFilePickerTraces = new Button();
+            textTraces = new TextBox();
             ((System.ComponentModel.ISupportInitialize)numericPopulationSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericLeadersArchiveSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numericMaxGenerations).BeginInit();
@@ -481,32 +481,33 @@
             buttonFilePickerGTK.UseVisualStyleBackColor = true;
             buttonFilePickerGTK.Click += buttonFilePickerGTK_Click;
             // 
-            // labelFilePathTrace
+            // buttonFilePickerTraces
             // 
-            labelFilePathTrace.AutoSize = true;
-            labelFilePathTrace.Location = new Point(593, 152);
-            labelFilePathTrace.Name = "labelFilePathTrace";
-            labelFilePathTrace.Size = new Size(82, 15);
-            labelFilePathTrace.TabIndex = 42;
-            labelFilePathTrace.Text = "No path given";
+            buttonFilePickerTraces.Location = new Point(436, 182);
+            buttonFilePickerTraces.Name = "buttonFilePickerTraces";
+            buttonFilePickerTraces.Size = new Size(151, 23);
+            buttonFilePickerTraces.TabIndex = 41;
+            buttonFilePickerTraces.Text = "Traces Paths";
+            buttonFilePickerTraces.UseVisualStyleBackColor = true;
+            buttonFilePickerTraces.Click += buttonFilePickerTrace_Click;
             // 
-            // buttonFilePickerTrace
+            // textTraces
             // 
-            buttonFilePickerTrace.Location = new Point(436, 148);
-            buttonFilePickerTrace.Name = "buttonFilePickerTrace";
-            buttonFilePickerTrace.Size = new Size(151, 23);
-            buttonFilePickerTrace.TabIndex = 41;
-            buttonFilePickerTrace.Text = "Path to trace";
-            buttonFilePickerTrace.UseVisualStyleBackColor = true;
-            buttonFilePickerTrace.Click += buttonFilePickerTrace_Click;
+            textTraces.Location = new Point(603, 148);
+            textTraces.Multiline = true;
+            textTraces.Name = "textTraces";
+            textTraces.ReadOnly = true;
+            textTraces.ScrollBars = ScrollBars.Vertical;
+            textTraces.Size = new Size(185, 94);
+            textTraces.TabIndex = 42;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Controls.Add(labelFilePathTrace);
-            Controls.Add(buttonFilePickerTrace);
+            Controls.Add(textTraces);
+            Controls.Add(buttonFilePickerTraces);
             Controls.Add(labelFilePickerGTK);
             Controls.Add(buttonFilePickerGTK);
             Controls.Add(labelFilePathExe);
@@ -613,6 +614,7 @@
         private Label labelFilePickerGTK;
         private Button buttonFilePickerGTK;
         private Label labelFilePathTrace;
-        private Button buttonFilePickerTrace;
+        private Button buttonFilePickerTraces;
+        private TextBox textTraces;
     }
 }

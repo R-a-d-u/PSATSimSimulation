@@ -109,9 +109,9 @@ public class VEGAOrchestrator
         }
     }
 
-    public List<(CPUConfig, double[])> StartSearch(SearchConfigVEGA searchConfig, string psatsimExePath, string gtkLibPath, string tracePath)
+    public List<(CPUConfig, double[])> StartSearch(SearchConfigVEGA searchConfig, string psatsimExePath, string gtkLibPath, List<string> tracePaths)
     {
-        ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, gtkLibPath, tracePath);
+        ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, gtkLibPath, tracePaths);
         int subPopSize = searchConfig.populationSize / 2;
         List<Individual> population = [];
         Random random = new();
@@ -162,7 +162,7 @@ public class VEGAOrchestrator
             var results = resultsProvider.Evaluate(individualsConfigs);
             for (int i = 0; i < population.Count; i++)
             {
-                population[i].result = results[i];
+                population[i].result = new double[2] { results[i].CPI, results[i].Energy };
             }
 
             List<Individual> bestCPI = population

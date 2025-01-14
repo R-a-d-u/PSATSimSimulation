@@ -16,25 +16,25 @@ namespace SMPSOGui
     {
         private Thread algorithmThread;
         private List<List<(CPUConfig, double[])>> history;
-        public Form2(SearchConfigSMPSO config, string exePath, string gtkPath, string tracePath)
+        public Form2(SearchConfigSMPSO config, string exePath, string gtkPath, List<string> tracePaths)
         {
             InitializeComponent();
             history = new();
             var runner = new SMPSOOrchestrator();
             runner.GenerationChanged += OnGenerationChanged;
-            algorithmThread = new Thread(new ThreadStart(() => runner.StartSearch(config, exePath, gtkPath, tracePath)));
+            algorithmThread = new Thread(new ThreadStart(() => runner.StartSearch(config, exePath, gtkPath, tracePaths)));
             algorithmThread.Start();
             listBoxGeneration.SelectedIndexChanged += changeGeneration;
             listBoxLeaders.SelectedIndexChanged += changeConfig;
         }
 
-        public Form2(SearchConfigVEGA config, string exePath, string gtkPath, string tracePath)
+        public Form2(SearchConfigVEGA config, string exePath, string gtkPath, List<string> tracePaths)
         {
             InitializeComponent();
             history = new();
             var runner = new VEGAOrchestrator();
             runner.GenerationChanged += OnGenerationChanged;
-            algorithmThread = new Thread(new ThreadStart(() => runner.StartSearch(config, exePath, gtkPath, tracePath)));
+            algorithmThread = new Thread(new ThreadStart(() => runner.StartSearch(config, exePath, gtkPath, tracePaths)));
             algorithmThread.Start();
             listBoxGeneration.SelectedIndexChanged += changeGeneration;
             listBoxLeaders.SelectedIndexChanged += changeConfig;

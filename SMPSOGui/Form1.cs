@@ -4,7 +4,8 @@ namespace SMPSOGui
 {
     public partial class Form1 : Form
     {
-        private string? exePath = null, gtkPath = null, tracePath = null;
+        private string? exePath = null, gtkPath = null;
+        List<string>? tracePaths = null;
 
         private enum SearchType
         {
@@ -226,18 +227,20 @@ namespace SMPSOGui
                 openFileDialog.Filter = "TRA Files (*.tra)|*.tra";
                 openFileDialog.FilterIndex = 1;
                 openFileDialog.RestoreDirectory = true;
+                openFileDialog.Multiselect = true; 
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    tracePath = openFileDialog.FileName;
-                    labelFilePathTrace.Text = tracePath;
+                    string[] selectedFiles = openFileDialog.FileNames; // Get all selected file paths
+                    tracePaths = new List<string>(selectedFiles);
+                    textTraces.Text = string.Join(Environment.NewLine, selectedFiles); // Display selected file paths
                 }
             }
         }
 
         private void buttonStartSearch_Click(object sender, EventArgs e)
         {
-            if (exePath == null || gtkPath == null || tracePath == null)
+            if (exePath == null || gtkPath == null || tracePaths == null)
             {
                 MessageBox.Show("Must provide all of psatsim_con.exe path, GTK/lib path, and trace file path");
             }
@@ -252,8 +255,7 @@ namespace SMPSOGui
                     (int)numericL1DataLatency.Value,
                     (double)numericL2Hitrate.Value,
                     (int)numericL2Latency.Value,
-                    (int)numericSystemMemory.Value,
-                    tracePath
+                    (int)numericSystemMemory.Value
                 );
                 Form2 form2;
                 switch ((SearchType)comboBoxSearchAlgorithm.SelectedIndex)
@@ -268,7 +270,7 @@ namespace SMPSOGui
                             envConf,
                             DominationConfig.GetWeightedSumDominationConfig((double)numericWeightCPI.Value, (double)numericWeightEnergy.Value)
                         );
-                        form2 = new Form2(searchConfigWeight, exePath, gtkPath, tracePath);
+                        form2 = new Form2(searchConfigWeight, exePath, gtkPath, tracePaths);
                         form2.FormClosing += (s, args) => { this.Close(); Application.Exit(); } ;
                         form2.Show();
                         break;
@@ -282,7 +284,7 @@ namespace SMPSOGui
                             envConf,
                             DominationConfig.GetLexicographicDominationConfig((DominationConfig.PrefferedObjective)comboPrefferedObjective.SelectedValue!)
                         );
-                        form2 = new Form2(searchConfigLexicographic, exePath, gtkPath, tracePath);
+                        form2 = new Form2(searchConfigLexicographic, exePath, gtkPath, tracePaths);
                         form2.FormClosing += (s, args) => { this.Close(); Application.Exit(); };
                         form2.Show();
                         break;
@@ -294,7 +296,7 @@ namespace SMPSOGui
                             (int)numericMaxFrequency.Value,
                             envConf
                         );
-                        form2 = new Form2(searchConfigVEGA, exePath, gtkPath, tracePath);
+                        form2 = new Form2(searchConfigVEGA, exePath, gtkPath, tracePaths);
                         form2.FormClosing += (s, args) => { this.Close(); Application.Exit(); };
                         form2.Show();
                         break;
@@ -308,7 +310,7 @@ namespace SMPSOGui
                             envConf,
                             DominationConfig.GetSMPSODominationConfig()
                         );
-                        form2 = new Form2(searchConfigSMPSO, exePath, gtkPath, tracePath);
+                        form2 = new Form2(searchConfigSMPSO, exePath, gtkPath, tracePaths);
                         form2.FormClosing += (s, args) => { this.Close(); Application.Exit(); };
                         form2.Show();
                         break;

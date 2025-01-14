@@ -41,16 +41,16 @@ namespace SMPSOsimulation
             RunProcess(command);
         }
 
-        public List<Tuple<double[], int>> Evaluate(List<Tuple<CPUConfig, int>> configs, EnvironmentConfig environmentConfig)
+        public List<(double cpi, double energy, int originalIndex)> Evaluate(List<(CPUConfig config, int originalIndex)> configs, EnvironmentConfig environmentConfig)
         {
             CreateInputXMLFile(configs, environmentConfig);
             RunPSATSimWithArguments("-g -t 16");
             currentProcess!.WaitForExit();
-            List<Tuple<double[], int>> results = GetResultsFromOutputXMLFile();
+            List<(double cpi, double energy, int originalIndex)> results = GetResultsFromOutputXMLFile();
             return results;
         }
 
-        private List<Tuple<double[], int>> GetResultsFromOutputXMLFile()
+        private List<(double cpi, double energy, int originalIndex)> GetResultsFromOutputXMLFile()
         {
             string filePath = workingDirectory + "/" + outputFile;
             XmlDocument xmlDoc = new();
@@ -58,7 +58,7 @@ namespace SMPSOsimulation
 
             XmlNode? root = xmlDoc.SelectSingleNode("psatsim_results") ?? throw new ApplicationException("Root element 'psatsim_results' not found!");
             var variations = root.SelectNodes("variation") ?? throw new ApplicationException("Element 'variation' not found!");
-            var results = new List<Tuple<double[], int>>();
+            var results = new List<(double cpi, double energy, int originalIndex)>();
 
             foreach (XmlNode variation in variations)
             {
@@ -66,13 +66,13 @@ namespace SMPSOsimulation
                 XmlNode? general = variation.SelectSingleNode("general") ?? throw new ApplicationException($"No 'general' node found for variation with configuration: {configuration}");
                 string? energy = (general.Attributes?["energy"]?.Value) ?? throw new ApplicationException("No 'energy' in variation!");
                 string? ipc = (general.Attributes?["ipc"]?.Value) ?? throw new ApplicationException("No 'ipc' in variation!");
-                results.Add(new Tuple<double[], int>([1 / double.Parse(ipc), double.Parse(energy)], int.Parse(configuration)));
+                results.Add((1 / double.Parse(ipc), double.Parse(energy), int.Parse(configuration)));
             }
 
             return results;
         }
 
-        private void CreateInputXMLFile(List<Tuple<CPUConfig, int>> configs, EnvironmentConfig environmentConfig)
+        private void CreateInputXMLFile(List<(CPUConfig config, int originalIndex)> configs, EnvironmentConfig environmentConfig)
         {
             // Create an XmlWriterSettings object to configure the output
             XmlWriterSettings settings = new()
@@ -88,7 +88,7 @@ namespace SMPSOsimulation
             writer.WriteStartDocument();
             writer.WriteStartElement("psatsim");
 
-            foreach (Tuple<CPUConfig, int> configTuple in configs)
+            foreach (var configTuple in configs)
             {
                 var cpuConfig = configTuple.Item1;
                 var indexConfig = configTuple.Item2;
