@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using Gtk;
 using SMPSOsimulation.dataStructures;
+using LinuxVisual;
 
 namespace LinuxVisual
 {
@@ -72,6 +74,7 @@ namespace LinuxVisual
 
             // Row 1 (Row index 0)
             buttonStartSearch = new Button("Start Search");
+            buttonStartSearch.Clicked += OnStartSearchClicked;
             grid.Attach(buttonStartSearch, 0, 0, 1, 1);
 
             // Row 2 (Row index 1)
@@ -270,25 +273,47 @@ namespace LinuxVisual
         {
             if (exePath == null || gtkPath == null || tracePaths == null)
             {
-                var dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Warning, ButtonsType.Ok,
-                    "Must provide all of psatsim_con.exe path, GTK/lib path, and trace file path");
-                dialog.Run();
-                dialog.Destroy();
+                MessageDialog md = new MessageDialog(this,
+                     DialogFlags.Modal,
+                     MessageType.Error,
+                     ButtonsType.Ok,
+                     "Must provide all of psatsim_con.exe path, GTK/lib path, and at least one trace file");
+                md.Run();
+                md.Destroy();
                 return;
             }
 
             // Create environment configuration
             var envConf = new EnvironmentConfig(
-                numericVdd.Value,
-                (MemoryArchEnum)combomemoryArch.Active,
-                numericL1CodeHitrate.Value,
-                (int)numericL1CodeLatency.Value,
-                numericl1DataHitrate.Value,
-                (int)numericL1DataLatency.Value,
-                numericL2Hitrate.Value,
-                (int)numericL2Latency.Value,
-                (int)numericSystemMemory.Value
-            );
+               numericVdd.Value,
+               (MemoryArchEnum)combomemoryArch.Active,
+               numericL1CodeHitrate.Value,
+               (int)numericL1CodeLatency.Value,
+               numericl1DataHitrate.Value,
+               (int)numericL1DataLatency.Value,
+               numericL2Hitrate.Value,
+               (int)numericL2Latency.Value,
+               (int)numericSystemMemory.Value
+           );
+            Window resultsWindow=null;
+
+            var searchConfigSMPSO = new SearchConfigSMPSO(
+                         (int)numericPopulationSize.Value,
+                         (int)numericLeadersArchiveSize.Value,
+                         (int)numericMaxGenerations.Value,
+                         numericMutationRate.Value,
+                         (int)numericMaxFrequency.Value,
+                         envConf,
+                         DominationConfig.GetSMPSODominationConfig()
+                     );
+            resultsWindow = new ResultsWindow(searchConfigSMPSO, exePath, gtkPath, tracePaths);
+
+            if (resultsWindow != null)
+            {
+                resultsWindow.DeleteEvent += (o, args) => Application.Quit();
+                resultsWindow.ShowAll();
+                this.Hide();
+            }
 
             // TODO: Implement search configuration and next form/simulation logic
         }
