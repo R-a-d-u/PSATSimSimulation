@@ -1,0 +1,1 @@
+400000000 # ./gcc/gcc00.peak.ev6 ./gcc/integrate.i -o ./gcc/integrate.S > ./gcc/gcc.out

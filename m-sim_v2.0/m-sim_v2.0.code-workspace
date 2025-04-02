@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"def.h": "c",
+			"host.h": "c",
+			"stdio.h": "c",
+			"misc.h": "c",
+			"machine.h": "c",
+			"cache.h": "c",
+			"*.def": "c"
+		}
+	}
+}
