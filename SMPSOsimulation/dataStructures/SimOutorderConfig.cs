@@ -343,14 +343,18 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// speed of front-end of machine relative to execution core
     /// </summary>
     public int? FetchSpeed { get; set; } // -fetch:speed <int>
+
     /// <summary> Fetch policy ("icount", "round_robin"). </summary>
-    public string? FetchPolicy { get; set; } // -fetch:policy <string>
+    public FetchPolicyEnum? FetchPolicy { get; set; } // -fetch:policy <string>
+
     /// <summary> Number of cycles between fetch and rename stages. </summary>
     public int? FetchRenameDelay { get; set; } // -fetch_rename_delay <int>
 
     // --- Branch Predictor ---
+
+    // TODO
     /// <summary> Branch predictor type ("nottaken", "taken", "perfect", "bimod", "2lev", "comb"). </summary>
-    public string? BranchPredictorType { get; set; } // -bpred <string>
+    public BranchPredictorTypeEnum? BranchPredictorType { get; set; } // -bpred <string>
 
     /// <summary>
     /// bimodal predictor config ("<table size>")
@@ -376,12 +380,14 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// BTB config (<num_sets> <associativity>)
     /// </summary>
     public BtbConfig? BpredBtbConfig { get; set; } // -bpred:btb <int list...>
+
     /// <summary> Speculative predictor update stage ("ID", "WB", or null for non-speculative). </summary>
-    public string? BpredSpeculativeUpdate { get; set; } // -bpred:spec_update <string>
+    public SpeculativePredictorUpdateStageEnum? BpredSpeculativeUpdate { get; set; } // -bpred:spec_update <string>
 
     // --- Cache Load-Latency Predictor (cpred) ---
+
     /// <summary> Cache load-latency predictor type ("nottaken", "taken", "perfect", "bimod", "2lev", "comb"). </summary>
-    public string? CacheLoadPredictorType { get; set; } // -cpred <string>
+    public CacheLoadPredictorTypeEnum? CacheLoadPredictorType { get; set; } // -cpred <string>
 
     /// <summary>
     /// cache load-latency bimodal predictor config (<table size>)
@@ -462,8 +468,9 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     public int? LoadStoreQueueSize { get; set; } // -lsq:size <int>
 
     // --- Recovery Model ---
+
     /// <summary> Recovery model ("squash", "perfect"). Alpha squash recovery or perfect predition </summary>
-    public string? RecoveryModel { get; set; } // -recovery:model <string>
+    public RecoveryModelEnum? RecoveryModel { get; set; } // -recovery:model <string>
 
     // --- Cache Hierarchy ---
     /// <summary> l1 data cache config, i.e., {<config>|none} </summary>
@@ -882,3 +889,39 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
         return !(left == right);
     }
 }
+
+public enum FetchPolicyEnum {
+    icount = 0,
+    round_robin = 1,
+}
+
+public enum BranchPredictorTypeEnum {
+    nottaken = 0,
+    taken = 1,
+    bimod = 2,
+    twolev = 3,
+    comb = 4,
+    perfect = 5, // WARNING TO NOT USE THIS
+}
+
+public enum SpeculativePredictorUpdateStageEnum {
+    ID = 0,
+    WB = 1,
+}
+
+public enum CacheLoadPredictorTypeEnum {
+    nottaken = 0,
+    taken = 1,
+    bimod = 2,
+    twolev = 3,
+    comb = 4,
+    perfect = 5, // WARNING TO NOT USE THIS
+}
+
+public enum RecoveryModelEnum {
+    squash = 0,
+    perfect = 1,
+}
+
+
+
