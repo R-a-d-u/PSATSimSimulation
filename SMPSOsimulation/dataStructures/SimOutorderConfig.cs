@@ -263,20 +263,72 @@ public class MemLatencyConfig : IEquatable<MemLatencyConfig>
 public class SimOutorderConfig : IEquatable<SimOutorderConfig>
 {
     // --- General Options ---
+
+    /// <summary>
+    /// load configuration from a file
+    /// </summary>
     public string? ConfigFile { get; set; } // -config <string>
+
+    /// <summary>
+    /// dump configuration to a file
+    /// </summary>
     public string? DumpConfigFile { get; set; } // -dumpconfig <string>
+
+    /// <summary>
+    /// print help message
+    /// </summary>
     public bool? PrintHelp { get; set; } // -h <true|false>
+
+    /// <summary>
+    /// verbose operation
+    /// </summary>
     public bool? Verbose { get; set; } // -v <true|false>
+
+    /// <summary>
+    /// enable debug message
+    /// </summary>
     public bool? Debug { get; set; } // -d <true|false>
+
+    /// <summary>
+    /// start in Dlite debugger
+    /// </summary>
     public bool? StartDebugger { get; set; } // -i <true|false>
+
+    /// <summary>
+    /// random number generator seed (0 for timer seed)
+    /// </summary>
     public int? RandomSeed { get; set; } // -seed <int> (0 for timer seed)
+
+    /// <summary>
+    /// initialize and terminate immediately
+    /// </summary>
     public bool? InitTerminate { get; set; } // -q <true|false>
+
+    /// <summary>
+    /// redirect simulator output to file (non-interactive only)
+    /// </summary>
     public string? RedirectSimOutput { get; set; } // -redir:sim <string>
+
+    /// <summary>
+    /// redirect simulated program output to file
+    /// </summary>
     public string? RedirectProgOutput { get; set; } // -redir:prog <string>
+
+    /// <summary>
+    /// simulator scheduling priority
+    /// </summary>
     public int? NicePriority { get; set; } // -nice <int>
 
     // --- Execution Control ---
+
+    /// <summary>
+    /// maximum number of inst's to execute
+    /// </summary>
     public ulong? MaxInstructions { get; set; } // -max:inst <uint> (Using ulong for <uint>)
+
+    /// <summary>
+    /// number of insts skipped before timing starts
+    /// </summary>
     public ulong? FastForwardInstructions { get; set; } // -fastfwd <int> (Using ulong as count is non-negative)
     /// <summary>
     /// List of pipetrace configurations. Each string should be formatted as
@@ -286,6 +338,10 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     public List<string>? PTrace { get; set; } // -ptrace <string list...>
 
     // --- Frontend ---
+
+    /// <summary>
+    /// speed of front-end of machine relative to execution core
+    /// </summary>
     public int? FetchSpeed { get; set; } // -fetch:speed <int>
     /// <summary> Fetch policy ("icount", "round_robin"). </summary>
     public string? FetchPolicy { get; set; } // -fetch:policy <string>
@@ -295,10 +351,30 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     // --- Branch Predictor ---
     /// <summary> Branch predictor type ("nottaken", "taken", "perfect", "bimod", "2lev", "comb"). </summary>
     public string? BranchPredictorType { get; set; } // -bpred <string>
+
+    /// <summary>
+    /// bimodal predictor config ("<table size>")
+    /// </summary>
     public int? BpredBimodTableSize { get; set; } // -bpred:bimod <int>
+
+    /// <summary>
+    /// 2-level predictor config (<l1size> <l2size> <hist_size> <xor>)
+    /// </summary>
     public Predictor2LevConfig? Bpred2LevConfig { get; set; } // -bpred:2lev <int list...>
+
+    /// <summary>
+    /// combining predictor config (<meta_table_size>)
+    /// </summary>
     public int? BpredCombMetaTableSize { get; set; } // -bpred:comb <int>
+
+    /// <summary>
+    /// return address stack size (0 for no return stack)
+    /// </summary>
     public int? BpredReturnAddressStackSize { get; set; } // -bpred:ras <int>
+
+    /// <summary>
+    /// BTB config (<num_sets> <associativity>)
+    /// </summary>
     public BtbConfig? BpredBtbConfig { get; set; } // -bpred:btb <int list...>
     /// <summary> Speculative predictor update stage ("ID", "WB", or null for non-speculative). </summary>
     public string? BpredSpeculativeUpdate { get; set; } // -bpred:spec_update <string>
@@ -306,17 +382,57 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     // --- Cache Load-Latency Predictor (cpred) ---
     /// <summary> Cache load-latency predictor type ("nottaken", "taken", "perfect", "bimod", "2lev", "comb"). </summary>
     public string? CacheLoadPredictorType { get; set; } // -cpred <string>
+
+    /// <summary>
+    /// cache load-latency bimodal predictor config (<table size>)
+    /// </summary>
     public int? CpredBimodTableSize { get; set; } // -cpred:bimod <int>
+
+    /// <summary>
+    /// cache load-latency 2-level predictor config (<l1size> <l2size> <hist_size> <xor>)
+    /// </summary>
     public Predictor2LevConfig? Cpred2LevConfig { get; set; } // -cpred:2lev <int list...>
+
+    /// <summary>
+    /// cache load-latency combining predictor config (<meta_table_size>)
+    /// </summary>
     public int? CpredCombMetaTableSize { get; set; } // -cpred:comb <int>
+
+    /// <summary>
+    /// return address stack size (0 for no return stack)
+    /// </summary>
     public int? CpredReturnAddressStackSize { get; set; } // -cpred:ras <int> (Note: Default is 0)
+
+    /// <summary>
+    /// cache load-latency BTB config (<num_sets> <associativity>)
+    /// </summary>
     public BtbConfig? CpredBtbConfig { get; set; } // -cpred:btb <int list...>
 
     // --- Pipeline Widths & Core ---
+
+    /// <summary>
+    /// instruction decode B/W (insts/cycle)
+    /// </summary>
     public int? DecodeWidth { get; set; } // -decode:width <int>
+
+    /// <summary>
+    /// instruction issue B/W (insts/cycle)
+    /// </summary>
     public int? IssueWidth { get; set; } // -issue:width <int>
+
+    /// <summary>
+    /// run pipeline with in-order issue
+    /// </summary>
     public bool? IssueInOrder { get; set; } // -issue:inorder <true|false>
+
+    /// <summary>
+    /// issue instructions down wrong execution paths
+    /// </summary>
     public bool? IssueWrongPath { get; set; } // -issue:wrongpath <true|false>
+
+    /// <summary>
+    /// instruction commit B/W (insts/cycle)
+    /// </summary>
     public int? CommitWidth { get; set; } // -commit:width <int>
     /// <summary> Number cycles between rename and dispatch stages. </summary>
     public int? RenameDispatchDelay { get; set; } // -rename_dispatch_delay <int>
@@ -324,47 +440,122 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     public int? IssueExecDelay { get; set; } // -iq:issue_exec_delay <int>
 
     // --- Queues & Buffers ---
+    
+    /// <summary>
+    /// reorder buffer (ROB) size
+    /// </summary>
     public int? ReorderBufferSize { get; set; } // -rob:size <int>
+
+    /// <summary>
+    /// issue queue (IQ) size
+    /// </summary>
     public int? IssueQueueSize { get; set; } // -iq:size <int>
+    
+    /// <summary>
+    /// register file (RF) size for each the INT and FP physical register file)
+    /// </summary>
     public int? RegisterFileSize { get; set; } // -rf:size <int> (Size for *each* INT and FP)
+
+    /// <summary>
+    /// load/store queue (LSQ) size
+    /// </summary>
     public int? LoadStoreQueueSize { get; set; } // -lsq:size <int>
 
     // --- Recovery Model ---
-    /// <summary> Recovery model ("squash", "perfect"). </summary>
+    /// <summary> Recovery model ("squash", "perfect"). Alpha squash recovery or perfect predition </summary>
     public string? RecoveryModel { get; set; } // -recovery:model <string>
 
     // --- Cache Hierarchy ---
-    /// <summary> L1 Data Cache Config. Can be "none" or CacheTlbConfig.ToString(). </summary>
+    /// <summary> l1 data cache config, i.e., {<config>|none} </summary>
     public string? CacheDl1 { get; set; } // -cache:dl1 <string>
+
+    /// <summary>
+    /// l1 data cache hit latency (in cycles)
+    /// </summary>
     public int? CacheDl1Latency { get; set; } // -cache:dl1lat <int>
-    /// <summary> L2 Data Cache Config. Can be "none" or CacheTlbConfig.ToString(). </summary>
+
+    /// <summary> l2 data cache config, i.e., {<config>|none} </summary>
     public string? CacheDl2 { get; set; } // -cache:dl2 <string>
+
+    /// <summary>
+    /// l2 data cache hit latency (in cycles)
+    /// </summary>
     public int? CacheDl2Latency { get; set; } // -cache:dl2lat <int>
-    /// <summary> L1 Instruction Cache Config. Can be "none", "dl1", "dl2", or CacheTlbConfig.ToString(). </summary>
+
+    /// <summary> L1 Instruction Cache Config. Can be "none", "dl1", "dl2", or CacheTlbConfig. </summary>
     public string? CacheIl1 { get; set; } // -cache:il1 <string>
+
+    /// <summary>
+    /// il1 instruction cache hit latency (in cycles)
+    /// </summary>
     public int? CacheIl1Latency { get; set; } // -cache:il1lat <int>
-    /// <summary> L2 Instruction Cache Config. Can be "none", "dl2", or CacheTlbConfig.ToString(). </summary>
+
+    /// <summary> L2 Instruction Cache Config. Can be "none", "dl2", or CacheTlbConfig. </summary>
     public string? CacheIl2 { get; set; } // -cache:il2 <string>
+
+    /// <summary>
+    /// l2 instruction cache hit latency (in cycles)
+    /// </summary>
     public int? CacheIl2Latency { get; set; } // -cache:il2lat <int>
+
+    /// <summary>
+    /// flush caches on system calls
+    /// </summary>
     public bool? CacheFlushOnSyscall { get; set; } // -cache:flush <true|false>
+
+    /// <summary>
+    /// convert 64-bit inst addresses to 32-bit inst equivalents
+    /// </summary>
     public bool? CacheInstructionCompress { get; set; } // -cache:icompress <true|false>
 
     // --- Memory System ---
+
+    /// <summary>
+    /// memory access latency (<first_chunk> <inter_chunk>)
+    /// </summary>
     public MemLatencyConfig? MemLatency { get; set; } // -mem:lat <int list...>
+
+    /// <summary>
+    /// memory access bus width (in bytes)s
+    /// </summary>
     public int? MemBusWidth { get; set; } // -mem:width <int>
 
     // --- TLB ---
-    /// <summary> Instruction TLB Config. Can be "none" or CacheTlbConfig.ToString(). </summary>
+    /// <summary> Instruction TLB Config. Can be "none" or CacheTlbConfig. </summary>
     public string? TlbItlb { get; set; } // -tlb:itlb <string>
-    /// <summary> Data TLB Config. Can be "none" or CacheTlbConfig.ToString(). </summary>
+    /// <summary> Data TLB Config. Can be "none" or CacheTlbConfig. </summary>
     public string? TlbDtlb { get; set; } // -tlb:dtlb <string>
+
+    /// <summary>
+    /// inst/data TLB miss latency (in cycles)
+    /// </summary>
     public int? TlbMissLatency { get; set; } // -tlb:lat <int>
 
     // --- Functional Units (Resources) ---
+
+    /// <summary>
+    /// total number of integer ALU's available
+    /// </summary>
     public int? ResIntegerAlu { get; set; } // -res:ialu <int>
+
+    /// <summary>
+    /// total number of integer multiplier/dividers available
+    /// </summary>
     public int? ResIntegerMultDiv { get; set; } // -res:imult <int>
+
+    /// <summary>
+    /// total number of memory system ports available (to CPU)
+    /// </summary>
     public int? ResMemoryPorts { get; set; } // -res:memport <int>
+
+    /// <summary>
+    /// total number of floating point ALU's available
+    /// </summary>
     public int? ResFpAlu { get; set; } // -res:fpalu <int>
+
+    /// <summary>
+    /// total number of floating point multiplier/dividers available
+    /// </summary>
     public int? ResFpMultDiv { get; set; } // -res:fpmult <int>
 
     // --- Profiling & Power ---
@@ -374,6 +565,10 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// Example entry: "sim_num_insn"
     /// </summary>
     public List<string>? PcStat { get; set; } // -pcstat <string list...>
+
+    /// <summary>
+    /// print power statistics collected by wattch?
+    /// </summary>
     public bool? PowerPrintStats { get; set; } // -power:print_stats <true|false>
 
     /// <summary>
