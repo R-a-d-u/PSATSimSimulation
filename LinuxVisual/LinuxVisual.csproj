@@ -11,6 +11,7 @@
     <PackageReference Include="GtkSharp" Version="3.24.24.95" />
     <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
     <PackageReference Include="OxyPlot.GtkSharp" Version="1.0.0" />
+    <PackageReference Include="ScottPlot" Version="5.0.55" />
   </ItemGroup>
 
   <ItemGroup>

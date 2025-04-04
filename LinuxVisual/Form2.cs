@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Gtk;
+using System.IO; // For MemoryStream
+using ScottPlot; // Added for ScottPlot
 
 namespace LinuxVisual
 {
@@ -25,6 +27,10 @@ namespace LinuxVisual
         private VBox vboxLeft;
         private VBox vboxRight;
 
+        // Keep track of the plot window to potentially close/reuse it
+        private Window plotWindow = null;
+
+        // Constructor SMPSO
         public ResultsWindow(SearchConfigSMPSO config, string exePath, string gtkPath, List<string> tracePaths)
             : base("SMPSO Simulation Results")
         {
@@ -42,6 +48,7 @@ namespace LinuxVisual
             DeleteEvent += OnWindowClosed;
         }
 
+        // Constructor VEGA
         public ResultsWindow(SearchConfigVEGA config, string exePath, string gtkPath, List<string> tracePaths)
             : base("VEGA Simulation Results")
         {
@@ -59,6 +66,7 @@ namespace LinuxVisual
             DeleteEvent += OnWindowClosed;
         }
 
+
         private void InitializeComponents()
         {
             SetDefaultSize(800, 600);
@@ -72,7 +80,7 @@ namespace LinuxVisual
             listBoxGeneration = new ListBox();
             listBoxLeaders = new ListBox();
             richTextBox1 = new TextView();
-            button1 = new Button("Export to CSV");
+            button1 = new Button("Export Last Gen to CSV"); // Updated button text
 
             // Configure text view
             richTextBox1.Editable = false;
@@ -89,14 +97,14 @@ namespace LinuxVisual
             scrolledWindow3.Add(richTextBox1);
 
             // Add widgets to left vbox
-            vboxLeft.PackStart(new Label("Generations"), false, false, 0);
+            vboxLeft.PackStart(new Gtk.Label("Generations"), false, false, 0);
             vboxLeft.PackStart(scrolledWindow1, true, true, 0);
-            vboxLeft.PackStart(new Label("Leaders"), false, false, 0);
+            vboxLeft.PackStart(new Gtk.Label("Leaders (CPI / Energy)"), false, false, 0); // Label clarification
             vboxLeft.PackStart(scrolledWindow2, true, true, 0);
             vboxLeft.PackStart(button1, false, false, 5);
 
             // Add widgets to right vbox
-            vboxRight.PackStart(new Label("Configuration Details"), false, false, 0);
+            vboxRight.PackStart(new Gtk.Label("Selected Configuration Details"), false, false, 0); // Label clarification
             vboxRight.PackStart(scrolledWindow3, true, true, 0);
 
             // Add vboxes to hbox
@@ -109,126 +117,367 @@ namespace LinuxVisual
 
         private void ChangeGeneration(object sender, RowSelectedArgs e)
         {
-            Application.Invoke(delegate
+            Application.Invoke(delegate // Ensure UI updates happen on the main thread
             {
                 if (listBoxGeneration.SelectedRow != null)
                 {
                     int generationIndex = listBoxGeneration.SelectedRow.Index;
 
+                    // --- Update Leaders ListBox (existing logic) ---
                     // Clear current leaders
-                    foreach (var child in listBoxLeaders.Children)
+                    // Use ToList() to avoid modifying collection while iterating if needed,
+                    // though direct removal should be fine with GTK# Children.
+                    var children = listBoxLeaders.Children.ToList();
+                    foreach (var child in children)
                     {
                         listBoxLeaders.Remove(child);
                     }
 
                     // Add new leaders
-                    foreach (var leader in history[generationIndex])
+                    if (generationIndex >= 0 && generationIndex < history.Count)
                     {
-                        var label = new Label($"{leader.Item2[0]}        {leader.Item2[1]}");
-                        label.Xalign = 0;
-                        listBoxLeaders.Add(label);
-                    }
+                        var currentLeaders = history[generationIndex];
+                        foreach (var leader in currentLeaders)
+                        {
+                            // Format numbers for better readability if needed
+                            var label = new Gtk.Label($"{leader.Item2[0]:F4}    {leader.Item2[1]:F4}");
+                            label.Xalign = 0; // Align text left
+                            listBoxLeaders.Add(label);
+                        }
+                        listBoxLeaders.ShowAll();
 
-                    listBoxLeaders.ShowAll();
+                        // --- Show Pareto Plot ---
+                        ShowParetoPlot(generationIndex);
+                    }
+                    else
+                    {
+                        // Handle invalid index if necessary, though ListBox selection should be valid
+                        Console.WriteLine($"Warning: Invalid generation index selected: {generationIndex}");
+                        // Optionally clear the leaders listbox and close any existing plot window
+                        if (plotWindow != null)
+                        {
+                            plotWindow.Destroy(); // Close existing plot window
+                            plotWindow = null;
+                        }
+                    }
+                }
+                else
+                {
+                    // No row selected, clear leaders and close plot
+                    var children = listBoxLeaders.Children.ToList();
+                    foreach (var child in children)
+                    {
+                        listBoxLeaders.Remove(child);
+                    }
+                    if (plotWindow != null)
+                    {
+                        plotWindow.Destroy(); // Close existing plot window
+                        plotWindow = null;
+                    }
                 }
             });
         }
 
         private void ChangeConfig(object sender, RowSelectedArgs e)
         {
-            Application.Invoke(delegate
+            Application.Invoke(delegate // Ensure UI updates happen on the main thread
             {
                 if (listBoxGeneration.SelectedRow != null && listBoxLeaders.SelectedRow != null)
                 {
                     int generationIndex = listBoxGeneration.SelectedRow.Index;
                     int configIndex = listBoxLeaders.SelectedRow.Index;
 
-                    if (generationIndex != -1 && configIndex != -1)
+                    // Add bounds checking for safety
+                    if (generationIndex >= 0 && generationIndex < history.Count &&
+                        configIndex >= 0 && configIndex < history[generationIndex].Count)
                     {
                         richTextBox1.Buffer.Text = history[generationIndex][configIndex].Item1.ToString();
                     }
+                    else
+                    {
+                        richTextBox1.Buffer.Text = "Invalid selection.";
+                    }
                 }
+                // Optional: Clear text if selection is incomplete
+                // else if (richTextBox1.Buffer.Text != string.Empty)
+                // {
+                //     richTextBox1.Buffer.Text = string.Empty;
+                // }
             });
         }
 
         private void OnGenerationChanged(object sender, List<(CPUConfig, double[])> leaders)
         {
-            Application.Invoke(delegate
+            Application.Invoke(delegate // Ensure UI updates happen on the main thread
             {
+                // Sort leaders by the first objective (e.g., CPI) before adding to history
+                // This makes the listbox display consistent if desired, but doesn't affect the plot
                 history.Add(leaders.OrderBy(leader => leader.Item2[0]).ToList());
 
-                var label = new Label($"Generation {history.Count}");
+                int generationNumber = history.Count; // Generation number (1-based)
+                var label = new Gtk.Label($"Generation {generationNumber}");
                 label.Xalign = 0;
                 listBoxGeneration.Add(label);
                 listBoxGeneration.ShowAll();
 
-                //richTextBox1.Buffer.Text = string.Empty;
+                // Optional: Automatically select the last added generation
+                // This requires getting the ListBoxRow associated with the label
+                // listBoxGeneration.SelectRow(label.Parent as ListBoxRow); // This might need adjustment based on GTK# hierarchy
+
+                // Clear the details text view when a new generation arrives
+                // richTextBox1.Buffer.Text = string.Empty;
             });
+        }
+
+        private void ShowParetoPlot(int generationIndex)
+        {
+            // Use a lock object to prevent concurrent modification of shared resources
+            lock (this)
+            {
+                // Close previous plot window if it exists
+                if (plotWindow != null)
+                {
+                    try
+                    {
+                        var windowToDestroy = plotWindow; // Capture the reference
+                        plotWindow = null; // Clear the reference immediately
+
+                        Application.Invoke(delegate {
+                            windowToDestroy.Destroy();
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error closing previous plot window: {ex.Message}");
+                    }
+                    finally
+                    {
+                        plotWindow = null;
+                    }
+                }
+
+                if (generationIndex < 0 || generationIndex >= history.Count)
+                {
+                    Console.WriteLine("Cannot plot: Invalid generation index.");
+                    return;
+                }
+
+                var leaders = history[generationIndex];
+
+                if (leaders == null || !leaders.Any())
+                {
+                    Console.WriteLine($"No leaders to plot for Generation {generationIndex + 1}.");
+                    return;
+                }
+
+                // Extract data for plotting
+                double[] cpiValues = leaders.Select(l => l.Item2[0]).ToArray();
+                double[] energyValues = leaders.Select(l => l.Item2[1]).ToArray();
+
+                // Create the plot
+                ScottPlot.Plot plot = null;
+                byte[] imageBytes = null;
+
+                try
+                {
+                    plot = new ScottPlot.Plot();
+                    plot.Add.Scatter(cpiValues, energyValues);
+                    plot.Title($"Pareto Front - Generation {generationIndex + 1}");
+                    plot.XLabel("CPI (Lower is Better)");
+                    plot.YLabel("Energy (Lower is Better)");
+                    plot.ShowLegend();
+
+                    // Render the plot to a byte array
+                    int plotWidth = 600;
+                    int plotHeight = 400;
+                    imageBytes = plot.GetImageBytes(plotWidth, plotHeight, ScottPlot.ImageFormat.Png);
+
+                    // Create and show plot window on the UI thread
+                    Application.Invoke(delegate {
+                        try
+                        {
+                            Gdk.Pixbuf pixbuf = null;
+                            try
+                            {
+                                using (var stream = new MemoryStream(imageBytes))
+                                {
+                                    pixbuf = new Gdk.Pixbuf(stream);
+                                }
+
+                                if (pixbuf == null)
+                                {
+                                    Console.WriteLine("Failed to create Pixbuf from image data.");
+                                    return;
+                                }
+
+                                // Create a new window for displaying the plot
+                                Window newPlotWindow = new Window($"Pareto Plot - Generation {generationIndex + 1}");
+                                newPlotWindow.SetDefaultSize(plotWidth + 20, plotHeight + 20);
+                                newPlotWindow.WindowPosition = WindowPosition.Center;
+
+                                var imageWidget = new Gtk.Image(pixbuf);
+                                newPlotWindow.Add(imageWidget);
+
+                                // Handle window closing properly
+                                newPlotWindow.DeleteEvent += (s, a) => {
+                                    try
+                                    {
+                                        Window win = (Window)s;
+                                        win.Destroy();
+                                        // Don't set plotWindow = null here, do it in Destroyed event
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Console.WriteLine($"Error in plot window DeleteEvent: {ex.Message}");
+                                    }
+                                    a.RetVal = true;
+                                };
+
+                                newPlotWindow.Destroyed += (s, a) => {
+                                    plotWindow = null;
+                                    // Explicitly dispose of pixbuf if needed
+                                    if (pixbuf != null)
+                                    {
+                                        pixbuf.Dispose();
+                                    }
+                                };
+
+                                newPlotWindow.ShowAll();
+                                plotWindow = newPlotWindow;
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"Error creating plot window: {ex.Message}");
+                                if (pixbuf != null)
+                                {
+                                    pixbuf.Dispose();
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error in UI thread: {ex.Message}");
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error creating plot: {ex.Message}");
+                }
+            }
         }
 
         private void OnWindowClosed(object sender, DeleteEventArgs e)
         {
-            Application.Quit();
+            // Optional: Ensure algorithm thread is stopped gracefully if needed
+            // if (algorithmThread != null && algorithmThread.IsAlive)
+            // {
+            //     // Implement a cancellation mechanism in your runner classes
+            //     // runner.StopSearch(); // Hypothetical method
+            //     // algorithmThread.Join(TimeSpan.FromSeconds(2)); // Wait briefly
+            //     // if (algorithmThread.IsAlive) algorithmThread.Abort(); // Force stop if necessary (use with caution)
+            // }
+
+            // Close any open plot window
+            if (plotWindow != null)
+            {
+                plotWindow.Destroy();
+                plotWindow = null;
+            }
+            Application.Quit(); // Quit the GTK application loop
         }
 
         private void OnButton1Clicked(object sender, EventArgs e)
         {
+            // Export the *last* generation's leaders
             if (history.Count > 0)
+            {
                 WriteHistoryTables(history[history.Count - 1]);
+                // Optional: Show a confirmation dialog
+                MessageDialog md = new MessageDialog(this,
+                    DialogFlags.DestroyWithParent | DialogFlags.Modal,
+                    MessageType.Info,
+                    ButtonsType.Ok,
+                    $"Exported data for Generation {history.Count} to Table_CPI_Energy.csv and Table_CPUConfig.csv");
+                md.Run();
+                md.Destroy();
+            }
+            else
+            {
+                MessageDialog md = new MessageDialog(this,
+                   DialogFlags.DestroyWithParent | DialogFlags.Modal,
+                   MessageType.Warning,
+                   ButtonsType.Ok,
+                   "No history available to export.");
+                md.Run();
+                md.Destroy();
+            }
         }
 
+        // WriteHistoryTables remains the same as provided
         public static void WriteHistoryTables(List<(CPUConfig config, double[] metrics)> history)
         {
             if (history == null || !history.Any())
             {
                 Console.WriteLine("History is empty. No tables will be generated.");
+                // Optionally show a Gtk MessageDialog if called from UI context
                 return;
             }
 
-            // File names
+            // File names (Consider making paths configurable or relative to executable)
             string file1 = "Table_CPI_Energy.csv";
             string file2 = "Table_CPUConfig.csv";
 
-            // First table: ID, CPI, Energy
-            using (System.IO.StreamWriter writer = new System.IO.StreamWriter(file1))
+            try
             {
-                writer.WriteLine("ID,CPI,Energy");
-                for (int i = 0; i < history.Count; i++)
+                // First table: ID, CPI, Energy
+                using (System.IO.StreamWriter writer = new System.IO.StreamWriter(file1))
                 {
-                    var (config, metrics) = history[i];
-                    writer.WriteLine($"{i},{metrics[0]},{metrics[1]}");
+                    writer.WriteLine("ID,CPI,Energy");
+                    for (int i = 0; i < history.Count; i++)
+                    {
+                        var (config, metrics) = history[i];
+                        // Use CultureInfo.InvariantCulture for consistent decimal formatting
+                        writer.WriteLine($"{i},{metrics[0].ToString(System.Globalization.CultureInfo.InvariantCulture)},{metrics[1].ToString(System.Globalization.CultureInfo.InvariantCulture)}");
+                    }
                 }
-            }
 
-            // Second table: ID and CPUConfig fields
-            using (System.IO.StreamWriter writer = new System.IO.StreamWriter(file2))
+                // Second table: ID and CPUConfig fields
+                using (System.IO.StreamWriter writer = new System.IO.StreamWriter(file2))
+                {
+                    // Write header (Matches the order in CPUConfig.ToString potentially, but explicit is better)
+                    writer.WriteLine("ID,Superscalar,Rename,Reorder,RsbArchitecture,SeparateDispatch,Iadd,Imult,Idiv,Fpadd,Fpmult,Fpdiv,Fpsqrt,Branch,Load,Store,Freq");
+                    for (int i = 0; i < history.Count; i++)
+                    {
+                        var (config, metrics) = history[i];
+                        // Use CultureInfo.InvariantCulture for Freq if it's a double/float
+                        writer.WriteLine($"{i}," +
+                                         $"{config.Superscalar}," +
+                                         $"{config.Rename}," +
+                                         $"{config.Reorder}," +
+                                         $"{config.RsbArchitecture}," +
+                                         $"{config.SeparateDispatch}," +
+                                         $"{config.Iadd}," +
+                                         $"{config.Imult}," +
+                                         $"{config.Idiv}," +
+                                         $"{config.Fpadd}," +
+                                         $"{config.Fpmult}," +
+                                         $"{config.Fpdiv}," +
+                                         $"{config.Fpsqrt}," +
+                                         $"{config.Branch}," +
+                                         $"{config.Load}," +
+                                         $"{config.Store}," +
+                                         $"{config.Freq.ToString(System.Globalization.CultureInfo.InvariantCulture)}"); // Assuming Freq might be float/double
+                    }
+                }
+
+                // Console.WriteLine($"Tables exported: {Path.GetFullPath(file1)}, {Path.GetFullPath(file2)}");
+            }
+            catch (Exception ex)
             {
-                // Write header
-                writer.WriteLine("ID,Superscalar,Rename,Reorder,RsbArchitecture,SeparateDispatch,Iadd,Imult,Idiv,Fpadd,Fpmult,Fpdiv,Fpsqrt,Branch,Load,Store,Freq");
-                for (int i = 0; i < history.Count; i++)
-                {
-                    var (config, metrics) = history[i];
-                    writer.WriteLine($"{i}," +
-                                     $"{config.Superscalar}," +
-                                     $"{config.Rename}," +
-                                     $"{config.Reorder}," +
-                                     $"{config.RsbArchitecture}," +
-                                     $"{config.SeparateDispatch}," +
-                                     $"{config.Iadd}," +
-                                     $"{config.Imult}," +
-                                     $"{config.Idiv}," +
-                                     $"{config.Fpadd}," +
-                                     $"{config.Fpmult}," +
-                                     $"{config.Fpdiv}," +
-                                     $"{config.Fpsqrt}," +
-                                     $"{config.Branch}," +
-                                     $"{config.Load}," +
-                                     $"{config.Store}," +
-                                     $"{config.Freq}");
-                }
+                Console.WriteLine($"Error exporting tables: {ex.Message}");
+                // Optionally show a Gtk MessageDialog if called from UI context
             }
-
-            Console.WriteLine($"Tables exported: {file1}, {file2}");
         }
     }
 }
