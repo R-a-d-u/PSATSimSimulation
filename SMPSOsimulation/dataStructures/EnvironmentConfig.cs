@@ -1,5 +1,8 @@
 
 
+using System.Security.Cryptography;
+using System.Text;
+
 public class EnvironmentConfig {
     /// <summary>
     /// maximum number of inst's to execute
@@ -118,27 +121,15 @@ public class EnvironmentConfig {
         TlbMissLatency = tlbMissLatency;
     }
 
-    public override int GetHashCode()
+    public string CalculateSha256()
     {
-        var hash = new HashCode();
+        using var sha256 = SHA256.Create();
+        var rawData = $"{MaxInstructions}-{FastForwardInstructions}-{FetchSpeed}-{IssueWrongPath}-{IssueExecDelay}-" +
+                    $"{CacheDl1Latency}-{CacheDl2Latency}-{CacheIl1Latency}-{CacheIl2Latency}-{CacheFlushOnSyscall}-" +
+                    $"{CacheInstructionCompress}-{MemLatency}-{TlbMissLatency}";
 
-        hash.Add(MaxInstructions);
-        hash.Add(FastForwardInstructions);
-        hash.Add(FetchSpeed);
-        hash.Add(IssueWrongPath);
-        hash.Add(IssueExecDelay);
-        hash.Add(CacheDl1Latency);
-        hash.Add(CacheDl2Latency);
-        hash.Add(CacheIl1Latency);
-        hash.Add(CacheIl2Latency);
-        hash.Add(CacheFlushOnSyscall);
-        hash.Add(CacheInstructionCompress);
-        hash.Add(MemLatency);
-        hash.Add(TlbMissLatency);
-
-        return hash.ToHashCode();
+        var bytes = Encoding.UTF8.GetBytes(rawData);
+        var hashBytes = sha256.ComputeHash(bytes);
+        return Convert.ToHexString(hashBytes); // or BitConverter.ToString(hashBytes).Replace("-", "") for older .NET
     }
-
-    
-
 }
