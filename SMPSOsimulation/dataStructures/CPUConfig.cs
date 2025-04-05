@@ -1,3 +1,6 @@
+using System.Security.Cryptography;
+using System.Text;
+
 public class CPUConfig : IEquatable<CPUConfig?>
 {
     
@@ -263,47 +266,48 @@ public class CPUConfig : IEquatable<CPUConfig?>
 
     
 
-    public override int GetHashCode()
+    public string CalculateSha256()
     {
-        HashCode hash = new HashCode();
+        var sb = new StringBuilder();
 
-        // Add all properties that contribute to the object's identity.
-        // HashCode.Add handles null checks for reference types and nullable value types automatically.
-        hash.Add(BranchPredictorType);
-        hash.Add(BpredBimodTableSize);
-        hash.Add(Bpred2LevConfig);
-        hash.Add(BpredCombMetaTableSize);
-        hash.Add(BpredReturnAddressStackSize);
-        hash.Add(BpredBtbConfig);
-        hash.Add(BpredSpeculativeUpdate);
-        hash.Add(CacheLoadPredictorType);
-        hash.Add(CpredBimodTableSize);
-        hash.Add(Cpred2LevConfig);
-        hash.Add(CpredCombMetaTableSize);
-        hash.Add(CpredReturnAddressStackSize);
-        hash.Add(CpredBtbConfig);
-        hash.Add(DecodeWidth);
-        hash.Add(IssueWidth);
-        hash.Add(IssueInOrder);
-        hash.Add(CommitWidth);
-        hash.Add(ReorderBufferSize);
-        hash.Add(IssueQueueSize);
-        hash.Add(RegisterFileSize);
-        hash.Add(LoadStoreQueueSize);
-        hash.Add(CacheDl1);
-        hash.Add(CacheDl2);
-        hash.Add(CacheIl1);
-        hash.Add(CacheIl2);
-        hash.Add(MemBusWidth);
-        hash.Add(TlbItlb);
-        hash.Add(TlbDtlb);
-        hash.Add(ResIntegerAlu);
-        hash.Add(ResIntegerMultDiv);
-        hash.Add(ResMemoryPorts);
-        hash.Add(ResFpAlu);
-        hash.Add(ResFpMultDiv);
+        sb.Append(BranchPredictorType);
+        sb.Append(BpredBimodTableSize);
+        sb.Append(Bpred2LevConfig);
+        sb.Append(BpredCombMetaTableSize);
+        sb.Append(BpredReturnAddressStackSize);
+        sb.Append(BpredBtbConfig);
+        sb.Append(BpredSpeculativeUpdate);
+        sb.Append(CacheLoadPredictorType);
+        sb.Append(CpredBimodTableSize);
+        sb.Append(Cpred2LevConfig);
+        sb.Append(CpredCombMetaTableSize);
+        sb.Append(CpredReturnAddressStackSize);
+        sb.Append(CpredBtbConfig);
+        sb.Append(DecodeWidth);
+        sb.Append(IssueWidth);
+        sb.Append(IssueInOrder);
+        sb.Append(CommitWidth);
+        sb.Append(ReorderBufferSize);
+        sb.Append(IssueQueueSize);
+        sb.Append(RegisterFileSize);
+        sb.Append(LoadStoreQueueSize);
+        sb.Append(CacheDl1);
+        sb.Append(CacheDl2);
+        sb.Append(CacheIl1);
+        sb.Append(CacheIl2);
+        sb.Append(MemBusWidth);
+        sb.Append(TlbItlb);
+        sb.Append(TlbDtlb);
+        sb.Append(ResIntegerAlu);
+        sb.Append(ResIntegerMultDiv);
+        sb.Append(ResMemoryPorts);
+        sb.Append(ResFpAlu);
+        sb.Append(ResFpMultDiv);
 
-        return hash.ToHashCode();
+        using var sha256 = SHA256.Create();
+        var bytes = Encoding.UTF8.GetBytes(sb.ToString());
+        var hashBytes = sha256.ComputeHash(bytes);
+        return Convert.ToHexString(hashBytes); // .NET 5+
     }
 
     // You should also implement Equals to be consistent with GetHashCode
@@ -523,7 +527,7 @@ public class CPUConfig : IEquatable<CPUConfig?>
     }
 
 
-    public static CPUConfig FromVectorFormDouble(double[] vector)
+    public static CPUConfig GetConfigFromVectorDouble(double[] vector)
     {
         int idx = 0;
 

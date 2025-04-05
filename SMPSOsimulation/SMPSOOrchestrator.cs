@@ -144,7 +144,7 @@ namespace SMPSOsimulation
             List<Particle> swarm = [];
             for (int i = 0; i < searchConfig.swarmSize; i++)
             {
-                var randomPositionWithResult = new PositionWithResult(CPUConfig.GenerateRandom(searchConfig.MaxFrequency), [double.PositiveInfinity, double.PositiveInfinity]);
+                var randomPositionWithResult = new PositionWithResult(CPUConfig.GenerateRandom(), [double.PositiveInfinity, double.PositiveInfinity]);
                 var speed = new double[16];
                 swarm.Add(new Particle(randomPositionWithResult, speed, randomPositionWithResult));
             }
@@ -174,14 +174,7 @@ namespace SMPSOsimulation
 
         private static DominationProvider InitDomination(SearchConfigSMPSO searchConfig)
         {
-            DominationProvider domination = searchConfig.domination.dominationType switch
-            {
-                DominationConfig.DominationType.SMPSO => new SMPSODomination(),
-                DominationConfig.DominationType.WEIGHT => new WeightedSumDomination(searchConfig.domination.wCPI!.Value, searchConfig.domination.wEnergy!.Value),
-                DominationConfig.DominationType.LEXICOGRAPHIC => new LexicographicDomination(searchConfig.domination.prefferedObjective!.Value),
-                _ => throw new Exception("StartSearch init of domination provider; how did we get here??"),
-            };
-            return domination;
+            return new SMPSODomination();
         }
 
         private static void UpdateSwarmSpeeds(List<Particle> swarm, Random random, List<PositionWithResult> leadersArchive, List<double> crowdingDistances, SearchConfigSMPSO searchConfig)
@@ -220,7 +213,7 @@ namespace SMPSOsimulation
                 for (int i = 0; i < particle.speed.Length; i++)
                 {
                     var minLimit = CPUConfig.CPUConfigLimits.GetMin(i);
-                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.MaxFrequency);
+                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i);
                     double delta = (maxLimit - minLimit) / 2.0;
 
                     if (particle.speed[i] > delta) particle.speed[i] = delta;
@@ -241,7 +234,7 @@ namespace SMPSOsimulation
                 for (int i = 0; i < particle.positionWithResult.position.Length; i++)
                 {
                     var minLimit = CPUConfig.CPUConfigLimits.GetMin(i);
-                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i, searchConfig.MaxFrequency);
+                    var maxLimit = CPUConfig.CPUConfigLimits.GetMax(i);
                     if (particle.positionWithResult.position[i] > maxLimit)
                     {
                         particle.speed[i] *= -1;
@@ -355,7 +348,7 @@ namespace SMPSOsimulation
         {
             const double eta_m = 20;
             double min = CPUConfig.CPUConfigLimits.GetMin(geneIndex);
-            double max = CPUConfig.CPUConfigLimits.GetMax(geneIndex, maxFrequency);
+            double max = CPUConfig.CPUConfigLimits.GetMax(geneIndex);
             double delta1 = (gene - min) / (max - min);
             double delta2 = (max - gene) / (max - min);
             double mut_pow = 1.0 / (eta_m + 1.0);

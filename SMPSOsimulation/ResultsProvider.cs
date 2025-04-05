@@ -43,8 +43,6 @@ public class ResultsProvider
 
     private static bool BreaksConstraints(CPUConfig config)
     {
-        if (config.RsbArchitecture == RsbArchitectureType.distributed && config.Load != config.Store)
-            return true;
         return false;
     }
 
