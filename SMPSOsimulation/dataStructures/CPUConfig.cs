@@ -1,5 +1,6 @@
 public class CPUConfig : IEquatable<CPUConfig?>
 {
+    
     /// <summary> Branch predictor type ("nottaken", "taken", "perfect", "bimod", "2lev", "comb"). </summary>
     public BranchPredictorTypeEnum BranchPredictorType { get; set; } // -bpred <string>
     
@@ -146,6 +147,122 @@ public class CPUConfig : IEquatable<CPUConfig?>
     /// </summary>
     public int ResFpMultDiv { get; set; } // -res:fpmult <int>
 
+    public CPUConfig(
+        BranchPredictorTypeEnum branchPredictorType,
+        int bpredBimodTableSize,
+        Predictor2LevConfig bpred2LevConfig,
+        int bpredCombMetaTableSize,
+        int bpredReturnAddressStackSize,
+        BtbConfig bpredBtbConfig,
+        SpeculativePredictorUpdateStageEnum bpredSpeculativeUpdate,
+        CacheLoadPredictorTypeEnum cacheLoadPredictorType,
+        int cpredBimodTableSize,
+        Predictor2LevConfig cpred2LevConfig,
+        int cpredCombMetaTableSize,
+        int cpredReturnAddressStackSize,
+        BtbConfig cpredBtbConfig,
+        int decodeWidth,
+        int issueWidth,
+        bool issueInOrder,
+        int commitWidth,
+        int reorderBufferSize,
+        int issueQueueSize,
+        int registerFileSize,
+        int loadStoreQueueSize,
+        CacheTlbConfig cacheDl1,
+        CacheTlbConfig cacheDl2,
+        CacheTlbConfig cacheIl1,
+        CacheTlbConfig cacheIl2,
+        int memBusWidth,
+        CacheTlbConfig tlbItlb,
+        CacheTlbConfig tlbDtlb,
+        int resIntegerAlu,
+        int resIntegerMultDiv,
+        int resMemoryPorts,
+        int resFpAlu,
+        int resFpMultDiv
+    )
+    {
+        void ThrowIfOutOfRange(string name, int value, int min, int max)
+        {
+            if (value < min || value > max)
+                throw new ArgumentOutOfRangeException(name, $"Value {value} is outside range [{min}, {max}]");
+        }
+
+        ThrowIfOutOfRange(nameof(branchPredictorType), (int)branchPredictorType, CPUConfigLimits.BranchPredictorTypeMin, CPUConfigLimits.BranchPredictorTypeMax);
+        ThrowIfOutOfRange(nameof(bpredBimodTableSize), bpredBimodTableSize, CPUConfigLimits.BpredBimodTableSizeMin, CPUConfigLimits.BpredBimodTableSizeMax);
+        ThrowIfOutOfRange(nameof(bpredCombMetaTableSize), bpredCombMetaTableSize, CPUConfigLimits.BpredCombMetaTableSizeMin, CPUConfigLimits.BpredCombMetaTableSizeMax);
+        ThrowIfOutOfRange(nameof(bpredReturnAddressStackSize), bpredReturnAddressStackSize, CPUConfigLimits.BpredReturnAddressStackSizeMin, CPUConfigLimits.BpredReturnAddressStackSizeMax);
+        ThrowIfOutOfRange(nameof(bpredSpeculativeUpdate), (int)bpredSpeculativeUpdate, CPUConfigLimits.BpredSpeculativeUpdateMin, CPUConfigLimits.BpredSpeculativeUpdateMax);
+        ThrowIfOutOfRange(nameof(cacheLoadPredictorType), (int)cacheLoadPredictorType, CPUConfigLimits.CacheLoadPredictorTypeMin, CPUConfigLimits.CacheLoadPredictorTypeMax);
+        ThrowIfOutOfRange(nameof(cpredBimodTableSize), cpredBimodTableSize, CPUConfigLimits.CpredBimodTableSizeMin, CPUConfigLimits.CpredBimodTableSizeMax);
+        ThrowIfOutOfRange(nameof(cpredCombMetaTableSize), cpredCombMetaTableSize, CPUConfigLimits.CpredCombMetaTableSizeMin, CPUConfigLimits.CpredCombMetaTableSizeMax);
+        ThrowIfOutOfRange(nameof(cpredReturnAddressStackSize), cpredReturnAddressStackSize, CPUConfigLimits.CpredReturnAddressStackSizeMin, CPUConfigLimits.CpredReturnAddressStackSizeMax);
+        ThrowIfOutOfRange(nameof(decodeWidth), decodeWidth, CPUConfigLimits.DecodeWidthMin, CPUConfigLimits.DecodeWidthMax);
+        ThrowIfOutOfRange(nameof(issueWidth), issueWidth, CPUConfigLimits.IssueWidthMin, CPUConfigLimits.IssueWidthMax);
+        ThrowIfOutOfRange(nameof(commitWidth), commitWidth, CPUConfigLimits.CommitWidthMin, CPUConfigLimits.CommitWidthMax);
+        ThrowIfOutOfRange(nameof(reorderBufferSize), reorderBufferSize, CPUConfigLimits.ReorderBufferSizeMin, CPUConfigLimits.ReorderBufferSizeMax);
+        ThrowIfOutOfRange(nameof(issueQueueSize), issueQueueSize, CPUConfigLimits.IssueQueueSizeMin, CPUConfigLimits.IssueQueueSizeMax);
+        ThrowIfOutOfRange(nameof(registerFileSize), registerFileSize, CPUConfigLimits.RegisterFileSizeMin, CPUConfigLimits.RegisterFileSizeMax);
+        ThrowIfOutOfRange(nameof(loadStoreQueueSize), loadStoreQueueSize, CPUConfigLimits.LoadStoreQueueSizeMin, CPUConfigLimits.LoadStoreQueueSizeMax);
+        ThrowIfOutOfRange(nameof(memBusWidth), memBusWidth, CPUConfigLimits.MemBusWidthMin, CPUConfigLimits.MemBusWidthMax);
+        ThrowIfOutOfRange(nameof(resIntegerAlu), resIntegerAlu, CPUConfigLimits.ResIntegerAluMin, CPUConfigLimits.ResIntegerAluMax);
+        ThrowIfOutOfRange(nameof(resIntegerMultDiv), resIntegerMultDiv, CPUConfigLimits.ResIntegerMultDivMin, CPUConfigLimits.ResIntegerMultDivMax);
+        ThrowIfOutOfRange(nameof(resMemoryPorts), resMemoryPorts, CPUConfigLimits.ResMemoryPortsMin, CPUConfigLimits.ResMemoryPortsMax);
+        ThrowIfOutOfRange(nameof(resFpAlu), resFpAlu, CPUConfigLimits.ResFpAluMin, CPUConfigLimits.ResFpAluMax);
+        ThrowIfOutOfRange(nameof(resFpMultDiv), resFpMultDiv, CPUConfigLimits.ResFpMultDivMin, CPUConfigLimits.ResFpMultDivMax);
+
+        // Validate nested config classes
+        bpred2LevConfig.Validate(CPUConfigLimits.Bpred2LevConfigL1SizeMin, CPUConfigLimits.Bpred2LevConfigL1SizeMax, CPUConfigLimits.Bpred2LevConfigL2SizeMin, CPUConfigLimits.Bpred2LevConfigL2SizeMax, CPUConfigLimits.Bpred2LevConfigHistorySizeMin, CPUConfigLimits.Bpred2LevConfigHistorySizeMax);
+        bpredBtbConfig.Validate(CPUConfigLimits.BpredBtbConfigNumSetsMin, CPUConfigLimits.BpredBtbConfigNumSetsMax, CPUConfigLimits.BpredBtbConfigAssociativityMin, CPUConfigLimits.BpredBtbConfigAssociativityMax);
+        cpred2LevConfig.Validate(CPUConfigLimits.Cpred2LevConfigL1SizeMin, CPUConfigLimits.Cpred2LevConfigL1SizeMax, CPUConfigLimits.Cpred2LevConfigL2SizeMin, CPUConfigLimits.Cpred2LevConfigL2SizeMax, CPUConfigLimits.Cpred2LevConfigHistorySizeMin, CPUConfigLimits.Cpred2LevConfigHistorySizeMax);
+        cpredBtbConfig.Validate(CPUConfigLimits.CpredBtbConfigNumSetsMin, CPUConfigLimits.CpredBtbConfigNumSetsMax, CPUConfigLimits.CpredBtbConfigAssociativityMin, CPUConfigLimits.CpredBtbConfigAssociativityMax);
+        cacheDl1.Validate(CPUConfigLimits.CacheDl1NumSetsMin, CPUConfigLimits.CacheDl1NumSetsMax, CPUConfigLimits.CacheDl1BlockOrPageSizeMin, CPUConfigLimits.CacheDl1BlockOrPageSizeMax, CPUConfigLimits.CacheDl1AssociativityMin, CPUConfigLimits.CacheDl1AssociativityMax);
+        cacheDl2.Validate(CPUConfigLimits.CacheDl2NumSetsMin, CPUConfigLimits.CacheDl2NumSetsMax, CPUConfigLimits.CacheDl2BlockOrPageSizeMin, CPUConfigLimits.CacheDl2BlockOrPageSizeMax, CPUConfigLimits.CacheDl2AssociativityMin, CPUConfigLimits.CacheDl2AssociativityMax);
+        cacheIl1.Validate(CPUConfigLimits.CacheIl1NumSetsMin, CPUConfigLimits.CacheIl1NumSetsMax, CPUConfigLimits.CacheIl1BlockOrPageSizeMin, CPUConfigLimits.CacheIl1BlockOrPageSizeMax, CPUConfigLimits.CacheIl1AssociativityMin, CPUConfigLimits.CacheIl1AssociativityMax);
+        cacheIl2.Validate(CPUConfigLimits.CacheIl2NumSetsMin, CPUConfigLimits.CacheIl2NumSetsMax, CPUConfigLimits.CacheIl2BlockOrPageSizeMin, CPUConfigLimits.CacheIl2BlockOrPageSizeMax, CPUConfigLimits.CacheIl2AssociativityMin, CPUConfigLimits.CacheIl2AssociativityMax);
+        tlbItlb.Validate(CPUConfigLimits.TlbItlbNumSetsMin, CPUConfigLimits.TlbItlbNumSetsMax, CPUConfigLimits.TlbItlbBlockOrPageSizeMin, CPUConfigLimits.TlbItlbBlockOrPageSizeMax, CPUConfigLimits.TlbItlbAssociativityMin, CPUConfigLimits.TlbItlbAssociativityMax);
+        tlbDtlb.Validate(CPUConfigLimits.TlbDtlbNumSetsMin, CPUConfigLimits.TlbDtlbNumSetsMax, CPUConfigLimits.TlbDtlbBlockOrPageSizeMin, CPUConfigLimits.TlbDtlbBlockOrPageSizeMax, CPUConfigLimits.TlbDtlbAssociativityMin, CPUConfigLimits.TlbDtlbAssociativityMax);
+
+
+        BranchPredictorType = branchPredictorType;
+        BpredBimodTableSize = bpredBimodTableSize;
+        Bpred2LevConfig = bpred2LevConfig;
+        BpredCombMetaTableSize = bpredCombMetaTableSize;
+        BpredReturnAddressStackSize = bpredReturnAddressStackSize;
+        BpredBtbConfig = bpredBtbConfig;
+        BpredSpeculativeUpdate = bpredSpeculativeUpdate;
+        CacheLoadPredictorType = cacheLoadPredictorType;
+        CpredBimodTableSize = cpredBimodTableSize;
+        Cpred2LevConfig = cpred2LevConfig;
+        CpredCombMetaTableSize = cpredCombMetaTableSize;
+        CpredReturnAddressStackSize = cpredReturnAddressStackSize;
+        CpredBtbConfig = cpredBtbConfig;
+        DecodeWidth = decodeWidth;
+        IssueWidth = issueWidth;
+        IssueInOrder = issueInOrder;
+        CommitWidth = commitWidth;
+        ReorderBufferSize = reorderBufferSize;
+        IssueQueueSize = issueQueueSize;
+        RegisterFileSize = registerFileSize;
+        LoadStoreQueueSize = loadStoreQueueSize;
+        CacheDl1 = cacheDl1;
+        CacheDl2 = cacheDl2;
+        CacheIl1 = cacheIl1;
+        CacheIl2 = cacheIl2;
+        MemBusWidth = memBusWidth;
+        TlbItlb = tlbItlb;
+        TlbDtlb = tlbDtlb;
+        ResIntegerAlu = resIntegerAlu;
+        ResIntegerMultDiv = resIntegerMultDiv;
+        ResMemoryPorts = resMemoryPorts;
+        ResFpAlu = resFpAlu;
+        ResFpMultDiv = resFpMultDiv;
+    }
+
+
+    
+
     public override int GetHashCode()
     {
         HashCode hash = new HashCode();
@@ -246,6 +363,102 @@ public class CPUConfig : IEquatable<CPUConfig?>
     {
         return !(left == right);
     }
+
+    public static CPUConfig GenerateRandom()
+    {
+        Random random = new();
+
+        return new CPUConfig(
+            (BranchPredictorTypeEnum)random.Next(CPUConfigLimits.BranchPredictorTypeMin, CPUConfigLimits.BranchPredictorTypeMax + 1),
+            random.Next(CPUConfigLimits.BpredBimodTableSizeMin, CPUConfigLimits.BpredBimodTableSizeMax + 1),
+            new Predictor2LevConfig( // bpred2levconfig
+                random.Next(CPUConfigLimits.Bpred2LevConfigL1SizeMin, CPUConfigLimits.Bpred2LevConfigL1SizeMax + 1),
+                random.Next(CPUConfigLimits.Bpred2LevConfigL2SizeMin, CPUConfigLimits.Bpred2LevConfigL2SizeMax + 1),
+                random.Next(CPUConfigLimits.Bpred2LevConfigHistorySizeMin, CPUConfigLimits.Bpred2LevConfigHistorySizeMax + 1),
+                random.Next(0, 2) == 1 // useXor
+            ),
+            random.Next(CPUConfigLimits.BpredCombMetaTableSizeMin, CPUConfigLimits.BpredCombMetaTableSizeMax + 1),
+            random.Next(CPUConfigLimits.BpredReturnAddressStackSizeMin, CPUConfigLimits.BpredReturnAddressStackSizeMax + 1),
+            new BtbConfig( //bpredBtbConfig
+                random.Next(CPUConfigLimits.BpredBtbConfigNumSetsMin, CPUConfigLimits.BpredBtbConfigNumSetsMax + 1),
+                random.Next(CPUConfigLimits.BpredBtbConfigAssociativityMin, CPUConfigLimits.BpredBtbConfigAssociativityMax + 1)
+            ),
+            (SpeculativePredictorUpdateStageEnum)random.Next(CPUConfigLimits.BpredSpeculativeUpdateMin, CPUConfigLimits.BpredSpeculativeUpdateMax + 1),
+            (CacheLoadPredictorTypeEnum)random.Next(CPUConfigLimits.CacheLoadPredictorTypeMin, CPUConfigLimits.CacheLoadPredictorTypeMax + 1),
+            random.Next(CPUConfigLimits.CpredBimodTableSizeMin, CPUConfigLimits.CpredBimodTableSizeMax + 1),
+            new Predictor2LevConfig( // cpred2levconfig
+                random.Next(CPUConfigLimits.Cpred2LevConfigL1SizeMin, CPUConfigLimits.Cpred2LevConfigL1SizeMax + 1),
+                random.Next(CPUConfigLimits.Cpred2LevConfigL2SizeMin, CPUConfigLimits.Cpred2LevConfigL2SizeMax + 1),
+                random.Next(CPUConfigLimits.Cpred2LevConfigHistorySizeMin, CPUConfigLimits.Cpred2LevConfigHistorySizeMax + 1),
+                random.Next(0, 2) == 1 // useXor
+            ),
+            random.Next(CPUConfigLimits.CpredCombMetaTableSizeMin, CPUConfigLimits.CpredCombMetaTableSizeMax + 1),
+            random.Next(CPUConfigLimits.CpredReturnAddressStackSizeMin, CPUConfigLimits.CpredReturnAddressStackSizeMax + 1),
+            new BtbConfig( //cpredBtbConfig
+                random.Next(CPUConfigLimits.CpredBtbConfigNumSetsMin, CPUConfigLimits.CpredBtbConfigNumSetsMax + 1),
+                random.Next(CPUConfigLimits.CpredBtbConfigAssociativityMin, CPUConfigLimits.CpredBtbConfigAssociativityMax + 1)
+            ),
+            random.Next(CPUConfigLimits.DecodeWidthMin, CPUConfigLimits.DecodeWidthMax + 1),
+            random.Next(CPUConfigLimits.IssueWidthMin, CPUConfigLimits.IssueWidthMax + 1),
+            random.Next(0, 2) == 1,
+            random.Next(CPUConfigLimits.CommitWidthMin, CPUConfigLimits.CommitWidthMax + 1),
+            random.Next(CPUConfigLimits.ReorderBufferSizeMin, CPUConfigLimits.ReorderBufferSizeMax + 1),
+            random.Next(CPUConfigLimits.IssueQueueSizeMin, CPUConfigLimits.IssueQueueSizeMax + 1),
+            random.Next(CPUConfigLimits.RegisterFileSizeMin, CPUConfigLimits.RegisterFileSizeMax + 1),
+            random.Next(CPUConfigLimits.LoadStoreQueueSizeMin, CPUConfigLimits.LoadStoreQueueSizeMax + 1),
+            new CacheTlbConfig(
+                "dl1",
+                random.Next(CPUConfigLimits.CacheDl1NumSetsMin, CPUConfigLimits.CacheDl1NumSetsMax + 1),
+                random.Next(CPUConfigLimits.CacheDl1BlockOrPageSizeMin, CPUConfigLimits.CacheDl1BlockOrPageSizeMax + 1),
+                random.Next(CPUConfigLimits.CacheDl1AssociativityMin, CPUConfigLimits.CacheDl1AssociativityMax + 1),
+                (ReplacementPolicyEnum)random.Next(CPUConfigLimits.CacheDl1ReplacementPolicyMin, CPUConfigLimits.CacheDl1ReplacementPolicyMax + 1)
+            ),
+            new CacheTlbConfig(
+                "dl2",
+                random.Next(CPUConfigLimits.CacheDl2NumSetsMin, CPUConfigLimits.CacheDl2NumSetsMax + 1),
+                random.Next(CPUConfigLimits.CacheDl2BlockOrPageSizeMin, CPUConfigLimits.CacheDl2BlockOrPageSizeMax + 1),
+                random.Next(CPUConfigLimits.CacheDl2AssociativityMin, CPUConfigLimits.CacheDl2AssociativityMax + 1),
+                (ReplacementPolicyEnum)random.Next(CPUConfigLimits.CacheDl2ReplacementPolicyMin, CPUConfigLimits.CacheDl2ReplacementPolicyMax + 1)
+            ),
+            new CacheTlbConfig(
+                "il1",
+                random.Next(CPUConfigLimits.CacheIl1NumSetsMin, CPUConfigLimits.CacheIl1NumSetsMax + 1),
+                random.Next(CPUConfigLimits.CacheIl1BlockOrPageSizeMin, CPUConfigLimits.CacheIl1BlockOrPageSizeMax + 1),
+                random.Next(CPUConfigLimits.CacheIl1AssociativityMin, CPUConfigLimits.CacheIl1AssociativityMax + 1),
+                (ReplacementPolicyEnum)random.Next(CPUConfigLimits.CacheIl1ReplacementPolicyMin, CPUConfigLimits.CacheIl1ReplacementPolicyMax + 1)
+            ),
+            new CacheTlbConfig(
+                "il2",
+                random.Next(CPUConfigLimits.CacheIl2NumSetsMin, CPUConfigLimits.CacheIl2NumSetsMax + 1),
+                random.Next(CPUConfigLimits.CacheIl2BlockOrPageSizeMin, CPUConfigLimits.CacheIl2BlockOrPageSizeMax + 1),
+                random.Next(CPUConfigLimits.CacheIl2AssociativityMin, CPUConfigLimits.CacheIl2AssociativityMax + 1),
+                (ReplacementPolicyEnum)random.Next(CPUConfigLimits.CacheIl2ReplacementPolicyMin, CPUConfigLimits.CacheIl2ReplacementPolicyMax + 1)
+            ),
+            random.Next(CPUConfigLimits.MemBusWidthMin, CPUConfigLimits.MemBusWidthMax + 1),
+            new CacheTlbConfig(
+                "itlb",
+                random.Next(CPUConfigLimits.TlbItlbNumSetsMin, CPUConfigLimits.TlbItlbNumSetsMax + 1),
+                random.Next(CPUConfigLimits.TlbItlbBlockOrPageSizeMin, CPUConfigLimits.TlbItlbBlockOrPageSizeMax + 1),
+                random.Next(CPUConfigLimits.TlbItlbAssociativityMin, CPUConfigLimits.TlbItlbAssociativityMax + 1),
+                (ReplacementPolicyEnum)random.Next(CPUConfigLimits.TlbItlbReplacementPolicyMin, CPUConfigLimits.TlbItlbReplacementPolicyMin + 1)
+            ),
+            new CacheTlbConfig(
+                "dtlb",
+                random.Next(CPUConfigLimits.TlbDtlbNumSetsMin, CPUConfigLimits.TlbDtlbNumSetsMax + 1),
+                random.Next(CPUConfigLimits.TlbDtlbBlockOrPageSizeMin, CPUConfigLimits.TlbDtlbBlockOrPageSizeMax + 1),
+                random.Next(CPUConfigLimits.TlbDtlbAssociativityMin, CPUConfigLimits.TlbDtlbAssociativityMax + 1),
+                (ReplacementPolicyEnum)random.Next(CPUConfigLimits.TlbDtlbReplacementPolicyMin, CPUConfigLimits.TlbDtlbReplacementPolicyMin + 1)
+            ),
+            random.Next(CPUConfigLimits.ResIntegerAluMin, CPUConfigLimits.ResIntegerAluMax + 1),
+            random.Next(CPUConfigLimits.ResIntegerMultDivMin, CPUConfigLimits.ResIntegerMultDivMax + 1),
+            random.Next(CPUConfigLimits.ResMemoryPortsMin, CPUConfigLimits.ResMemoryPortsMax + 1),
+            random.Next(CPUConfigLimits.ResFpAluMin, CPUConfigLimits.ResFpAluMax + 1),
+            random.Next(CPUConfigLimits.ResFpMultDivMin, CPUConfigLimits.ResFpMultDivMax + 1)
+        );
+    }
+
+
+
 
     public static class CPUConfigLimits {
         public static int BranchPredictorTypeMax = (int)BranchPredictorTypeEnum.perfect - 1;
@@ -432,5 +645,140 @@ public class CPUConfig : IEquatable<CPUConfig?>
 
         public static int ResFpMultDivMax = 9999;
         public static int ResFpMultDivMin = 1;
+
+        public static int GetMin(int index)
+        {
+            return index switch
+            {
+                0 => BranchPredictorTypeMin,
+                1 => BpredBimodTableSizeMin,
+                2 => Bpred2LevConfigL1SizeMin,
+                3 => Bpred2LevConfigL2SizeMin,
+                4 => Bpred2LevConfigHistorySizeMin,
+                5 => Bpred2LevConfigUseXorMin,
+                6 => BpredCombMetaTableSizeMin,
+                7 => BpredReturnAddressStackSizeMin,
+                8 => BpredBtbConfigNumSetsMin,
+                9 => BpredBtbConfigAssociativityMin,
+                10 => BpredSpeculativeUpdateMin,
+                11 => CacheLoadPredictorTypeMin,
+                12 => CpredBimodTableSizeMin,
+                13 => Cpred2LevConfigL1SizeMin,
+                14 => Cpred2LevConfigL2SizeMin,
+                15 => Cpred2LevConfigHistorySizeMin,
+                16 => Cpred2LevConfigUseXorMin,
+                17 => CpredCombMetaTableSizeMin,
+                18 => CpredReturnAddressStackSizeMin,
+                19 => CpredBtbConfigNumSetsMin,
+                20 => CpredBtbConfigAssociativityMin,
+                21 => DecodeWidthMin,
+                22 => IssueWidthMin,
+                23 => IssueInOrderMin,
+                24 => CommitWidthMin,
+                25 => ReorderBufferSizeMin,
+                26 => IssueQueueSizeMin,
+                27 => RegisterFileSizeMin,
+                28 => LoadStoreQueueSizeMin,
+                29 => CacheDl1NumSetsMin,
+                30 => CacheDl1BlockOrPageSizeMin,
+                31 => CacheDl1AssociativityMin,
+                32 => CacheDl1ReplacementPolicyMin,
+                33 => CacheDl2NumSetsMin,
+                34 => CacheDl2BlockOrPageSizeMin,
+                35 => CacheDl2AssociativityMin,
+                36 => CacheDl2ReplacementPolicyMin,
+                37 => CacheIl1NumSetsMin,
+                38 => CacheIl1BlockOrPageSizeMin,
+                39 => CacheIl1AssociativityMin,
+                40 => CacheIl1ReplacementPolicyMin,
+                41 => CacheIl2NumSetsMin,
+                42 => CacheIl2BlockOrPageSizeMin,
+                43 => CacheIl2AssociativityMin,
+                44 => CacheIl2ReplacementPolicyMin,
+                45 => MemBusWidthMin,
+                46 => TlbItlbNumSetsMin,
+                47 => TlbItlbBlockOrPageSizeMin,
+                48 => TlbItlbAssociativityMin,
+                49 => TlbItlbReplacementPolicyMin,
+                50 => TlbDtlbNumSetsMin,
+                51 => TlbDtlbBlockOrPageSizeMin,
+                52 => TlbDtlbAssociativityMin,
+                53 => TlbDtlbReplacementPolicyMin,
+                54 => ResIntegerAluMin,
+                55 => ResIntegerMultDivMin,
+                56 => ResMemoryPortsMin,
+                57 => ResFpAluMin,
+                58 => ResFpMultDivMin,
+                _ => throw new ArgumentOutOfRangeException(nameof(index)),
+            };
+        }
+
+        public static int GetMax(int index)
+        {
+            return index switch
+            {
+                0 => BranchPredictorTypeMax,
+                1 => BpredBimodTableSizeMax,
+                2 => Bpred2LevConfigL1SizeMax,
+                3 => Bpred2LevConfigL2SizeMax,
+                4 => Bpred2LevConfigHistorySizeMax,
+                5 => Bpred2LevConfigUseXorMax,
+                6 => BpredCombMetaTableSizeMax,
+                7 => BpredReturnAddressStackSizeMax,
+                8 => BpredBtbConfigNumSetsMax,
+                9 => BpredBtbConfigAssociativityMax,
+                10 => BpredSpeculativeUpdateMax,
+                11 => CacheLoadPredictorTypeMax,
+                12 => CpredBimodTableSizeMax,
+                13 => Cpred2LevConfigL1SizeMax,
+                14 => Cpred2LevConfigL2SizeMax,
+                15 => Cpred2LevConfigHistorySizeMax,
+                16 => Cpred2LevConfigUseXorMax,
+                17 => CpredCombMetaTableSizeMax,
+                18 => CpredReturnAddressStackSizeMax,
+                19 => CpredBtbConfigNumSetsMax,
+                20 => CpredBtbConfigAssociativityMax,
+                21 => DecodeWidthMax,
+                22 => IssueWidthMax,
+                23 => IssueInOrderMax,
+                24 => CommitWidthMax,
+                25 => ReorderBufferSizeMax,
+                26 => IssueQueueSizeMax,
+                27 => RegisterFileSizeMax,
+                28 => LoadStoreQueueSizeMax,
+                29 => CacheDl1NumSetsMax,
+                30 => CacheDl1BlockOrPageSizeMax,
+                31 => CacheDl1AssociativityMax,
+                32 => CacheDl1ReplacementPolicyMax,
+                33 => CacheDl2NumSetsMax,
+                34 => CacheDl2BlockOrPageSizeMax,
+                35 => CacheDl2AssociativityMax,
+                36 => CacheDl2ReplacementPolicyMax,
+                37 => CacheIl1NumSetsMax,
+                38 => CacheIl1BlockOrPageSizeMax,
+                39 => CacheIl1AssociativityMax,
+                40 => CacheIl1ReplacementPolicyMax,
+                41 => CacheIl2NumSetsMax,
+                42 => CacheIl2BlockOrPageSizeMax,
+                43 => CacheIl2AssociativityMax,
+                44 => CacheIl2ReplacementPolicyMax,
+                45 => MemBusWidthMax,
+                46 => TlbItlbNumSetsMax,
+                47 => TlbItlbBlockOrPageSizeMax,
+                48 => TlbItlbAssociativityMax,
+                49 => TlbItlbReplacementPolicyMax,
+                50 => TlbDtlbNumSetsMax,
+                51 => TlbDtlbBlockOrPageSizeMax,
+                52 => TlbDtlbAssociativityMax,
+                53 => TlbDtlbReplacementPolicyMax,
+                54 => ResIntegerAluMax,
+                55 => ResIntegerMultDivMax,
+                56 => ResMemoryPortsMax,
+                57 => ResFpAluMax,
+                58 => ResFpMultDivMax,
+                _ => throw new ArgumentOutOfRangeException(nameof(index)),
+            };
+        }
+
     }
 }

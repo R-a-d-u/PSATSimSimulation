@@ -81,6 +81,21 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
     {
         return !(left == right);
     }
+
+    public bool Validate(int numSetsMin, int numSetsMax, int blockOrPageSizeMin, int blockOrPageSizeMax, int associativityMin, int associativityMax)
+    {
+        if (NumSets < numSetsMin || NumSets > numSetsMax)
+            throw new ArgumentOutOfRangeException(nameof(NumSets), $"NumSets {NumSets} is out of bounds [{numSetsMin}, {numSetsMax}]");
+
+        if (BlockOrPageSize < blockOrPageSizeMin || BlockOrPageSize > blockOrPageSizeMax)
+            throw new ArgumentOutOfRangeException(nameof(BlockOrPageSize), $"BlockOrPageSize {BlockOrPageSize} is out of bounds [{blockOrPageSizeMin}, {blockOrPageSizeMax}]");
+
+        if (Associativity < associativityMin || Associativity > associativityMax)
+            throw new ArgumentOutOfRangeException(nameof(Associativity), $"Associativity {Associativity} is out of bounds [{associativityMin}, {associativityMax}]");
+
+        return true;
+    }
+
 }
 
 /// <summary>
@@ -154,6 +169,20 @@ public class Predictor2LevConfig : IEquatable<Predictor2LevConfig>
     {
         return !(left == right);
     }
+
+    public bool Validate(int l1min, int l1max, int l2min, int l2max, int historySizeMin, int historySizeMax)
+    {
+        if (L1Size < l1min || L1Size > l1max)
+            throw new ArgumentOutOfRangeException(nameof(L1Size), $"L1Size {L1Size} is out of bounds [{l1min}, {l1max}]");
+
+        if (L2Size < l2min || L2Size > l2max)
+            throw new ArgumentOutOfRangeException(nameof(L2Size), $"L2Size {L2Size} is out of bounds [{l2min}, {l2max}]");
+
+        if (HistorySize < historySizeMin || HistorySize > historySizeMax)
+            throw new ArgumentOutOfRangeException(nameof(HistorySize), $"HistorySize {HistorySize} is out of bounds [{historySizeMin}, {historySizeMax}]");
+
+        return true;
+    }
 }
 
 /// <summary>
@@ -211,6 +240,17 @@ public class BtbConfig : IEquatable<BtbConfig>
     public static bool operator !=(BtbConfig? left, BtbConfig? right)
     {
         return !(left == right);
+    }
+
+    public bool Validate(int numSetsMin, int numSetsMax, int associativityMin, int associativityMax)
+    {
+        if (NumSets < numSetsMin || NumSets > numSetsMax)
+            throw new ArgumentOutOfRangeException(nameof(NumSets), $"NumSets {NumSets} is out of bounds [{numSetsMin}, {numSetsMax}]");
+
+        if (Associativity < associativityMin || Associativity > associativityMax)
+            throw new ArgumentOutOfRangeException(nameof(Associativity), $"Associativity {Associativity} is out of bounds [{associativityMin}, {associativityMax}]");
+
+        return true;
     }
 }
 
