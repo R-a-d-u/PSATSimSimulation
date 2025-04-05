@@ -12,37 +12,39 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
     /// <summary>
     /// Name of the cache/TLB being defined.
     /// </summary>
-    public required string Name { get; init; }
+    public string Name { get; init; }
 
     /// <summary>
     /// Number of sets in the cache/TLB.
     /// </summary>
-    public required int NumSets { get; init; }
+    public int NumSets { get; init; }
 
     /// <summary>
     /// Block size (cache) or page size (TLB) in bytes.
     /// </summary>
-    public required int BlockOrPageSize { get; init; }
+    public int BlockOrPageSize { get; init; }
 
     /// <summary>
     /// Associativity of the cache/TLB.
     /// </summary>
-    public required int Associativity { get; init; }
+    public int Associativity { get; init; }
 
     /// <summary>
     /// Block replacement strategy: 'l' (LRU), 'f' (FIFO), 'r' (Random).
     /// </summary>
-    public required char ReplacementPolicy { get; init; } // Could be an enum
+    public ReplacementPolicyEnum ReplacementPolicy { get; init; } // Could be an enum
+
+    public CacheTlbConfig(string name, int numSets, int blockSize, int associativity, ReplacementPolicyEnum replacementPolicy) {
+        Name = name;
+        NumSets = numSets;
+        BlockOrPageSize = blockSize;
+        Associativity = associativity;
+        ReplacementPolicy = replacementPolicy;
+    }
 
     public override string ToString()
     {
-        // Validate replacement policy if needed
-        char policy = char.ToLowerInvariant(ReplacementPolicy);
-        if (policy != 'l' && policy != 'f' && policy != 'r')
-        {
-            throw new InvalidOperationException($"Invalid replacement policy '{ReplacementPolicy}'. Must be 'l', 'f', or 'r'.");
-        }
-        return $"{Name}:{NumSets}:{BlockOrPageSize}:{Associativity}:{policy}";
+        return $"{Name}:{NumSets}:{BlockOrPageSize}:{Associativity}:{ReplacementPolicy.ToString()}";
     }
 
     // --- IEquatable and Hashing ---
@@ -56,7 +58,7 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
                NumSets == other.NumSets &&
                BlockOrPageSize == other.BlockOrPageSize &&
                Associativity == other.Associativity &&
-               char.ToLowerInvariant(ReplacementPolicy) == char.ToLowerInvariant(other.ReplacementPolicy);
+               ReplacementPolicy == other.ReplacementPolicy;
     }
 
     public override bool Equals(object? obj)
@@ -66,7 +68,7 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
 
     public override int GetHashCode()
     {
-        return HashCode.Combine(Name, NumSets, BlockOrPageSize, Associativity, char.ToLowerInvariant(ReplacementPolicy));
+        return HashCode.Combine(Name, NumSets, BlockOrPageSize, Associativity, ReplacementPolicy);
     }
 
     public static bool operator ==(CacheTlbConfig? left, CacheTlbConfig? right)
@@ -89,23 +91,30 @@ public class Predictor2LevConfig : IEquatable<Predictor2LevConfig>
     /// <summary>
     /// Level 1 table size.
     /// </summary>
-    public required int L1Size { get; init; }
+    public int L1Size { get; init; }
 
     /// <summary>
     /// Level 2 table size.
     /// </summary>
-    public required int L2Size { get; init; }
+    public int L2Size { get; init; }
 
     /// <summary>
     /// History register size (in bits).
     /// </summary>
-    public required int HistorySize { get; init; }
+    public int HistorySize { get; init; }
 
     /// <summary>
     /// Whether to use XOR folding for history (true) or not (false).
     /// Corresponds to the <xor> parameter (0 or non-zero).
     /// </summary>
-    public required bool UseXor { get; init; }
+    public bool UseXor { get; init; }
+
+    public Predictor2LevConfig(int l1, int l2, int historySize, bool useXor) {
+        L1Size = l1;
+        L2Size = l2;
+        HistorySize = historySize;
+        UseXor = useXor;
+    }
 
     public override string ToString()
     {
@@ -155,12 +164,17 @@ public class BtbConfig : IEquatable<BtbConfig>
     /// <summary>
     /// Number of sets in the BTB.
     /// </summary>
-    public required int NumSets { get; init; }
+    public int NumSets { get; init; }
 
     /// <summary>
     /// Associativity of the BTB.
     /// </summary>
-    public required int Associativity { get; init; }
+    public int Associativity { get; init; }
+
+    public BtbConfig(int numSets, int associativity) {
+        NumSets = numSets;
+        Associativity = associativity;
+    }
 
     public override string ToString()
     {
@@ -209,12 +223,17 @@ public class MemLatencyConfig : IEquatable<MemLatencyConfig>
     /// <summary>
     /// Latency for the first chunk accessed.
     /// </summary>
-    public required int FirstChunkLatency { get; init; }
+    public int FirstChunkLatency { get; init; }
 
     /// <summary>
     /// Latency for subsequent chunks accessed within the same request.
     /// </summary>
-    public required int InterChunkLatency { get; init; }
+    public int InterChunkLatency { get; init; }
+
+    public MemLatencyConfig(int firstChunkLatency, int interChunkLatency) {
+        FirstChunkLatency = firstChunkLatency;
+        InterChunkLatency = interChunkLatency;
+    }
 
     public override string ToString()
     {
@@ -474,7 +493,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
 
     // --- Cache Hierarchy ---
     /// <summary> l1 data cache config, i.e., {<config>|none} </summary>
-    public string? CacheDl1 { get; set; } // -cache:dl1 <string>
+    public CacheTlbConfig? CacheDl1 { get; set; } // -cache:dl1 <string>
 
     /// <summary>
     /// l1 data cache hit latency (in cycles)
@@ -482,7 +501,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     public int? CacheDl1Latency { get; set; } // -cache:dl1lat <int>
 
     /// <summary> l2 data cache config, i.e., {<config>|none} </summary>
-    public string? CacheDl2 { get; set; } // -cache:dl2 <string>
+    public CacheTlbConfig? CacheDl2 { get; set; } // -cache:dl2 <string>
 
     /// <summary>
     /// l2 data cache hit latency (in cycles)
@@ -490,7 +509,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     public int? CacheDl2Latency { get; set; } // -cache:dl2lat <int>
 
     /// <summary> L1 Instruction Cache Config. Can be "none", "dl1", "dl2", or CacheTlbConfig. </summary>
-    public string? CacheIl1 { get; set; } // -cache:il1 <string>
+    public CacheTlbConfig? CacheIl1 { get; set; } // -cache:il1 <string>
 
     /// <summary>
     /// il1 instruction cache hit latency (in cycles)
@@ -498,7 +517,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     public int? CacheIl1Latency { get; set; } // -cache:il1lat <int>
 
     /// <summary> L2 Instruction Cache Config. Can be "none", "dl2", or CacheTlbConfig. </summary>
-    public string? CacheIl2 { get; set; } // -cache:il2 <string>
+    public CacheTlbConfig? CacheIl2 { get; set; } // -cache:il2 <string>
 
     /// <summary>
     /// l2 instruction cache hit latency (in cycles)
@@ -529,9 +548,9 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
 
     // --- TLB ---
     /// <summary> Instruction TLB Config. Can be "none" or CacheTlbConfig. </summary>
-    public string? TlbItlb { get; set; } // -tlb:itlb <string>
+    public CacheTlbConfig? TlbItlb { get; set; } // -tlb:itlb <string>
     /// <summary> Data TLB Config. Can be "none" or CacheTlbConfig. </summary>
-    public string? TlbDtlb { get; set; } // -tlb:dtlb <string>
+    public CacheTlbConfig? TlbDtlb { get; set; } // -tlb:dtlb <string>
 
     /// <summary>
     /// inst/data TLB miss latency (in cycles)
@@ -602,6 +621,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
                 if (value is CacheTlbConfig cfg) valueStr = cfg.ToString();
                 else if (value is string s && (s == "dl1" || s == "dl2" || s == "none")) valueStr = s; // Keep predefined strings
 
+                if (valueStr == "twolev") valueStr = "2lev";
                 sb.Append(name).Append(' ').Append(valueStr).Append(' ');
             }
         };
@@ -924,4 +944,8 @@ public enum RecoveryModelEnum {
 }
 
 
-
+public enum ReplacementPolicyEnum {
+    l = 0,
+    f = 1,
+    r = 2,
+}
