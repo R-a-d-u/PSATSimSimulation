@@ -458,6 +458,210 @@ public class CPUConfig : IEquatable<CPUConfig?>
     }
 
 
+    public double[] GetVectorFormDouble() {
+        return [
+            (int)BranchPredictorType,
+            BpredBimodTableSize,
+            Bpred2LevConfig.L1Size,
+            Bpred2LevConfig.L2Size,
+            Bpred2LevConfig.HistorySize,
+            Bpred2LevConfig.UseXor ? 1 : 0,
+            BpredCombMetaTableSize,
+            BpredReturnAddressStackSize,
+            BpredBtbConfig.NumSets,
+            BpredBtbConfig.Associativity,
+            (int)BpredSpeculativeUpdate,
+            (int)CacheLoadPredictorType,
+            CpredBimodTableSize,
+            Cpred2LevConfig.L1Size,
+            Cpred2LevConfig.L2Size,
+            Cpred2LevConfig.HistorySize,
+            Cpred2LevConfig.UseXor ? 1 : 0,
+            CpredCombMetaTableSize,
+            CpredReturnAddressStackSize,
+            CpredBtbConfig.NumSets,
+            CpredBtbConfig.Associativity,
+            DecodeWidth,
+            IssueWidth,
+            IssueInOrder ? 1 : 0,
+            CommitWidth,
+            ReorderBufferSize,
+            IssueQueueSize,
+            RegisterFileSize,
+            LoadStoreQueueSize,
+            CacheDl1.NumSets,
+            CacheDl1.BlockOrPageSize,
+            CacheDl1.Associativity,
+            (int)CacheDl1.ReplacementPolicy,
+            CacheDl2.NumSets,
+            CacheDl2.BlockOrPageSize,
+            CacheDl2.Associativity,
+            (int)CacheDl2.ReplacementPolicy,
+            CacheIl1.NumSets,
+            CacheIl1.BlockOrPageSize,
+            CacheIl1.Associativity,
+            (int)CacheIl1.ReplacementPolicy,
+            CacheIl2.NumSets,
+            CacheIl2.BlockOrPageSize,
+            CacheIl2.Associativity,
+            (int)CacheIl2.ReplacementPolicy,
+            MemBusWidth,
+            TlbItlb.NumSets,
+            TlbItlb.BlockOrPageSize,
+            TlbItlb.Associativity,
+            (int)TlbItlb.ReplacementPolicy,
+            TlbDtlb.NumSets,
+            TlbDtlb.BlockOrPageSize,
+            TlbDtlb.Associativity,
+            (int)TlbDtlb.ReplacementPolicy,
+            ResIntegerAlu,
+            ResIntegerMultDiv,
+            ResMemoryPorts,
+            ResFpAlu,
+            ResFpMultDiv,
+        ];
+    }
+
+
+    public static CPUConfig FromVectorFormDouble(double[] vector)
+    {
+        int idx = 0;
+
+        var branchPredictorType = (BranchPredictorTypeEnum)(int)vector[idx++];
+        var bpredBimodTableSize = (int)vector[idx++];
+        var bpred2LevConfig = new Predictor2LevConfig
+        (
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (int)vector[idx++],
+            vector[idx++] != 0
+        );
+        var bpredCombMetaTableSize = (int)vector[idx++];
+        var bpredReturnAddressStackSize = (int)vector[idx++];
+        var bpredBtbConfig = new BtbConfig
+        (
+            (int)vector[idx++],
+            (int)vector[idx++]
+        );
+        var bpredSpeculativeUpdate = (SpeculativePredictorUpdateStageEnum)(int)vector[idx++];
+        var cacheLoadPredictorType = (CacheLoadPredictorTypeEnum)(int)vector[idx++];
+        var cpredBimodTableSize = (int)vector[idx++];
+        var cpred2LevConfig = new Predictor2LevConfig
+        (
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (int)vector[idx++],
+            vector[idx++] != 0
+        );
+        var cpredCombMetaTableSize = (int)vector[idx++];
+        var cpredReturnAddressStackSize = (int)vector[idx++];
+        var cpredBtbConfig = new BtbConfig
+        (
+            (int)vector[idx++],
+            (int)vector[idx++]
+        );
+        var decodeWidth = (int)vector[idx++];
+        var issueWidth = (int)vector[idx++];
+        var issueInOrder = vector[idx++] != 0;
+        var commitWidth = (int)vector[idx++];
+        var reorderBufferSize = (int)vector[idx++];
+        var issueQueueSize = (int)vector[idx++];
+        var registerFileSize = (int)vector[idx++];
+        var loadStoreQueueSize = (int)vector[idx++];
+        var cacheDl1 = new CacheTlbConfig
+        (
+            "dl1",
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (ReplacementPolicyEnum)(int)vector[idx++] // assuming the ReplacementPolicy is an enum of type CacheReplacementPolicyEnum
+        );
+        var cacheDl2 = new CacheTlbConfig
+        (
+            "dl2",
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (ReplacementPolicyEnum)(int)vector[idx++]
+        );
+        var cacheIl1 = new CacheTlbConfig
+        (
+            "il1",
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (ReplacementPolicyEnum)(int)vector[idx++]
+        );
+        var cacheIl2 = new CacheTlbConfig
+        (
+            "il2",
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (ReplacementPolicyEnum)(int)vector[idx++]
+        );
+        var memBusWidth = (int)vector[idx++];
+        var tlbItlb = new CacheTlbConfig
+        (
+            "itlb",
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (ReplacementPolicyEnum)(int)vector[idx++]
+        );
+        var tlbDtlb = new CacheTlbConfig
+        (
+            "dtlb",
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (int)vector[idx++],
+            (ReplacementPolicyEnum)(int)vector[idx++]
+        );
+        var resIntegerAlu = (int)vector[idx++];
+        var resIntegerMultDiv = (int)vector[idx++];
+        var resMemoryPorts = (int)vector[idx++];
+        var resFpAlu = (int)vector[idx++];
+        var resFpMultDiv = (int)vector[idx++];
+
+        return new CPUConfig(
+            branchPredictorType,
+            bpredBimodTableSize,
+            bpred2LevConfig,
+            bpredCombMetaTableSize,
+            bpredReturnAddressStackSize,
+            bpredBtbConfig,
+            bpredSpeculativeUpdate,
+            cacheLoadPredictorType,
+            cpredBimodTableSize,
+            cpred2LevConfig,
+            cpredCombMetaTableSize,
+            cpredReturnAddressStackSize,
+            cpredBtbConfig,
+            decodeWidth,
+            issueWidth,
+            issueInOrder,
+            commitWidth,
+            reorderBufferSize,
+            issueQueueSize,
+            registerFileSize,
+            loadStoreQueueSize,
+            cacheDl1,
+            cacheDl2,
+            cacheIl1,
+            cacheIl2,
+            memBusWidth,
+            tlbItlb,
+            tlbDtlb,
+            resIntegerAlu,
+            resIntegerMultDiv,
+            resMemoryPorts,
+            resFpAlu,
+            resFpMultDiv
+        );
+    }
+
+
+
 
 
     public static class CPUConfigLimits {
