@@ -118,4 +118,27 @@ public class EnvironmentConfig {
         TlbMissLatency = tlbMissLatency;
     }
 
+    public override int GetHashCode()
+    {
+        var hash = new HashCode();
+
+        hash.Add(MaxInstructions);
+        hash.Add(FastForwardInstructions);
+        hash.Add(FetchSpeed);
+        hash.Add(IssueWrongPath);
+        hash.Add(IssueExecDelay);
+        hash.Add(CacheDl1Latency);
+        hash.Add(CacheDl2Latency);
+        hash.Add(CacheIl1Latency);
+        hash.Add(CacheIl2Latency);
+        hash.Add(CacheFlushOnSyscall);
+        hash.Add(CacheInstructionCompress);
+        hash.Add(MemLatency);
+        hash.Add(TlbMissLatency);
+
+        return hash.ToHashCode();
+    }
+
+    
+
 }
