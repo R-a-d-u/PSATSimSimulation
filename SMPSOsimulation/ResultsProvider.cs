@@ -10,16 +10,15 @@ public class ResultsProvider
     private readonly EnvironmentConfig env;
     private readonly string envHash;
     private readonly ResultsDB cachedb = new();
-    private readonly string psatsimExePath, gtkBinPath;
+    private readonly string simOutorderExePath;
     private readonly List<string> tracePaths;
     private readonly List<string> traceHashes;
 
-    public ResultsProvider(EnvironmentConfig env, string psatsimExePath, string gtkBinPath, List<string> tracePaths)
+    public ResultsProvider(EnvironmentConfig env, string simOutorderExePath, List<string> tracePaths)
     {
         this.env = env;
         this.envHash = env.CalculateSha256();
-        this.psatsimExePath = psatsimExePath;
-        this.gtkBinPath = gtkBinPath;
+        this.simOutorderExePath = simOutorderExePath;
         this.tracePaths = tracePaths;
         this.traceHashes = new List<string>();
         foreach (string path in tracePaths)
@@ -79,7 +78,7 @@ public class ResultsProvider
     {
         List<(double CPI, double Energy)> results = Enumerable.Repeat((0.0, 0.0), configs.Count).ToList();
         List<(CPUConfig config, int originIndex)> toEvaluate = [];
-        var psatsim = new PSAtSimWrapper(psatsimExePath, gtkBinPath, trace.path);
+        var simoutorder = new SimOutorderWrapper(simOutorderExePath, trace.path);
 
         for (int i = 0; i < configs.Count; i++)
         {
@@ -102,7 +101,7 @@ public class ResultsProvider
 
         if (toEvaluate.Count > 0)
         {
-            var newEvaluations = psatsim.Evaluate(toEvaluate, env);
+            var newEvaluations = simoutorder.Evaluate(toEvaluate, env);
 
             foreach (var eval in newEvaluations)
             {
