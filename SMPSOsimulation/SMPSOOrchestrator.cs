@@ -260,8 +260,7 @@ namespace SMPSOsimulation
                         if (p < searchConfig.turbulenceRate)
                         {
                             particle.positionWithResult.position[i] =
-                                JMetalPolynomialTurbulence(particle.positionWithResult.position[i], i,
-                                    searchConfig.MaxFrequency, random);
+                                JMetalPolynomialTurbulence(particle.positionWithResult.position[i], i, random);
                         }
                     }
                 }
@@ -322,10 +321,10 @@ namespace SMPSOsimulation
             GenerationChanged.Invoke(this, results);
         }
 
-        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, string gtkLibPath, List<string> tracePaths)
+        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, List<string> tracePaths)
         {
             Random random = new();
-            ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, gtkLibPath, tracePaths);
+            ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, tracePaths);
             var domination = InitDomination(searchConfig);
             var swarm = InitSwarm(searchConfig, resultsProvider);
             var leadersArchive = InitLeadersArchive(swarm, searchConfig, domination);
@@ -344,7 +343,7 @@ namespace SMPSOsimulation
             return leadersArchive.Select(leader => (leader.GetConfigFromPosition(), leader.result)).ToList();
         }
 
-        private static double JMetalPolynomialTurbulence(double gene, int geneIndex, int maxFrequency, Random random)
+        private static double JMetalPolynomialTurbulence(double gene, int geneIndex, Random random)
         {
             const double eta_m = 20;
             double min = CPUConfig.CPUConfigLimits.GetMin(geneIndex);
