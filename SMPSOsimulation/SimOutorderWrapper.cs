@@ -1,5 +1,7 @@
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Text;
 
 
 public class SimOutorderWrapper {
@@ -17,34 +19,86 @@ public class SimOutorderWrapper {
         this.tracePath = tracePath;
     }
     
-    // Core function to run the process with specified arguments
     private void RunProcess(string arguments)
     {
-        // Check if there's an existing process and terminate it
+        // --- Terminate existing process (generally cross-platform) ---
         if (currentProcess != null && !currentProcess.HasExited)
         {
-            currentProcess.Kill();
-            currentProcess.WaitForExit();
-            currentProcess.Dispose();
-            currentProcess = null;
+            try
+            {
+                // Use Kill(true) on Windows to attempt killing child processes as well.
+                // On Unix, Kill sends SIGKILL, which doesn't inherently kill children
+                // unless they are part of the same process group and handled appropriately.
+                bool killTree = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+                currentProcess.Kill(killTree);
+                currentProcess.WaitForExit(5000); // Wait up to 5 seconds for termination
+            }
+            catch (InvalidOperationException e)
+            {
+                // Process might have already exited between check and Kill
+                throw new Exception($"Previous process already exited. (exception: {e.Message})");
+            }
+            catch (Exception ex)
+            {
+                // Log failure but continue, maybe the process is already gone or unstoppable
+                throw new Exception($"Warning: Failed to terminate previous process: {ex.Message}");
+            }
+            finally
+            {
+                currentProcess.Dispose();
+                currentProcess = null;
+            }
         }
+
         try
         {
-            ProcessStartInfo startInfo = new()
+            ProcessStartInfo startInfo = new ProcessStartInfo
             {
-                FileName = "cmd.exe",
-                Arguments = $"/K \"cd /d {workingDirectory} && {exePath} {arguments} {tracePath} && exit\"",
-                UseShellExecute = false,
-                CreateNoWindow = true,
-                WorkingDirectory = workingDirectory,
+                UseShellExecute = false, // Crucial for cross-platform and redirection
+                CreateNoWindow = true,   // Hide window on Windows, no effect on Linux usually
+                WorkingDirectory = workingDirectory, // Set the process's working dir
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
             };
+
+            string commandToExecute;
+            // Basic quoting for paths, might need more robust solution if paths contain quotes themselves
+            string safeExePath = $"\"{exePath}\"";
+            string safeTracePath = $"\"{tracePath}\"";
+            string safeWorkingDirectory = $"\"{workingDirectory}\"";
+
+
+            // --- OS-Specific Shell and Arguments ---
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                startInfo.FileName = "cmd.exe";
+                // Use /C to execute command then exit. Safer than /K with CreateNoWindow=true.
+                // Command: cd /d "WORKDIR" && "EXECPATH" arguments "TRACEPATH"
+                commandToExecute = $"cd /d {safeWorkingDirectory} && {safeExePath} {arguments} {safeTracePath}";
+                startInfo.Arguments = $"/C \"{commandToExecute}\""; // Pass the command string to cmd.exe
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) || RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                // Use /bin/sh for better compatibility than /bin/bash on some systems
+                startInfo.FileName = "/bin/sh";
+                // Command: cd "WORKDIR" && "EXECPATH" arguments "TRACEPATH"
+                // Note: Ensure exePath is executable (chmod +x) on Linux/macOS.
+                commandToExecute = $"cd {safeWorkingDirectory} && {safeExePath} {arguments} {safeTracePath}";
+                startInfo.Arguments = $"-c \"{commandToExecute}\""; // Pass the command string to sh/bash
+            }
+            else
+            {
+                throw new PlatformNotSupportedException($"Operating system not supported: {RuntimeInformation.OSDescription}");
+            }
 
             currentProcess = new Process { StartInfo = startInfo };
             currentProcess.Start();
+
         }
-        catch (Exception ex)
+        catch (Exception ex) // Catch Win32Exception, PlatformNotSupportedException, etc.
         {
-            throw new ApplicationException($"Error: {ex.Message}, Msim Error");
+            // Provide more context in the thrown exception
+            throw new ApplicationException($"Error starting process '{exePath}' on {RuntimeInformation.OSDescription}. Details: {ex.Message}", ex);
         }
     }
 
@@ -119,15 +173,10 @@ public class SimOutorderWrapper {
         }
         catch (FileNotFoundException ex)
         {
-            // Scream and Shout - File not found
-            Console.Error.WriteLine($"ERROR: Simulation output file not found at '{filePath}'.");
-            // Re-throw with more context or let it propagate
             throw new FileNotFoundException($"Simulation output file '{filePath}' not found.", filePath, ex);
         }
         catch (IOException ex)
         {
-            // Scream and Shout - Error reading file (permissions, disk issue, etc.)
-            Console.Error.WriteLine($"ERROR: Failed to read simulation output file '{filePath}'. Check permissions and disk space.");
             throw new IOException($"An error occurred while reading the file '{filePath}'.", ex);
         }
         // Catch other potential exceptions during processing if necessary
@@ -157,6 +206,59 @@ public class SimOutorderWrapper {
         simOutorderConfig.PowerPrintStats = true;
         RunProcess(simOutorderConfig.ToCommandLineString());
         currentProcess!.WaitForExit();
+        // *** Check Exit Code and Capture STREAMS on Error ***
+        if (currentProcess.ExitCode != 0)
+        {
+            StringBuilder errorDetailsBuilder = new StringBuilder();
+            errorDetailsBuilder.AppendLine($"External simulation process failed with ExitCode {currentProcess.ExitCode}.");
+
+            try
+            {
+                // --- Read Captured Standard Error ---
+                // ReadToEnd() is safe here because the process has already exited.
+                string stdErr = currentProcess.StandardError.ReadToEnd();
+                if (!string.IsNullOrWhiteSpace(stdErr))
+                {
+                    errorDetailsBuilder.AppendLine("--- Standard Error Output ---");
+                    // Limit output length in exception message if necessary
+                    const int maxLen = 2048;
+                    errorDetailsBuilder.AppendLine(stdErr.Length <= maxLen ? stdErr.Trim() : stdErr.Substring(0, maxLen).Trim() + "...");
+                    // errorDetailsBuilder.AppendLine(stdErr.Trim()); // Use this if length isn't a concern
+                    errorDetailsBuilder.AppendLine("--- End Standard Error Output ---");
+                }
+                else
+                {
+                    errorDetailsBuilder.AppendLine("(No output captured on Standard Error stream.)");
+                }
+
+                // --- Read Captured Standard Output ---
+                string stdOut = currentProcess.StandardOutput.ReadToEnd();
+                if (!string.IsNullOrWhiteSpace(stdOut))
+                {
+                    errorDetailsBuilder.AppendLine("--- Standard Output ---");
+                    // Limit output length in exception message if necessary
+                    const int maxLen = 2048;
+                    errorDetailsBuilder.AppendLine(stdOut.Length <= maxLen ? stdOut.Trim() : stdOut.Substring(0, maxLen).Trim() + "...");
+                    // errorDetailsBuilder.AppendLine(stdOut.Trim()); // Use this if length isn't a concern
+                    errorDetailsBuilder.AppendLine("--- End Standard Output ---");
+                }
+                else
+                {
+                    errorDetailsBuilder.AppendLine("(No output captured on Standard Output stream.)");
+                }
+            }
+            catch (Exception streamEx)
+            {
+                // Unlikely after process exit, but possible
+                errorDetailsBuilder.AppendLine($"\n(An error occurred while reading process output streams: {streamEx.Message})");
+            }
+
+            // Attempt cleanup of potentially unused/incomplete redirected files (simout/progout)
+            try { File.Delete(Path.Combine(workingDirectory, simout)); } catch { /* Ignore */ }
+            try { File.Delete(Path.Combine(workingDirectory, progout)); } catch { /* Ignore */ }
+
+            throw new ApplicationException(errorDetailsBuilder.ToString());
+        }
         var results = GetResultsFromSimout();
         try
         {
