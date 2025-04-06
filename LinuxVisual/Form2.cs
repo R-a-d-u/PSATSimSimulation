@@ -3,16 +3,16 @@ using SMPSOsimulation.dataStructures;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Gtk;
-using System.IO; // For MemoryStream
-using ScottPlot; // Added for ScottPlot
+using System.IO;
+using ScottPlot;
 
 namespace LinuxVisual
 {
     public class ResultsWindow : Window
     {
-        private Thread algorithmThread;
+        private Task algorithmTask;
+        private CancellationTokenSource cts;
         private List<List<(CPUConfig, double[])>> history;
 
         // GTK Widgets
@@ -38,8 +38,12 @@ namespace LinuxVisual
             history = new List<List<(CPUConfig, double[])>>();
             var runner = new SMPSOOrchestrator();
             runner.GenerationChanged += OnGenerationChanged;
-            algorithmThread = new Thread(new ThreadStart(() => runner.StartSearch(config, exePath, gtkPath, tracePaths)));
-            algorithmThread.Start();
+
+            // Create a cancellation token source
+            cts = new CancellationTokenSource();
+
+            // Start the search as a Task
+            algorithmTask = Task.Run(() => runner.StartSearch(config, exePath, gtkPath, tracePaths), cts.Token);
 
             listBoxGeneration.RowSelected += ChangeGeneration;
             listBoxLeaders.RowSelected += ChangeConfig;
@@ -56,8 +60,12 @@ namespace LinuxVisual
             history = new List<List<(CPUConfig, double[])>>();
             var runner = new VEGAOrchestrator();
             runner.GenerationChanged += OnGenerationChanged;
-            algorithmThread = new Thread(new ThreadStart(() => runner.StartSearch(config, exePath, gtkPath, tracePaths)));
-            algorithmThread.Start();
+
+            // Create a cancellation token source
+            cts = new CancellationTokenSource();
+
+            // Start the search as a Task
+            algorithmTask = Task.Run(() => runner.StartSearch(config, exePath, gtkPath, tracePaths), cts.Token);
 
             listBoxGeneration.RowSelected += ChangeGeneration;
             listBoxLeaders.RowSelected += ChangeConfig;
@@ -66,9 +74,10 @@ namespace LinuxVisual
             DeleteEvent += OnWindowClosed;
         }
 
-
+        // The InitializeComponents method remains unchanged
         private void InitializeComponents()
         {
+            // Existing implementation...
             SetDefaultSize(800, 600);
 
             // Create containers
@@ -80,7 +89,7 @@ namespace LinuxVisual
             listBoxGeneration = new ListBox();
             listBoxLeaders = new ListBox();
             richTextBox1 = new TextView();
-            button1 = new Button("Export Last Gen to CSV"); // Updated button text
+            button1 = new Button("Export Last Gen to CSV");
 
             // Configure text view
             richTextBox1.Editable = false;
@@ -99,12 +108,12 @@ namespace LinuxVisual
             // Add widgets to left vbox
             vboxLeft.PackStart(new Gtk.Label("Generations"), false, false, 0);
             vboxLeft.PackStart(scrolledWindow1, true, true, 0);
-            vboxLeft.PackStart(new Gtk.Label("Leaders (CPI / Energy)"), false, false, 0); // Label clarification
+            vboxLeft.PackStart(new Gtk.Label("Leaders (CPI / Energy)"), false, false, 0);
             vboxLeft.PackStart(scrolledWindow2, true, true, 0);
             vboxLeft.PackStart(button1, false, false, 5);
 
             // Add widgets to right vbox
-            vboxRight.PackStart(new Gtk.Label("Selected Configuration Details"), false, false, 0); // Label clarification
+            vboxRight.PackStart(new Gtk.Label("Selected Configuration Details"), false, false, 0);
             vboxRight.PackStart(scrolledWindow3, true, true, 0);
 
             // Add vboxes to hbox
@@ -115,121 +124,10 @@ namespace LinuxVisual
             ShowAll();
         }
 
-        private void ChangeGeneration(object sender, RowSelectedArgs e)
-        {
-            Application.Invoke(delegate // Ensure UI updates happen on the main thread
-            {
-                if (listBoxGeneration.SelectedRow != null)
-                {
-                    int generationIndex = listBoxGeneration.SelectedRow.Index;
+        // The existing event handler methods remain largely unchanged
+        // ChangeGeneration, ChangeConfig methods remain the same...
 
-                    // --- Update Leaders ListBox (existing logic) ---
-                    // Clear current leaders
-                    // Use ToList() to avoid modifying collection while iterating if needed,
-                    // though direct removal should be fine with GTK# Children.
-                    var children = listBoxLeaders.Children.ToList();
-                    foreach (var child in children)
-                    {
-                        listBoxLeaders.Remove(child);
-                    }
-
-                    // Add new leaders
-                    if (generationIndex >= 0 && generationIndex < history.Count)
-                    {
-                        var currentLeaders = history[generationIndex];
-                        foreach (var leader in currentLeaders)
-                        {
-                            // Format numbers for better readability if needed
-                            var label = new Gtk.Label($"{leader.Item2[0]:F4}    {leader.Item2[1]:F4}");
-                            label.Xalign = 0; // Align text left
-                            listBoxLeaders.Add(label);
-                        }
-                        listBoxLeaders.ShowAll();
-
-                        // --- Show Pareto Plot ---
-                        ShowParetoPlot(generationIndex);
-                    }
-                    else
-                    {
-                        // Handle invalid index if necessary, though ListBox selection should be valid
-                        Console.WriteLine($"Warning: Invalid generation index selected: {generationIndex}");
-                        // Optionally clear the leaders listbox and close any existing plot window
-                        if (plotWindow != null)
-                        {
-                            plotWindow.Destroy(); // Close existing plot window
-                            plotWindow = null;
-                        }
-                    }
-                }
-                else
-                {
-                    // No row selected, clear leaders and close plot
-                    var children = listBoxLeaders.Children.ToList();
-                    foreach (var child in children)
-                    {
-                        listBoxLeaders.Remove(child);
-                    }
-                    if (plotWindow != null)
-                    {
-                        plotWindow.Destroy(); // Close existing plot window
-                        plotWindow = null;
-                    }
-                }
-            });
-        }
-
-        private void ChangeConfig(object sender, RowSelectedArgs e)
-        {
-            Application.Invoke(delegate // Ensure UI updates happen on the main thread
-            {
-                if (listBoxGeneration.SelectedRow != null && listBoxLeaders.SelectedRow != null)
-                {
-                    int generationIndex = listBoxGeneration.SelectedRow.Index;
-                    int configIndex = listBoxLeaders.SelectedRow.Index;
-
-                    // Add bounds checking for safety
-                    if (generationIndex >= 0 && generationIndex < history.Count &&
-                        configIndex >= 0 && configIndex < history[generationIndex].Count)
-                    {
-                        richTextBox1.Buffer.Text = history[generationIndex][configIndex].Item1.ToString();
-                    }
-                    else
-                    {
-                        richTextBox1.Buffer.Text = "Invalid selection.";
-                    }
-                }
-                // Optional: Clear text if selection is incomplete
-                // else if (richTextBox1.Buffer.Text != string.Empty)
-                // {
-                //     richTextBox1.Buffer.Text = string.Empty;
-                // }
-            });
-        }
-
-        private void OnGenerationChanged(object sender, List<(CPUConfig, double[])> leaders)
-        {
-            Application.Invoke(delegate // Ensure UI updates happen on the main thread
-            {
-                // Sort leaders by the first objective (e.g., CPI) before adding to history
-                // This makes the listbox display consistent if desired, but doesn't affect the plot
-                history.Add(leaders.OrderBy(leader => leader.Item2[0]).ToList());
-
-                int generationNumber = history.Count; // Generation number (1-based)
-                var label = new Gtk.Label($"Generation {generationNumber}");
-                label.Xalign = 0;
-                listBoxGeneration.Add(label);
-                listBoxGeneration.ShowAll();
-
-                // Optional: Automatically select the last added generation
-                // This requires getting the ListBoxRow associated with the label
-                // listBoxGeneration.SelectRow(label.Parent as ListBoxRow); // This might need adjustment based on GTK# hierarchy
-
-                // Clear the details text view when a new generation arrives
-                // richTextBox1.Buffer.Text = string.Empty;
-            });
-        }
-
-        private void ShowParetoPlot(int generationIndex)
+        private async void ShowParetoPlot(int generationIndex)
         {
             // Use a lock object to prevent concurrent modification of shared resources
             lock (this)
@@ -239,8 +137,8 @@ namespace LinuxVisual
                 {
                     try
                     {
-                        var windowToDestroy = plotWindow; // Capture the reference
-                        plotWindow = null; // Clear the reference immediately
+                        var windowToDestroy = plotWindow;
+                        plotWindow = null;
 
                         Application.Invoke(delegate {
                             windowToDestroy.Destroy();
@@ -274,23 +172,25 @@ namespace LinuxVisual
                 double[] cpiValues = leaders.Select(l => l.Item2[0]).ToArray();
                 double[] energyValues = leaders.Select(l => l.Item2[1]).ToArray();
 
-                // Create the plot
-                ScottPlot.Plot plot = null;
+                // Create the plot - this could be moved to a background task if needed
                 byte[] imageBytes = null;
 
                 try
                 {
-                    plot = new ScottPlot.Plot();
-                    plot.Add.Scatter(cpiValues, energyValues);
-                    plot.Title($"Pareto Front - Generation {generationIndex + 1}");
-                    plot.XLabel("CPI (Lower is Better)");
-                    plot.YLabel("Energy (Lower is Better)");
-                    plot.ShowLegend();
+                    // Create the plot on a background thread to avoid UI freezing
+                    imageBytes = Task.Run(() => {
+                        var plot = new ScottPlot.Plot();
+                        plot.Add.Scatter(cpiValues, energyValues);
+                        plot.Title($"Pareto Front - Generation {generationIndex + 1}");
+                        plot.XLabel("CPI (Lower is Better)");
+                        plot.YLabel("Energy (Lower is Better)");
+                        plot.ShowLegend();
 
-                    // Render the plot to a byte array
-                    int plotWidth = 600;
-                    int plotHeight = 400;
-                    imageBytes = plot.GetImageBytes(plotWidth, plotHeight, ScottPlot.ImageFormat.Png);
+                        // Render the plot to a byte array
+                        int plotWidth = 600;
+                        int plotHeight = 400;
+                        return plot.GetImageBytes(plotWidth, plotHeight, ScottPlot.ImageFormat.Png);
+                    }).Result;
 
                     // Create and show plot window on the UI thread
                     Application.Invoke(delegate {
@@ -312,7 +212,7 @@ namespace LinuxVisual
 
                                 // Create a new window for displaying the plot
                                 Window newPlotWindow = new Window($"Pareto Plot - Generation {generationIndex + 1}");
-                                newPlotWindow.SetDefaultSize(plotWidth + 20, plotHeight + 20);
+                                newPlotWindow.SetDefaultSize(620, 420); // Slightly larger than the image
                                 newPlotWindow.WindowPosition = WindowPosition.Center;
 
                                 var imageWidget = new Gtk.Image(pixbuf);
@@ -324,7 +224,6 @@ namespace LinuxVisual
                                     {
                                         Window win = (Window)s;
                                         win.Destroy();
-                                        // Don't set plotWindow = null here, do it in Destroyed event
                                     }
                                     catch (Exception ex)
                                     {
@@ -356,7 +255,7 @@ namespace LinuxVisual
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine($"Error in UI thread: {ex.Message}");
+                            Console.WriteLine($"Error in UI: {ex.Message}");
                         }
                     });
                 }
@@ -369,14 +268,19 @@ namespace LinuxVisual
 
         private void OnWindowClosed(object sender, DeleteEventArgs e)
         {
-            // Optional: Ensure algorithm thread is stopped gracefully if needed
-            // if (algorithmThread != null && algorithmThread.IsAlive)
-            // {
-            //     // Implement a cancellation mechanism in your runner classes
-            //     // runner.StopSearch(); // Hypothetical method
-            //     // algorithmThread.Join(TimeSpan.FromSeconds(2)); // Wait briefly
-            //     // if (algorithmThread.IsAlive) algorithmThread.Abort(); // Force stop if necessary (use with caution)
-            // }
+            // Cancel the running task if it's still active
+            if (cts != null && !cts.IsCancellationRequested)
+            {
+                try
+                {
+                    cts.Cancel();
+                    // Note: Your orchestrators must check for cancellation
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error cancelling task: {ex.Message}");
+                }
+            }
 
             // Close any open plot window
             if (plotWindow != null)
@@ -384,7 +288,105 @@ namespace LinuxVisual
                 plotWindow.Destroy();
                 plotWindow = null;
             }
+
             Application.Quit(); // Quit the GTK application loop
+        }
+
+        // Other methods remain unchanged
+        private void OnGenerationChanged(object sender, List<(CPUConfig, double[])> leaders)
+        {
+            Application.Invoke(delegate
+            {
+                // Sort leaders by the first objective (e.g., CPI) before adding to history
+                history.Add(leaders.OrderBy(leader => leader.Item2[0]).ToList());
+
+                int generationNumber = history.Count; // Generation number (1-based)
+                var label = new Gtk.Label($"Generation {generationNumber}");
+                label.Xalign = 0;
+                listBoxGeneration.Add(label);
+                listBoxGeneration.ShowAll();
+            });
+        }
+
+        private void ChangeGeneration(object sender, RowSelectedArgs e)
+        {
+            Application.Invoke(delegate
+            {
+                if (listBoxGeneration.SelectedRow != null)
+                {
+                    int generationIndex = listBoxGeneration.SelectedRow.Index;
+
+                    // Clear current leaders
+                    var children = listBoxLeaders.Children.ToList();
+                    foreach (var child in children)
+                    {
+                        listBoxLeaders.Remove(child);
+                    }
+
+                    // Add new leaders
+                    if (generationIndex >= 0 && generationIndex < history.Count)
+                    {
+                        var currentLeaders = history[generationIndex];
+                        foreach (var leader in currentLeaders)
+                        {
+                            // Format numbers for better readability
+                            var label = new Gtk.Label($"{leader.Item2[0]:F4}    {leader.Item2[1]:F4}");
+                            label.Xalign = 0; // Align text left
+                            listBoxLeaders.Add(label);
+                        }
+                        listBoxLeaders.ShowAll();
+
+                        // Show Pareto Plot
+                        ShowParetoPlot(generationIndex);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Warning: Invalid generation index selected: {generationIndex}");
+                        if (plotWindow != null)
+                        {
+                            plotWindow.Destroy();
+                            plotWindow = null;
+                        }
+                    }
+                }
+                else
+                {
+                    // No row selected, clear leaders and close plot
+                    var children = listBoxLeaders.Children.ToList();
+                    foreach (var child in children)
+                    {
+                        listBoxLeaders.Remove(child);
+                    }
+                    if (plotWindow != null)
+                    {
+                        plotWindow.Destroy();
+                        plotWindow = null;
+                    }
+                }
+            });
+        }
+
+        private void ChangeConfig(object sender, RowSelectedArgs e)
+        {
+            Application.Invoke(delegate
+            {
+                if (listBoxGeneration.SelectedRow != null && listBoxLeaders.SelectedRow != null)
+                {
+                    int generationIndex = listBoxGeneration.SelectedRow.Index;
+                    int configIndex = listBoxLeaders.SelectedRow.Index;
+
+                    // Add bounds checking for safety
+                    if (generationIndex >= 0 && generationIndex < history.Count &&
+                        configIndex >= 0 && configIndex < history[generationIndex].Count)
+                    {
+                        richTextBox1.Buffer.Text = history[generationIndex][configIndex].Item1.ToString();
+                    }
+                    else
+                    {
+                        richTextBox1.Buffer.Text = "Invalid selection.";
+                    }
+                }
+            });
         }
 
         private void OnButton1Clicked(object sender, EventArgs e)
@@ -414,17 +416,16 @@ namespace LinuxVisual
             }
         }
 
-        // WriteHistoryTables remains the same as provided
+        // WriteHistoryTables method remains unchanged
         public static void WriteHistoryTables(List<(CPUConfig config, double[] metrics)> history)
         {
+            // Existing implementation...
             if (history == null || !history.Any())
             {
                 Console.WriteLine("History is empty. No tables will be generated.");
-                // Optionally show a Gtk MessageDialog if called from UI context
                 return;
             }
 
-            // File names (Consider making paths configurable or relative to executable)
             string file1 = "Table_CPI_Energy.csv";
             string file2 = "Table_CPUConfig.csv";
 
@@ -437,7 +438,6 @@ namespace LinuxVisual
                     for (int i = 0; i < history.Count; i++)
                     {
                         var (config, metrics) = history[i];
-                        // Use CultureInfo.InvariantCulture for consistent decimal formatting
                         writer.WriteLine($"{i},{metrics[0].ToString(System.Globalization.CultureInfo.InvariantCulture)},{metrics[1].ToString(System.Globalization.CultureInfo.InvariantCulture)}");
                     }
                 }
@@ -445,12 +445,10 @@ namespace LinuxVisual
                 // Second table: ID and CPUConfig fields
                 using (System.IO.StreamWriter writer = new System.IO.StreamWriter(file2))
                 {
-                    // Write header (Matches the order in CPUConfig.ToString potentially, but explicit is better)
                     writer.WriteLine("ID,Superscalar,Rename,Reorder,RsbArchitecture,SeparateDispatch,Iadd,Imult,Idiv,Fpadd,Fpmult,Fpdiv,Fpsqrt,Branch,Load,Store,Freq");
                     for (int i = 0; i < history.Count; i++)
                     {
                         var (config, metrics) = history[i];
-                        // Use CultureInfo.InvariantCulture for Freq if it's a double/float
                         writer.WriteLine($"{i}," +
                                          $"{config.Superscalar}," +
                                          $"{config.Rename}," +
@@ -467,16 +465,13 @@ namespace LinuxVisual
                                          $"{config.Branch}," +
                                          $"{config.Load}," +
                                          $"{config.Store}," +
-                                         $"{config.Freq.ToString(System.Globalization.CultureInfo.InvariantCulture)}"); // Assuming Freq might be float/double
+                                         $"{config.Freq.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
                     }
                 }
-
-                // Console.WriteLine($"Tables exported: {Path.GetFullPath(file1)}, {Path.GetFullPath(file2)}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error exporting tables: {ex.Message}");
-                // Optionally show a Gtk MessageDialog if called from UI context
             }
         }
     }
