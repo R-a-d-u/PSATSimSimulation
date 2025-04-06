@@ -21,6 +21,9 @@ public class EnvironmentConfig {
     /// </summary>
     public int? FetchSpeed { get; set; } // -fetch:speed <int>
 
+    /// <summary> Number of cycles between fetch and rename stages. </summary>
+    public int? FetchRenameDelay { get; set; } // -fetch_rename_delay <int>
+
     /// <summary>
     /// issue instructions down wrong execution paths
     /// </summary>
@@ -69,8 +72,11 @@ public class EnvironmentConfig {
     /// </summary>
     public int? TlbMissLatency { get; set; } // -tlb:lat <int>
 
+    /// <summary> Number cycles between rename and dispatch stages. </summary>
+    public int? RenameDispatchDelay { get; set; } // -rename_dispatch_delay <int>
 
-    public EnvironmentConfig(ulong? maxInstructions = null, ulong? fastForwardInstructions = null, int? fetchSpeed = null, bool? issueWrongPath = null, int? issueExecDelay = null, int? cacheDl1Latency = null, int? cacheDl2Latency = null, int? cacheIl1Latency = null, int? cacheIl2Latency = null, bool? cacheFlushOnSyscall = null, bool? cacheInstructionCompress = null, MemLatencyConfig? memLatency = null, int? tlbMissLatency = null)
+
+    public EnvironmentConfig(ulong? maxInstructions = null, ulong? fastForwardInstructions = null, int? fetchSpeed = null, bool? issueWrongPath = null, int? issueExecDelay = null, int? cacheDl1Latency = null, int? cacheDl2Latency = null, int? cacheIl1Latency = null, int? cacheIl2Latency = null, bool? cacheFlushOnSyscall = null, bool? cacheInstructionCompress = null, MemLatencyConfig? memLatency = null, int? tlbMissLatency = null, int? fetchRenameDelay = null, int? renameDispatchDelay = null)
     {
         if (maxInstructions <= 0)
             throw new ArgumentException("maxInstructions must be greater than 0.");
@@ -105,6 +111,12 @@ public class EnvironmentConfig {
         if (tlbMissLatency <= 0)
             throw new ArgumentException("tlbMissLatency must be greater than 0.");
 
+        if (fetchRenameDelay <= 0)
+            throw new ArgumentException("fetchRenameDelay must be greater than 0.");
+
+        if (renameDispatchDelay <= 0)
+            throw new ArgumentException("renameDispatchDelay must be greater than 0.");
+
 
         MaxInstructions = maxInstructions;
         FastForwardInstructions = fastForwardInstructions;
@@ -119,6 +131,8 @@ public class EnvironmentConfig {
         CacheInstructionCompress = cacheInstructionCompress;
         MemLatency = memLatency;
         TlbMissLatency = tlbMissLatency;
+        FetchRenameDelay = fetchRenameDelay;
+        RenameDispatchDelay = renameDispatchDelay;
     }
 
     public string CalculateSha256()
@@ -126,7 +140,7 @@ public class EnvironmentConfig {
         using var sha256 = SHA256.Create();
         var rawData = $"{MaxInstructions}-{FastForwardInstructions}-{FetchSpeed}-{IssueWrongPath}-{IssueExecDelay}-" +
                     $"{CacheDl1Latency}-{CacheDl2Latency}-{CacheIl1Latency}-{CacheIl2Latency}-{CacheFlushOnSyscall}-" +
-                    $"{CacheInstructionCompress}-{MemLatency}-{TlbMissLatency}";
+                    $"{CacheInstructionCompress}-{MemLatency}-{TlbMissLatency}-{FetchRenameDelay}-{RenameDispatchDelay}";
 
         var bytes = Encoding.UTF8.GetBytes(rawData);
         var hashBytes = sha256.ComputeHash(bytes);

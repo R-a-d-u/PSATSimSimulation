@@ -637,6 +637,90 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// </summary>
     public bool? PowerPrintStats { get; set; } // -power:print_stats <true|false>
 
+    public SimOutorderConfig(CPUConfig cpuConfig, EnvironmentConfig environmentConfig)
+    {
+        // --- General Options ---
+        // ConfigFile, DumpConfigFile, PrintHelp, Verbose, Debug, StartDebugger,
+        // RandomSeed, InitTerminate, RedirectSimOutput, RedirectProgOutput,
+        // NicePriority are not present in CPUConfig or EnvironmentConfig, remain null.
+
+        // --- Execution Control ---
+        this.MaxInstructions = environmentConfig.MaxInstructions;
+        this.FastForwardInstructions = environmentConfig.FastForwardInstructions;
+        // PTrace is not present in CPUConfig or EnvironmentConfig, remains null.
+
+        // --- Frontend ---
+        this.FetchSpeed = environmentConfig.FetchSpeed;
+        this.FetchRenameDelay = environmentConfig.FetchRenameDelay;
+        // FetchPolicy, are not present in CPUConfig or EnvironmentConfig, remain null.
+
+        // --- Branch Predictor ---
+        this.BranchPredictorType = cpuConfig.BranchPredictorType;
+        this.BpredBimodTableSize = cpuConfig.BpredBimodTableSize;
+        this.Bpred2LevConfig = cpuConfig.Bpred2LevConfig;
+        this.BpredCombMetaTableSize = cpuConfig.BpredCombMetaTableSize;
+        this.BpredReturnAddressStackSize = cpuConfig.BpredReturnAddressStackSize;
+        this.BpredBtbConfig = cpuConfig.BpredBtbConfig;
+        this.BpredSpeculativeUpdate = cpuConfig.BpredSpeculativeUpdate;
+
+        // --- Cache Load-Latency Predictor (cpred) ---
+        this.CacheLoadPredictorType = cpuConfig.CacheLoadPredictorType;
+        this.CpredBimodTableSize = cpuConfig.CpredBimodTableSize;
+        this.Cpred2LevConfig = cpuConfig.Cpred2LevConfig;
+        this.CpredCombMetaTableSize = cpuConfig.CpredCombMetaTableSize;
+        this.CpredReturnAddressStackSize = cpuConfig.CpredReturnAddressStackSize;
+        this.CpredBtbConfig = cpuConfig.CpredBtbConfig;
+
+        // --- Pipeline Widths & Core ---
+        this.DecodeWidth = cpuConfig.DecodeWidth;
+        this.IssueWidth = cpuConfig.IssueWidth;
+        this.IssueInOrder = cpuConfig.IssueInOrder;
+        this.IssueWrongPath = environmentConfig.IssueWrongPath;
+        this.CommitWidth = cpuConfig.CommitWidth;
+        this.RenameDispatchDelay = environmentConfig.RenameDispatchDelay;
+        this.IssueExecDelay = environmentConfig.IssueExecDelay;
+
+        // --- Queues & Buffers ---
+        this.ReorderBufferSize = cpuConfig.ReorderBufferSize;
+        this.IssueQueueSize = cpuConfig.IssueQueueSize;
+        this.RegisterFileSize = cpuConfig.RegisterFileSize;
+        this.LoadStoreQueueSize = cpuConfig.LoadStoreQueueSize;
+
+        // --- Recovery Model ---
+        // RecoveryModel is not present in CPUConfig or EnvironmentConfig, remains null.
+
+        // --- Cache Hierarchy ---
+        this.CacheDl1 = cpuConfig.CacheDl1;
+        this.CacheDl1Latency = environmentConfig.CacheDl1Latency;
+        this.CacheDl2 = cpuConfig.CacheDl2;
+        this.CacheDl2Latency = environmentConfig.CacheDl2Latency;
+        this.CacheIl1 = cpuConfig.CacheIl1;
+        this.CacheIl1Latency = environmentConfig.CacheIl1Latency;
+        this.CacheIl2 = cpuConfig.CacheIl2;
+        this.CacheIl2Latency = environmentConfig.CacheIl2Latency;
+        this.CacheFlushOnSyscall = environmentConfig.CacheFlushOnSyscall;
+        this.CacheInstructionCompress = environmentConfig.CacheInstructionCompress;
+
+        // --- Memory System ---
+        this.MemLatency = environmentConfig.MemLatency;
+        this.MemBusWidth = cpuConfig.MemBusWidth;
+
+        // --- TLB ---
+        this.TlbItlb = cpuConfig.TlbItlb;
+        this.TlbDtlb = cpuConfig.TlbDtlb;
+        this.TlbMissLatency = environmentConfig.TlbMissLatency;
+
+        // --- Functional Units (Resources) ---
+        this.ResIntegerAlu = cpuConfig.ResIntegerAlu;
+        this.ResIntegerMultDiv = cpuConfig.ResIntegerMultDiv;
+        this.ResMemoryPorts = cpuConfig.ResMemoryPorts;
+        this.ResFpAlu = cpuConfig.ResFpAlu;
+        this.ResFpMultDiv = cpuConfig.ResFpMultDiv;
+
+        // --- Profiling & Power ---
+        // PcStat, PowerPrintStats are not present in CPUConfig or EnvironmentConfig, remain null.
+    }
+
     /// <summary>
     /// Generates the command-line argument string corresponding to the configured options.
     /// Only includes options that have been explicitly set (are not null).
