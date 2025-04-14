@@ -35,6 +35,11 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
     public ReplacementPolicyEnum ReplacementPolicy { get; init; } // Could be an enum
 
     public CacheTlbConfig(string name, int numSets, int blockSize, int associativity, ReplacementPolicyEnum replacementPolicy) {
+        if (numSets <= 0 || (numSets & (numSets - 1)) != 0)
+        {
+            throw new ArgumentException($"The number of sets ({nameof(numSets)}) must be a positive power of 2. Received value: {numSets}.", nameof(numSets));
+        }
+
         Name = name;
         NumSets = numSets;
         BlockOrPageSize = blockSize;
@@ -643,7 +648,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
         // ConfigFile, DumpConfigFile, PrintHelp, Verbose, Debug, StartDebugger,
         // RandomSeed, InitTerminate, RedirectSimOutput, RedirectProgOutput,
         // NicePriority are not present in CPUConfig or EnvironmentConfig, remain null.
-
+        
         // --- Execution Control ---
         this.MaxInstructions = environmentConfig.MaxInstructions;
         this.FastForwardInstructions = environmentConfig.FastForwardInstructions;
@@ -728,6 +733,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// <returns>A string suitable for passing as arguments to sim-outorder.</returns>
     public string ToCommandLineString()
     {
+
         var sb = new StringBuilder();
 
         // Helper to append option if value is not null

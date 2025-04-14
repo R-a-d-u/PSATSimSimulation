@@ -43,56 +43,56 @@ namespace SMPSOsimulation
                 commitWidth: 8,
                 reorderBufferSize: 64,
                 issueQueueSize: 16,
-                registerFileSize: 32,
+                registerFileSize: 35,
                 loadStoreQueueSize: 32,
                 cacheDl1: new CacheTlbConfig(
                     name: "dl1",
-                    numSets: 10,
+                    numSets: 16,
                     blockSize: 32,
                     associativity: 4,
                     replacementPolicy: ReplacementPolicyEnum.f
                 ),
                 cacheDl2: new CacheTlbConfig(
                     name: "dl2",
-                    numSets: 6,
+                    numSets: 8,
                     blockSize: 64,
                     associativity: 8,
                     replacementPolicy: ReplacementPolicyEnum.r
                 ),
                 cacheIl1: new CacheTlbConfig(
                     name: "il1",
-                    numSets: 6,
+                    numSets: 8,
                     blockSize: 64,
                     associativity: 8,
                     replacementPolicy: ReplacementPolicyEnum.r
                 ),
                 cacheIl2: new CacheTlbConfig(
                     name: "il1",
-                    numSets: 6,
+                    numSets: 8,
                     blockSize: 64,
                     associativity: 8,
                     replacementPolicy: ReplacementPolicyEnum.r
                 ),
                 tlbItlb: new CacheTlbConfig(
                     name: "itlb",
-                    numSets: 6,
+                    numSets: 8,
                     blockSize: 64,
                     associativity: 8,
                     replacementPolicy: ReplacementPolicyEnum.r
                 ),
                 tlbDtlb: new CacheTlbConfig(
                     name: "dl1",
-                    numSets: 10,
+                    numSets: 16,
                     blockSize: 32,
                     associativity: 4,
                     replacementPolicy: ReplacementPolicyEnum.l
                 ),
-                memBusWidth: 120,
-                resIntegerAlu: 10,
-                resIntegerMultDiv: 11,
-                resMemoryPorts: 12,
-                resFpAlu: 13,
-                resFpMultDiv: 14
+                memBusWidth: 128,
+                resIntegerAlu: 8,
+                resIntegerMultDiv: 8,
+                resMemoryPorts: 8,
+                resFpAlu: 7,
+                resFpMultDiv: 5
             );
 
             var env = new EnvironmentConfig(

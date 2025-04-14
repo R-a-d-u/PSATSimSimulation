@@ -227,6 +227,10 @@ public class CPUConfig : IEquatable<CPUConfig?>
         tlbItlb.Validate(CPUConfigLimits.TlbItlbNumSetsMin, CPUConfigLimits.TlbItlbNumSetsMax, CPUConfigLimits.TlbItlbBlockOrPageSizeMin, CPUConfigLimits.TlbItlbBlockOrPageSizeMax, CPUConfigLimits.TlbItlbAssociativityMin, CPUConfigLimits.TlbItlbAssociativityMax);
         tlbDtlb.Validate(CPUConfigLimits.TlbDtlbNumSetsMin, CPUConfigLimits.TlbDtlbNumSetsMax, CPUConfigLimits.TlbDtlbBlockOrPageSizeMin, CPUConfigLimits.TlbDtlbBlockOrPageSizeMax, CPUConfigLimits.TlbDtlbAssociativityMin, CPUConfigLimits.TlbDtlbAssociativityMax);
 
+        if (memBusWidth <= 0 || (memBusWidth & (memBusWidth - 1)) != 0)
+        {
+            throw new ArgumentException($"The memory bus width ({nameof(memBusWidth)}) must be a positive power of 2. Received value: {memBusWidth}.", nameof(memBusWidth));
+        }
 
         BranchPredictorType = branchPredictorType;
         BpredBimodTableSize = bpredBimodTableSize;
@@ -751,7 +755,7 @@ public class CPUConfig : IEquatable<CPUConfig?>
         public static int IssueQueueSizeMin = 1;
 
         public static int RegisterFileSizeMax = 9999;
-        public static int RegisterFileSizeMin = 1;
+        public static int RegisterFileSizeMin = 34;
 
         public static int LoadStoreQueueSizeMax = 9999;
         public static int LoadStoreQueueSizeMin = 1;
@@ -839,19 +843,19 @@ public class CPUConfig : IEquatable<CPUConfig?>
         public static int TlbDtlbReplacementPolicyMin = 0;
 
 
-        public static int ResIntegerAluMax = 9999;
+        public static int ResIntegerAluMax = 8;
         public static int ResIntegerAluMin = 1;
 
-        public static int ResIntegerMultDivMax = 9999;
+        public static int ResIntegerMultDivMax = 8;
         public static int ResIntegerMultDivMin = 1;
 
-        public static int ResMemoryPortsMax = 9999;
+        public static int ResMemoryPortsMax = 8;
         public static int ResMemoryPortsMin = 1;
 
-        public static int ResFpAluMax = 9999;
+        public static int ResFpAluMax = 8;
         public static int ResFpAluMin = 1;
 
-        public static int ResFpMultDivMax = 9999;
+        public static int ResFpMultDivMax = 8;
         public static int ResFpMultDivMin = 1;
 
         public static int GetMin(int index)

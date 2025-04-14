@@ -4,21 +4,29 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 
-public class SimOutorderWrapper {
+public class SimOutorderWrapper
+{
     private Process? currentProcess = null; // Variable to store the current process
     private string workingDirectory;
     private string exePath;
-    private const string simout = "result/simout.res";
-    private const string progout = "result/progout.res";
+    private const string simout = "results/simout.res";
+    private const string progout = "results/progout.res";
 
     private string tracePath;
 
-    public SimOutorderWrapper(string exePath, string tracePath) {
+    public SimOutorderWrapper(string exePath, string tracePath)
+    {
         this.workingDirectory = Path.GetDirectoryName(exePath)!;
         this.exePath = exePath;
         this.tracePath = tracePath;
+
+        string resultPath = Path.Combine(this.workingDirectory, "results");
+        if (!Directory.Exists(resultPath))
+        {
+            Directory.CreateDirectory(resultPath);
+        }
     }
-    
+
     private void RunProcess(string arguments)
     {
         // --- Terminate existing process (generally cross-platform) ---
@@ -199,82 +207,196 @@ public class SimOutorderWrapper {
         return (new CPI(foundCpi.Value), new Energy(foundEnergy.Value));
     }
 
-    private (CPI cpi, Energy energy) Evaluate(CPUConfig config, EnvironmentConfig environmentConfig) {
+    private (CPI cpi, Energy energy) Evaluate(CPUConfig config, EnvironmentConfig environmentConfig)
+    {
+        // Ensure working directory exists (optional, but good practice)
+        Directory.CreateDirectory(workingDirectory);
+
+        // Define unique filenames for this run if needed, or use fixed names
+        // For example:
+        // simout = $"sim_{Guid.NewGuid()}.out";
+        // progout = $"prog_{Guid.NewGuid()}.out";
+
         var simOutorderConfig = new SimOutorderConfig(config, environmentConfig);
-        simOutorderConfig.RedirectSimOutput = simout;
-        simOutorderConfig.RedirectProgOutput = progout;
+        simOutorderConfig.RedirectSimOutput = simout; // Assigns the filename
+        simOutorderConfig.RedirectProgOutput = progout; // Assigns the filename
         simOutorderConfig.PowerPrintStats = true;
+
         RunProcess(simOutorderConfig.ToCommandLineString());
-        currentProcess!.WaitForExit();
-        // *** Check Exit Code and Capture STREAMS on Error ***
+
+        if (currentProcess == null)
+        {
+            throw new InvalidOperationException("Process was not started correctly.");
+        }
+
+        currentProcess.WaitForExit();
+
+        // *** Check Exit Code and Capture STREAMS/FILE on Error ***
         if (currentProcess.ExitCode != 0)
         {
             StringBuilder errorDetailsBuilder = new StringBuilder();
             errorDetailsBuilder.AppendLine($"External simulation process failed with ExitCode {currentProcess.ExitCode}.");
+            errorDetailsBuilder.AppendLine($"Working Directory: {Path.GetFullPath(workingDirectory)}"); // Added for clarity
+            errorDetailsBuilder.AppendLine($"Command used was: {simOutorderConfig.ToCommandLineString()}");
 
+            // --- Read Captured Standard Error ---
             try
             {
-                // --- Read Captured Standard Error ---
-                // ReadToEnd() is safe here because the process has already exited.
                 string stdErr = currentProcess.StandardError.ReadToEnd();
                 if (!string.IsNullOrWhiteSpace(stdErr))
                 {
-                    errorDetailsBuilder.AppendLine("--- Standard Error Output ---");
-                    // Limit output length in exception message if necessary
+                    errorDetailsBuilder.AppendLine("\n--- Standard Error Output ---");
                     const int maxLen = 2048;
                     errorDetailsBuilder.AppendLine(stdErr.Length <= maxLen ? stdErr.Trim() : stdErr.Substring(0, maxLen).Trim() + "...");
-                    // errorDetailsBuilder.AppendLine(stdErr.Trim()); // Use this if length isn't a concern
                     errorDetailsBuilder.AppendLine("--- End Standard Error Output ---");
                 }
                 else
                 {
-                    errorDetailsBuilder.AppendLine("(No output captured on Standard Error stream.)");
-                }
-
-                // --- Read Captured Standard Output ---
-                string stdOut = currentProcess.StandardOutput.ReadToEnd();
-                if (!string.IsNullOrWhiteSpace(stdOut))
-                {
-                    errorDetailsBuilder.AppendLine("--- Standard Output ---");
-                    // Limit output length in exception message if necessary
-                    const int maxLen = 2048;
-                    errorDetailsBuilder.AppendLine(stdOut.Length <= maxLen ? stdOut.Trim() : stdOut.Substring(0, maxLen).Trim() + "...");
-                    // errorDetailsBuilder.AppendLine(stdOut.Trim()); // Use this if length isn't a concern
-                    errorDetailsBuilder.AppendLine("--- End Standard Output ---");
-                }
-                else
-                {
-                    errorDetailsBuilder.AppendLine("(No output captured on Standard Output stream.)");
+                    errorDetailsBuilder.AppendLine("\n(No output captured on Standard Error stream.)");
                 }
             }
             catch (Exception streamEx)
             {
-                // Unlikely after process exit, but possible
-                errorDetailsBuilder.AppendLine($"\n(An error occurred while reading process output streams: {streamEx.Message})");
+                errorDetailsBuilder.AppendLine($"\n(An error occurred while reading Standard Error stream: {streamEx.Message})");
             }
 
-            // Attempt cleanup of potentially unused/incomplete redirected files (simout/progout)
-            try { File.Delete(Path.Combine(workingDirectory, simout)); } catch { /* Ignore */ }
-            try { File.Delete(Path.Combine(workingDirectory, progout)); } catch { /* Ignore */ }
+            // --- Read Captured Standard Output ---
+            try
+            {
+                string stdOut = currentProcess.StandardOutput.ReadToEnd();
+                if (!string.IsNullOrWhiteSpace(stdOut))
+                {
+                    errorDetailsBuilder.AppendLine("\n--- Standard Output ---");
+                    string trimmedStdOut = stdOut.Trim();
+                    const int maxLen = 2048;
+                    // Show the *end* of the output if it's too long, as errors often appear last
+                    errorDetailsBuilder.AppendLine(trimmedStdOut.Length <= maxLen ? trimmedStdOut : "..." + trimmedStdOut.Substring(trimmedStdOut.Length - maxLen));
+                    errorDetailsBuilder.AppendLine("--- End Standard Output ---");
+                }
+                else
+                {
+                    errorDetailsBuilder.AppendLine("\n(No output captured on Standard Output stream.)");
+                }
+            }
+            catch (Exception streamEx)
+            {
+                errorDetailsBuilder.AppendLine($"\n(An error occurred while reading Standard Output stream: {streamEx.Message})");
+            }
 
+            // --- Read 'simout' file for "fatal:" lines ---
+            // Do this *before* deleting the file
+            string simoutPath = Path.Combine(workingDirectory, simout);
+            errorDetailsBuilder.AppendLine($"\n--- Searching for 'fatal:' lines in {simout} ({simoutPath}) ---");
+            try
+            {
+                if (File.Exists(simoutPath))
+                {
+                    var fatalLinesFound = new List<string>();
+                    // Use StreamReader for line-by-line reading and proper disposal
+                    using (StreamReader reader = new StreamReader(simoutPath))
+                    {
+                        string? line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            // Case-insensitive search for "fatal:"
+                            if (line.IndexOf("fatal:", StringComparison.OrdinalIgnoreCase) >= 0)
+                            {
+                                fatalLinesFound.Add(line.Trim());
+                            }
+                        }
+                    } // StreamReader is disposed here
+
+                    if (fatalLinesFound.Any())
+                    {
+                        errorDetailsBuilder.AppendLine("Found the following 'fatal:' lines:");
+                        foreach (var fatalLine in fatalLinesFound)
+                        {
+                            // Optional: Limit length of each reported fatal line if they can be very long
+                            const int maxFatalLineLen = 512;
+                            errorDetailsBuilder.AppendLine($"  * {(fatalLine.Length <= maxFatalLineLen ? fatalLine : fatalLine.Substring(0, maxFatalLineLen) + "...")}");
+                        }
+                    }
+                    else
+                    {
+                        errorDetailsBuilder.AppendLine("(No lines containing 'fatal:' found.)");
+                    }
+                }
+                else
+                {
+                    errorDetailsBuilder.AppendLine($"(File not found. It might not have been created or was already deleted.)");
+                }
+            }
+            catch (IOException ioEx) // Catch specific IO exceptions
+            {
+                errorDetailsBuilder.AppendLine($"\n(IO Error occurred while trying to read the simout file: {ioEx.Message})");
+            }
+            catch (Exception fileEx) // Catch any other potential exceptions during file read
+            {
+                errorDetailsBuilder.AppendLine($"\n(An unexpected error occurred while trying to read the simout file: {fileEx.Message})");
+            }
+            finally // Ensure end marker is added even if exceptions occur during reading
+            {
+                errorDetailsBuilder.AppendLine($"--- End search in {simout} ---");
+            }
+            // --- End reading 'simout' ---
+
+
+            // Attempt cleanup of potentially unused/incomplete redirected files
+            // Now delete simout (if it exists) and progout
+            try
+            {
+                if (File.Exists(simoutPath))
+                {
+                    File.Delete(simoutPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorDetailsBuilder.AppendLine($"\n(Warning: Failed to delete {simoutPath}: {ex.Message})");
+                // Decide if you want to continue or stop here. Continuing might leave files behind.
+            }
+            try
+            {
+                string progoutPath = Path.Combine(workingDirectory, progout);
+                if (File.Exists(progoutPath))
+                {
+                    File.Delete(progoutPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                errorDetailsBuilder.AppendLine($"\n(Warning: Failed to delete {progout}: {ex.Message})");
+            }
+
+            // Throw the exception with all gathered details
             throw new ApplicationException(errorDetailsBuilder.ToString());
-        }
-        var results = GetResultsFromSimout();
+        } // End if (ExitCode != 0)
+
+        // --- Process exited successfully ---
+        var results = GetResultsFromSimout(); // Assumes this reads 'simout'
+
+        // --- Cleanup successful run files ---
         try
         {
-            File.Delete(Path.Combine(workingDirectory, simout));
-            File.Delete(Path.Combine(workingDirectory, progout));
+            string simoutPath = Path.Combine(workingDirectory, simout);
+            string progoutPath = Path.Combine(workingDirectory, progout);
+            //if (File.Exists(simoutPath)) File.Delete(simoutPath);
+            //if (File.Exists(progoutPath)) File.Delete(progoutPath);
         }
         catch (Exception ex)
         {
-            throw new Exception($"Warning: Successfully read results, but failed to delete files in '{workingDirectory}'. Error: {ex.Message}");
+            // Log this as a warning, but don't fail the whole operation since results were obtained
+            Console.Error.WriteLine($"Warning: Successfully read results, but failed to delete simulation files in '{workingDirectory}'. Error: {ex.Message}");
+            // Depending on requirements, you might want to re-throw or handle differently
+            // throw new IOException($"Warning: Successfully read results, but failed to delete files in '{workingDirectory}'. Error: {ex.Message}", ex);
         }
         return results;
     }
-
-    public List<(double cpi, double energy, int originalIndex)> Evaluate(List<(CPUConfig config, int originalIndex)> configs, EnvironmentConfig environmentConfig) {
+    public List<(double cpi, double energy, int originalIndex)> Evaluate(List<(CPUConfig config, int originalIndex)> configs, EnvironmentConfig environmentConfig)
+    {
         List<(double cpi, double energy, int originalIndex)> retlist = new();
-        foreach (var config in configs) {
+        foreach (var config in configs)
+        {
             var result = Evaluate(config.config, environmentConfig);
             retlist.Add((result.cpi.Value, result.energy.Value, config.originalIndex));
         }
