@@ -201,8 +201,8 @@ public class CPUConfig : IEquatable<CPUConfig?>
         ThrowIfOutOfRange(nameof(cpredBimodTableSize), cpredBimodTableSize, CPUConfigLimits.CpredBimodTableSizeMin, CPUConfigLimits.CpredBimodTableSizeMax);
         ThrowIfOutOfRange(nameof(cpredCombMetaTableSize), cpredCombMetaTableSize, CPUConfigLimits.CpredCombMetaTableSizeMin, CPUConfigLimits.CpredCombMetaTableSizeMax);
         ThrowIfOutOfRange(nameof(cpredReturnAddressStackSize), cpredReturnAddressStackSize, CPUConfigLimits.CpredReturnAddressStackSizeMin, CPUConfigLimits.CpredReturnAddressStackSizeMax);
-        ThrowIfOutOfRange(nameof(decodeWidth), decodeWidth, CPUConfigLimits.DecodeWidthMin, CPUConfigLimits.DecodeWidthMax);
-        ThrowIfOutOfRange(nameof(issueWidth), issueWidth, CPUConfigLimits.IssueWidthMin, CPUConfigLimits.IssueWidthMax);
+        ThrowIfOutOfRange(nameof(decodeWidth), decodeWidth, (int)Math.Pow(2, CPUConfigLimits.DecodeWidthMinLog2), (int)Math.Pow(2, CPUConfigLimits.DecodeWidthMaxLog2));
+        ThrowIfOutOfRange(nameof(issueWidth), issueWidth, (int)Math.Pow(2, CPUConfigLimits.IssueWidthMinLog2), (int)Math.Pow(2, CPUConfigLimits.IssueWidthMaxLog2));
         ThrowIfOutOfRange(nameof(commitWidth), commitWidth, CPUConfigLimits.CommitWidthMin, CPUConfigLimits.CommitWidthMax);
         ThrowIfOutOfRange(nameof(reorderBufferSize), reorderBufferSize, CPUConfigLimits.ReorderBufferSizeMin, CPUConfigLimits.ReorderBufferSizeMax);
         ThrowIfOutOfRange(nameof(issueQueueSize), issueQueueSize, CPUConfigLimits.IssueQueueSizeMin, CPUConfigLimits.IssueQueueSizeMax);
@@ -216,9 +216,9 @@ public class CPUConfig : IEquatable<CPUConfig?>
         ThrowIfOutOfRange(nameof(resFpMultDiv), resFpMultDiv, CPUConfigLimits.ResFpMultDivMin, CPUConfigLimits.ResFpMultDivMax);
 
         // Validate nested config classes
-        bpred2LevConfig.Validate(CPUConfigLimits.Bpred2LevConfigL1SizeMin, CPUConfigLimits.Bpred2LevConfigL1SizeMax, CPUConfigLimits.Bpred2LevConfigL2SizeMin, CPUConfigLimits.Bpred2LevConfigL2SizeMax, CPUConfigLimits.Bpred2LevConfigHistorySizeMin, CPUConfigLimits.Bpred2LevConfigHistorySizeMax);
+        bpred2LevConfig.Validate((int)Math.Pow(2, CPUConfigLimits.Bpred2LevConfigL1SizeMinLog2), (int)Math.Pow(2, CPUConfigLimits.Bpred2LevConfigL1SizeMaxLog2), (int)Math.Pow(2, CPUConfigLimits.Bpred2LevConfigL2SizeMinLog2), (int)Math.Pow(2, CPUConfigLimits.Bpred2LevConfigL2SizeMaxLog2), CPUConfigLimits.Bpred2LevConfigHistorySizeMin, CPUConfigLimits.Bpred2LevConfigHistorySizeMax);
         bpredBtbConfig.Validate(CPUConfigLimits.BpredBtbConfigNumSetsMin, CPUConfigLimits.BpredBtbConfigNumSetsMax, CPUConfigLimits.BpredBtbConfigAssociativityMin, CPUConfigLimits.BpredBtbConfigAssociativityMax);
-        cpred2LevConfig.Validate(CPUConfigLimits.Cpred2LevConfigL1SizeMin, CPUConfigLimits.Cpred2LevConfigL1SizeMax, CPUConfigLimits.Cpred2LevConfigL2SizeMin, CPUConfigLimits.Cpred2LevConfigL2SizeMax, CPUConfigLimits.Cpred2LevConfigHistorySizeMin, CPUConfigLimits.Cpred2LevConfigHistorySizeMax);
+        cpred2LevConfig.Validate((int)Math.Pow(2, CPUConfigLimits.Cpred2LevConfigL1SizeMinLog2), (int)Math.Pow(2, CPUConfigLimits.Cpred2LevConfigL1SizeMaxLog2), (int)Math.Pow(2, CPUConfigLimits.Cpred2LevConfigL2SizeMinLog2), (int)Math.Pow(2, CPUConfigLimits.Cpred2LevConfigL2SizeMaxLog2), CPUConfigLimits.Cpred2LevConfigHistorySizeMin, CPUConfigLimits.Cpred2LevConfigHistorySizeMax);
         cpredBtbConfig.Validate(CPUConfigLimits.CpredBtbConfigNumSetsMin, CPUConfigLimits.CpredBtbConfigNumSetsMax, CPUConfigLimits.CpredBtbConfigAssociativityMin, CPUConfigLimits.CpredBtbConfigAssociativityMax);
         cacheDl1.Validate((int)Math.Pow(2, CPUConfigLimits.CacheDl1NumSetsMinLog2), (int)Math.Pow(2, CPUConfigLimits.CacheDl1NumSetsMaxLog2), CPUConfigLimits.CacheDl1BlockOrPageSizeMin, CPUConfigLimits.CacheDl1BlockOrPageSizeMax, CPUConfigLimits.CacheDl1AssociativityMin, CPUConfigLimits.CacheDl1AssociativityMax);
         cacheDl2.Validate((int)Math.Pow(2, CPUConfigLimits.CacheDl2NumSetsMinLog2), (int)Math.Pow(2, CPUConfigLimits.CacheDl2NumSetsMaxLog2), CPUConfigLimits.CacheDl2BlockOrPageSizeMin, CPUConfigLimits.CacheDl2BlockOrPageSizeMax, CPUConfigLimits.CacheDl2AssociativityMin, CPUConfigLimits.CacheDl2AssociativityMax);
@@ -428,15 +428,24 @@ public class CPUConfig : IEquatable<CPUConfig?>
     {
         Random random = new();
 
+        var bpred2predcfg = new Predictor2LevConfig( // bpred2levconfig
+                GenerateRandomPowerOfTwo(random, CPUConfigLimits.Bpred2LevConfigL1SizeMinLog2, CPUConfigLimits.Bpred2LevConfigL1SizeMaxLog2),
+                GenerateRandomPowerOfTwo(random, CPUConfigLimits.Bpred2LevConfigL2SizeMinLog2, CPUConfigLimits.Bpred2LevConfigL2SizeMaxLog2),
+                random.Next(CPUConfigLimits.Bpred2LevConfigHistorySizeMin, CPUConfigLimits.Bpred2LevConfigHistorySizeMax + 1),
+                random.Next(0, 2) == 1 // useXor
+            );
+        
+        var cpred2predcfg = new Predictor2LevConfig( // cpred2levconfig
+                GenerateRandomPowerOfTwo(random, CPUConfigLimits.Cpred2LevConfigL1SizeMinLog2, CPUConfigLimits.Cpred2LevConfigL1SizeMaxLog2),
+                GenerateRandomPowerOfTwo(random, CPUConfigLimits.Cpred2LevConfigL2SizeMinLog2, CPUConfigLimits.Cpred2LevConfigL2SizeMaxLog2),
+                random.Next(CPUConfigLimits.Cpred2LevConfigHistorySizeMin, CPUConfigLimits.Cpred2LevConfigHistorySizeMax + 1),
+                random.Next(0, 2) == 1 // useXor
+            );
+
         return new CPUConfig(
             (BranchPredictorTypeEnum)random.Next(CPUConfigLimits.BranchPredictorTypeMin, CPUConfigLimits.BranchPredictorTypeMax + 1),
             random.Next(CPUConfigLimits.BpredBimodTableSizeMin, CPUConfigLimits.BpredBimodTableSizeMax + 1),
-            new Predictor2LevConfig( // bpred2levconfig
-                random.Next(CPUConfigLimits.Bpred2LevConfigL1SizeMin, CPUConfigLimits.Bpred2LevConfigL1SizeMax + 1),
-                random.Next(CPUConfigLimits.Bpred2LevConfigL2SizeMin, CPUConfigLimits.Bpred2LevConfigL2SizeMax + 1),
-                random.Next(CPUConfigLimits.Bpred2LevConfigHistorySizeMin, CPUConfigLimits.Bpred2LevConfigHistorySizeMax + 1),
-                random.Next(0, 2) == 1 // useXor
-            ),
+            bpred2predcfg,
             random.Next(CPUConfigLimits.BpredCombMetaTableSizeMin, CPUConfigLimits.BpredCombMetaTableSizeMax + 1),
             random.Next(CPUConfigLimits.BpredReturnAddressStackSizeMin, CPUConfigLimits.BpredReturnAddressStackSizeMax + 1),
             new BtbConfig( //bpredBtbConfig
@@ -446,20 +455,15 @@ public class CPUConfig : IEquatable<CPUConfig?>
             (SpeculativePredictorUpdateStageEnum)random.Next(CPUConfigLimits.BpredSpeculativeUpdateMin, CPUConfigLimits.BpredSpeculativeUpdateMax + 1),
             (CacheLoadPredictorTypeEnum)random.Next(CPUConfigLimits.CacheLoadPredictorTypeMin, CPUConfigLimits.CacheLoadPredictorTypeMax + 1),
             random.Next(CPUConfigLimits.CpredBimodTableSizeMin, CPUConfigLimits.CpredBimodTableSizeMax + 1),
-            new Predictor2LevConfig( // cpred2levconfig
-                random.Next(CPUConfigLimits.Cpred2LevConfigL1SizeMin, CPUConfigLimits.Cpred2LevConfigL1SizeMax + 1),
-                random.Next(CPUConfigLimits.Cpred2LevConfigL2SizeMin, CPUConfigLimits.Cpred2LevConfigL2SizeMax + 1),
-                random.Next(CPUConfigLimits.Cpred2LevConfigHistorySizeMin, CPUConfigLimits.Cpred2LevConfigHistorySizeMax + 1),
-                random.Next(0, 2) == 1 // useXor
-            ),
+            cpred2predcfg,
             random.Next(CPUConfigLimits.CpredCombMetaTableSizeMin, CPUConfigLimits.CpredCombMetaTableSizeMax + 1),
             random.Next(CPUConfigLimits.CpredReturnAddressStackSizeMin, CPUConfigLimits.CpredReturnAddressStackSizeMax + 1),
             new BtbConfig( //cpredBtbConfig
                 random.Next(CPUConfigLimits.CpredBtbConfigNumSetsMin, CPUConfigLimits.CpredBtbConfigNumSetsMax + 1),
                 random.Next(CPUConfigLimits.CpredBtbConfigAssociativityMin, CPUConfigLimits.CpredBtbConfigAssociativityMax + 1)
             ),
-            random.Next(CPUConfigLimits.DecodeWidthMin, CPUConfigLimits.DecodeWidthMax + 1),
-            random.Next(CPUConfigLimits.IssueWidthMin, CPUConfigLimits.IssueWidthMax + 1),
+            GenerateRandomPowerOfTwo(random, CPUConfigLimits.DecodeWidthMinLog2, CPUConfigLimits.DecodeWidthMaxLog2),
+            GenerateRandomPowerOfTwo(random, CPUConfigLimits.IssueWidthMinLog2, CPUConfigLimits.IssueWidthMaxLog2),
             random.Next(0, 2) == 1,
             random.Next(CPUConfigLimits.CommitWidthMin, CPUConfigLimits.CommitWidthMax + 1),
             random.Next(CPUConfigLimits.ReorderBufferSizeMin, CPUConfigLimits.ReorderBufferSizeMax + 1),
@@ -523,8 +527,8 @@ public class CPUConfig : IEquatable<CPUConfig?>
         return [
             (int)BranchPredictorType,
             BpredBimodTableSize,
-            Bpred2LevConfig.L1Size,
-            Bpred2LevConfig.L2Size,
+            Math.Log2(Bpred2LevConfig.L1Size),
+            Math.Log2(Bpred2LevConfig.L2Size),
             Bpred2LevConfig.HistorySize,
             Bpred2LevConfig.UseXor ? 1 : 0,
             BpredCombMetaTableSize,
@@ -534,16 +538,16 @@ public class CPUConfig : IEquatable<CPUConfig?>
             (int)BpredSpeculativeUpdate,
             (int)CacheLoadPredictorType,
             CpredBimodTableSize,
-            Cpred2LevConfig.L1Size,
-            Cpred2LevConfig.L2Size,
+            Math.Log2(Cpred2LevConfig.L1Size),
+            Math.Log2(Cpred2LevConfig.L2Size),
             Cpred2LevConfig.HistorySize,
             Cpred2LevConfig.UseXor ? 1 : 0,
             CpredCombMetaTableSize,
             CpredReturnAddressStackSize,
             CpredBtbConfig.NumSets,
             CpredBtbConfig.Associativity,
-            DecodeWidth,
-            IssueWidth,
+            Math.Log2(DecodeWidth),
+            Math.Log2(IssueWidth),
             IssueInOrder ? 1 : 0,
             CommitWidth,
             ReorderBufferSize,
@@ -592,8 +596,8 @@ public class CPUConfig : IEquatable<CPUConfig?>
         var bpredBimodTableSize = (int)vector[idx++];
         var bpred2LevConfig = new Predictor2LevConfig
         (
-            (int)vector[idx++],
-            (int)vector[idx++],
+            (int)Math.Pow(2, (int)vector[idx++]),
+            (int)Math.Pow(2, (int)vector[idx++]),
             (int)vector[idx++],
             vector[idx++] != 0
         );
@@ -609,8 +613,8 @@ public class CPUConfig : IEquatable<CPUConfig?>
         var cpredBimodTableSize = (int)vector[idx++];
         var cpred2LevConfig = new Predictor2LevConfig
         (
-            (int)vector[idx++],
-            (int)vector[idx++],
+            (int)Math.Pow(2, (int)vector[idx++]),
+            (int)Math.Pow(2, (int)vector[idx++]),
             (int)vector[idx++],
             vector[idx++] != 0
         );
@@ -621,8 +625,8 @@ public class CPUConfig : IEquatable<CPUConfig?>
             (int)vector[idx++],
             (int)vector[idx++]
         );
-        var decodeWidth = (int)vector[idx++];
-        var issueWidth = (int)vector[idx++];
+        var decodeWidth = (int)Math.Pow(2, (int)vector[idx++]);
+        var issueWidth = (int)Math.Pow(2, (int)vector[idx++]);
         var issueInOrder = vector[idx++] != 0;
         var commitWidth = (int)vector[idx++];
         var reorderBufferSize = (int)vector[idx++];
@@ -733,11 +737,11 @@ public class CPUConfig : IEquatable<CPUConfig?>
         public static int BpredBimodTableSizeMax = 9999;
         public static int BpredBimodTableSizeMin = 1;
 
-        public static int Bpred2LevConfigL1SizeMax = 9999;
-        public static int Bpred2LevConfigL1SizeMin = 1;
+        public static int Bpred2LevConfigL1SizeMaxLog2 = (int)Math.Log2(9999);
+        public static int Bpred2LevConfigL1SizeMinLog2 = 0;
 
-        public static int Bpred2LevConfigL2SizeMax = 9999;
-        public static int Bpred2LevConfigL2SizeMin = 1;
+        public static int Bpred2LevConfigL2SizeMaxLog2 = (int)Math.Log2(9999);
+        public static int Bpred2LevConfigL2SizeMinLog2 = 0;
 
         public static int Bpred2LevConfigHistorySizeMax = 9999;
         public static int Bpred2LevConfigHistorySizeMin = 1;
@@ -766,11 +770,11 @@ public class CPUConfig : IEquatable<CPUConfig?>
         public static int CpredBimodTableSizeMax = 9999;
         public static int CpredBimodTableSizeMin = 1;
 
-        public static int Cpred2LevConfigL1SizeMax = 9999;
-        public static int Cpred2LevConfigL1SizeMin = 1;
+        public static int Cpred2LevConfigL1SizeMaxLog2 = (int)Math.Log2(9999);
+        public static int Cpred2LevConfigL1SizeMinLog2 = 0;
 
-        public static int Cpred2LevConfigL2SizeMax = 9999;
-        public static int Cpred2LevConfigL2SizeMin = 1;
+        public static int Cpred2LevConfigL2SizeMaxLog2 = (int)Math.Log2(9999);
+        public static int Cpred2LevConfigL2SizeMinLog2 = 0;
 
         public static int Cpred2LevConfigHistorySizeMax = 9999;
         public static int Cpred2LevConfigHistorySizeMin = 1;
@@ -790,11 +794,11 @@ public class CPUConfig : IEquatable<CPUConfig?>
         public static int CpredBtbConfigAssociativityMax = 9999;
         public static int CpredBtbConfigAssociativityMin = 1;
 
-        public static int DecodeWidthMax = 9999;
-        public static int DecodeWidthMin = 1;
+        public static int DecodeWidthMaxLog2 = (int)Math.Log2(9999);
+        public static int DecodeWidthMinLog2 = 0;
 
-        public static int IssueWidthMax = 9999;
-        public static int IssueWidthMin = 1;
+        public static int IssueWidthMaxLog2 = (int)Math.Log2(9999);
+        public static int IssueWidthMinLog2 = 0;
 
         public static int IssueInOrderMax = 1;
         public static int IssueInOrderMin = 0;
@@ -918,8 +922,8 @@ public class CPUConfig : IEquatable<CPUConfig?>
             {
                 0 => BranchPredictorTypeMin,
                 1 => BpredBimodTableSizeMin,
-                2 => Bpred2LevConfigL1SizeMin,
-                3 => Bpred2LevConfigL2SizeMin,
+                2 => Bpred2LevConfigL1SizeMinLog2,
+                3 => Bpred2LevConfigL2SizeMinLog2,
                 4 => Bpred2LevConfigHistorySizeMin,
                 5 => Bpred2LevConfigUseXorMin,
                 6 => BpredCombMetaTableSizeMin,
@@ -929,16 +933,16 @@ public class CPUConfig : IEquatable<CPUConfig?>
                 10 => BpredSpeculativeUpdateMin,
                 11 => CacheLoadPredictorTypeMin,
                 12 => CpredBimodTableSizeMin,
-                13 => Cpred2LevConfigL1SizeMin,
-                14 => Cpred2LevConfigL2SizeMin,
+                13 => Cpred2LevConfigL1SizeMinLog2,
+                14 => Cpred2LevConfigL2SizeMinLog2,
                 15 => Cpred2LevConfigHistorySizeMin,
                 16 => Cpred2LevConfigUseXorMin,
                 17 => CpredCombMetaTableSizeMin,
                 18 => CpredReturnAddressStackSizeMin,
                 19 => CpredBtbConfigNumSetsMin,
                 20 => CpredBtbConfigAssociativityMin,
-                21 => DecodeWidthMin,
-                22 => IssueWidthMin,
+                21 => DecodeWidthMinLog2,
+                22 => IssueWidthMinLog2,
                 23 => IssueInOrderMin,
                 24 => CommitWidthMin,
                 25 => ReorderBufferSizeMin,
@@ -985,8 +989,8 @@ public class CPUConfig : IEquatable<CPUConfig?>
             {
                 0 => BranchPredictorTypeMax,
                 1 => BpredBimodTableSizeMax,
-                2 => Bpred2LevConfigL1SizeMax,
-                3 => Bpred2LevConfigL2SizeMax,
+                2 => Bpred2LevConfigL1SizeMaxLog2,
+                3 => Bpred2LevConfigL2SizeMaxLog2,
                 4 => Bpred2LevConfigHistorySizeMax,
                 5 => Bpred2LevConfigUseXorMax,
                 6 => BpredCombMetaTableSizeMax,
@@ -996,16 +1000,16 @@ public class CPUConfig : IEquatable<CPUConfig?>
                 10 => BpredSpeculativeUpdateMax,
                 11 => CacheLoadPredictorTypeMax,
                 12 => CpredBimodTableSizeMax,
-                13 => Cpred2LevConfigL1SizeMax,
-                14 => Cpred2LevConfigL2SizeMax,
+                13 => Cpred2LevConfigL1SizeMaxLog2,
+                14 => Cpred2LevConfigL2SizeMaxLog2,
                 15 => Cpred2LevConfigHistorySizeMax,
                 16 => Cpred2LevConfigUseXorMax,
                 17 => CpredCombMetaTableSizeMax,
                 18 => CpredReturnAddressStackSizeMax,
                 19 => CpredBtbConfigNumSetsMax,
                 20 => CpredBtbConfigAssociativityMax,
-                21 => DecodeWidthMax,
-                22 => IssueWidthMax,
+                21 => DecodeWidthMaxLog2,
+                22 => IssueWidthMaxLog2,
                 23 => IssueInOrderMax,
                 24 => CommitWidthMax,
                 25 => ReorderBufferSizeMax,

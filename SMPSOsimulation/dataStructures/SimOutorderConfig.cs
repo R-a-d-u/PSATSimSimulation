@@ -186,6 +186,16 @@ public class Predictor2LevConfig : IEquatable<Predictor2LevConfig>
         if (HistorySize < historySizeMin || HistorySize > historySizeMax)
             throw new ArgumentOutOfRangeException(nameof(HistorySize), $"HistorySize {HistorySize} is out of bounds [{historySizeMin}, {historySizeMax}]");
 
+        if (L1Size <= 0 || (L1Size & (L1Size - 1)) != 0)
+        {
+            throw new ArgumentException($"The ({nameof(L1Size)}) must be a positive power of 2. Received value: {L1Size}.", nameof(L1Size));
+        }
+
+        if (L2Size <= 0 || (L2Size & (L2Size - 1)) != 0)
+        {
+            throw new ArgumentException($"The ({nameof(L2Size)}) must be a positive power of 2. Received value: {L2Size}.", nameof(L2Size));
+        }
+
         return true;
     }
 }
