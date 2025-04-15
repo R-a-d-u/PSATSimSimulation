@@ -17,7 +17,7 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
     /// <summary>
     /// Number of sets in the cache/TLB.
     /// </summary>
-    public int NumSets { get; init; }
+    public IntPowerOf2 NumSets { get; init; }
 
     /// <summary>
     /// Block size (cache) or page size (TLB) in bytes.
@@ -34,12 +34,7 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
     /// </summary>
     public ReplacementPolicyEnum ReplacementPolicy { get; init; } // Could be an enum
 
-    public CacheTlbConfig(string name, int numSets, int blockSize, int associativity, ReplacementPolicyEnum replacementPolicy) {
-        if (numSets <= 0 || (numSets & (numSets - 1)) != 0)
-        {
-            throw new ArgumentException($"The number of sets ({nameof(numSets)}) must be a positive power of 2. Received value: {numSets}.", nameof(numSets));
-        }
-
+    public CacheTlbConfig(string name, IntPowerOf2 numSets, int blockSize, int associativity, ReplacementPolicyEnum replacementPolicy) {
         Name = name;
         NumSets = numSets;
         BlockOrPageSize = blockSize;
@@ -87,11 +82,8 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
         return !(left == right);
     }
 
-    public bool Validate(int numSetsMin, int numSetsMax, int blockOrPageSizeMin, int blockOrPageSizeMax, int associativityMin, int associativityMax)
+    public bool Validate(int blockOrPageSizeMin, int blockOrPageSizeMax, int associativityMin, int associativityMax)
     {
-        if (NumSets < numSetsMin || NumSets > numSetsMax)
-            throw new ArgumentOutOfRangeException(nameof(NumSets), $"NumSets {NumSets} is out of bounds [{numSetsMin}, {numSetsMax}]");
-
         if (BlockOrPageSize < blockOrPageSizeMin || BlockOrPageSize > blockOrPageSizeMax)
             throw new ArgumentOutOfRangeException(nameof(BlockOrPageSize), $"BlockOrPageSize {BlockOrPageSize} is out of bounds [{blockOrPageSizeMin}, {blockOrPageSizeMax}]");
 
@@ -111,17 +103,17 @@ public class Predictor2LevConfig : IEquatable<Predictor2LevConfig>
     /// <summary>
     /// Level 1 table size.
     /// </summary>
-    public int L1Size { get; init; }
+    public IntPowerOf2 L1Size { get; init; }
 
     /// <summary>
     /// Level 2 table size.
     /// </summary>
-    public int L2Size { get; init; }
+    public IntPowerOf2 L2Size { get; init; }
 
     /// <summary>
     /// History register size (in bits).
     /// </summary>
-    public int HistorySize { get; init; }
+    public IntPowerOf2 HistorySize { get; init; }
 
     /// <summary>
     /// Whether to use XOR folding for history (true) or not (false).
@@ -129,7 +121,7 @@ public class Predictor2LevConfig : IEquatable<Predictor2LevConfig>
     /// </summary>
     public bool UseXor { get; init; }
 
-    public Predictor2LevConfig(int l1, int l2, int historySize, bool useXor) {
+    public Predictor2LevConfig(IntPowerOf2 l1, IntPowerOf2 l2, IntPowerOf2 historySize, bool useXor) {
         L1Size = l1;
         L2Size = l2;
         HistorySize = historySize;
@@ -138,7 +130,7 @@ public class Predictor2LevConfig : IEquatable<Predictor2LevConfig>
 
     public override string ToString()
     {
-        return $"{L1Size} {L2Size} {HistorySize} {(UseXor ? 1 : 0)}";
+        return $"{L1Size.ToString()} {L2Size.ToString()} {HistorySize.ToString()} {(UseXor ? 1 : 0)}";
     }
 
     // --- IEquatable and Hashing ---
@@ -173,30 +165,6 @@ public class Predictor2LevConfig : IEquatable<Predictor2LevConfig>
     public static bool operator !=(Predictor2LevConfig? left, Predictor2LevConfig? right)
     {
         return !(left == right);
-    }
-
-    public bool Validate(int l1min, int l1max, int l2min, int l2max, int historySizeMin, int historySizeMax)
-    {
-        if (L1Size < l1min || L1Size > l1max)
-            throw new ArgumentOutOfRangeException(nameof(L1Size), $"L1Size {L1Size} is out of bounds [{l1min}, {l1max}]");
-
-        if (L2Size < l2min || L2Size > l2max)
-            throw new ArgumentOutOfRangeException(nameof(L2Size), $"L2Size {L2Size} is out of bounds [{l2min}, {l2max}]");
-
-        if (HistorySize < historySizeMin || HistorySize > historySizeMax)
-            throw new ArgumentOutOfRangeException(nameof(HistorySize), $"HistorySize {HistorySize} is out of bounds [{historySizeMin}, {historySizeMax}]");
-
-        if (L1Size <= 0 || (L1Size & (L1Size - 1)) != 0)
-        {
-            throw new ArgumentException($"The ({nameof(L1Size)}) must be a positive power of 2. Received value: {L1Size}.", nameof(L1Size));
-        }
-
-        if (L2Size <= 0 || (L2Size & (L2Size - 1)) != 0)
-        {
-            throw new ArgumentException($"The ({nameof(L2Size)}) must be a positive power of 2. Received value: {L2Size}.", nameof(L2Size));
-        }
-
-        return true;
     }
 }
 
@@ -493,12 +461,12 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// <summary>
     /// instruction decode B/W (insts/cycle)
     /// </summary>
-    public int? DecodeWidth { get; set; } // -decode:width <int>
+    public IntPowerOf2? DecodeWidth { get; set; } // -decode:width <int>
 
     /// <summary>
     /// instruction issue B/W (insts/cycle)
     /// </summary>
-    public int? IssueWidth { get; set; } // -issue:width <int>
+    public IntPowerOf2? IssueWidth { get; set; } // -issue:width <int>
 
     /// <summary>
     /// run pipeline with in-order issue
@@ -599,7 +567,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// <summary>
     /// memory access bus width (in bytes)s
     /// </summary>
-    public int? MemBusWidth { get; set; } // -mem:width <int>
+    public IntPowerOf2? MemBusWidth { get; set; } // -mem:width <int>
 
     // --- TLB ---
     /// <summary> Instruction TLB Config. Can be "none" or CacheTlbConfig. </summary>
