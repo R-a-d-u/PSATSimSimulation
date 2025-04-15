@@ -321,10 +321,10 @@ namespace SMPSOsimulation
             GenerationChanged.Invoke(this, results);
         }
 
-        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string psatsimExePath, List<string> tracePaths)
+        public List<(CPUConfig, double[])> StartSearch(SearchConfigSMPSO searchConfig, string msimRunnablePath, List<string> benchmarkPaths)
         {
             Random random = new();
-            ResultsProvider resultsProvider = new(searchConfig.environment, psatsimExePath, tracePaths);
+            ResultsProvider resultsProvider = new(searchConfig.environment, msimRunnablePath, benchmarkPaths);
             var domination = InitDomination(searchConfig);
             var swarm = InitSwarm(searchConfig, resultsProvider);
             var leadersArchive = InitLeadersArchive(swarm, searchConfig, domination);

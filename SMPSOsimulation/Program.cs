@@ -7,94 +7,6 @@ namespace SMPSOsimulation
     {
         public static void Main(string[] _)
         {
-            var cpuconf = new CPUConfig(
-                branchPredictorType: BranchPredictorTypeEnum.twolev,
-                bpredBimodTableSize: 128,
-                bpred2LevConfig: new Predictor2LevConfig(
-                    l1: 64,
-                    l2: 64,
-                    historySize: 8,
-                    useXor: false
-                ),
-                bpredCombMetaTableSize: 128,
-                bpredReturnAddressStackSize: 32,
-                bpredBtbConfig: new BtbConfig(
-                    numSets: 8,
-                    associativity: 2
-                ),
-                bpredSpeculativeUpdate: SpeculativePredictorUpdateStageEnum.ID,
-                cacheLoadPredictorType: CacheLoadPredictorTypeEnum.taken,
-                cpredBimodTableSize: 64,
-                cpred2LevConfig: new Predictor2LevConfig(
-                    l1: 128,
-                    l2: 128,
-                    historySize: 4,
-                    useXor: true
-                ),
-                cpredCombMetaTableSize: 120,
-                cpredReturnAddressStackSize: 30,
-                cpredBtbConfig: new BtbConfig(
-                    numSets: 10,
-                    associativity: 3
-                ),
-                decodeWidth: 32,
-                issueWidth: 16,
-                issueInOrder: false,
-                commitWidth: 8,
-                reorderBufferSize: 64,
-                issueQueueSize: 16,
-                registerFileSize: 35,
-                loadStoreQueueSize: 32,
-                cacheDl1: new CacheTlbConfig(
-                    name: "dl1",
-                    numSets: 16,
-                    blockSize: 32,
-                    associativity: 4,
-                    replacementPolicy: ReplacementPolicyEnum.f
-                ),
-                cacheDl2: new CacheTlbConfig(
-                    name: "dl2",
-                    numSets: 8,
-                    blockSize: 64,
-                    associativity: 8,
-                    replacementPolicy: ReplacementPolicyEnum.r
-                ),
-                cacheIl1: new CacheTlbConfig(
-                    name: "il1",
-                    numSets: 8,
-                    blockSize: 64,
-                    associativity: 8,
-                    replacementPolicy: ReplacementPolicyEnum.r
-                ),
-                cacheIl2: new CacheTlbConfig(
-                    name: "il1",
-                    numSets: 8,
-                    blockSize: 64,
-                    associativity: 8,
-                    replacementPolicy: ReplacementPolicyEnum.r
-                ),
-                tlbItlb: new CacheTlbConfig(
-                    name: "itlb",
-                    numSets: 8,
-                    blockSize: 64,
-                    associativity: 8,
-                    replacementPolicy: ReplacementPolicyEnum.r
-                ),
-                tlbDtlb: new CacheTlbConfig(
-                    name: "dl1",
-                    numSets: 16,
-                    blockSize: 32,
-                    associativity: 4,
-                    replacementPolicy: ReplacementPolicyEnum.l
-                ),
-                memBusWidth: 128,
-                resIntegerAlu: 8,
-                resIntegerMultDiv: 8,
-                resMemoryPorts: 8,
-                resFpAlu: 7,
-                resFpMultDiv: 5
-            );
-
             var env = new EnvironmentConfig(
                 maxInstructions: 50000,
                 fastForwardInstructions: 1000,
@@ -116,9 +28,34 @@ namespace SMPSOsimulation
                 renameDispatchDelay: 15
             );
 
-            var runner = new SimOutorderWrapper("/home/cepoiuradu/currentstorage/Documents/Projects/SimpleSimSMPSO/m-sim_v2.0/sim-outorder", "/home/cepoiuradu/currentstorage/Documents/Projects/SimpleSimSMPSO/m-sim_v2.0/bzip2.arg");
-            var results = runner.Evaluate([(cpuconf, 14)], env);
-            Console.WriteLine($"cpi {results[0].cpi} | energy {results[0].energy} | position {results[0].originalIndex}");
+            var cfg = new SearchConfigSMPSO(
+                swarmSize: 10,
+                archiveSize: 10,
+                maxGenerations: 10,
+                turbulenceRate: 0.1,
+                environment: env
+            );
+
+            var simExec = "/home/cepoiuradu/currentstorage/Documents/Projects/SimpleSimSMPSO/m-sim_v2.0/sim-outorder";
+            var benchmark = "/home/cepoiuradu/currentstorage/Documents/Projects/SimpleSimSMPSO/m-sim_v2.0/bzip2.arg";
+
+            var runner = new SMPSOOrchestrator();
+            runner.GenerationChanged += OnGenerationChanged;
+            var algorithmThread = new Thread(new ThreadStart(() => runner.StartSearch(cfg, simExec, [benchmark])));
+            algorithmThread.Start();
+
+            algorithmThread.Join();
+        }
+
+        private static void OnGenerationChanged(object? sender, List<(CPUConfig, double[])> leaders)
+        {
+            Console.WriteLine("A aparut generatie noua. Liderii sunt:");
+            foreach (var leader in leaders) {
+                Console.WriteLine($"{leader.Item2[0]} {leader.Item2[1]}");
+            }
+            Console.WriteLine("--------------");
+            Console.WriteLine();
+            Console.WriteLine();
         }
     }
 }

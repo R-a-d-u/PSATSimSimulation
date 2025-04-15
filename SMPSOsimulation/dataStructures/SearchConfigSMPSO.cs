@@ -6,7 +6,6 @@
         public int maxGenerations;
         public double turbulenceRate;
         public EnvironmentConfig environment;
-        internal readonly int MaxFrequency;
 
         public bool IsRespectingConstraints()
         {
@@ -17,14 +16,13 @@
             return true;
         }
 
-        public SearchConfigSMPSO(int swarmSize, int archiveSize, int maxGenerations, double turbulenceRate, int maxFrequency, EnvironmentConfig environment)
+        public SearchConfigSMPSO(int swarmSize, int archiveSize, int maxGenerations, double turbulenceRate, EnvironmentConfig environment)
         {
             this.swarmSize = swarmSize;
             this.archiveSize = archiveSize;
             this.maxGenerations = maxGenerations;
             this.turbulenceRate = turbulenceRate;
             this.environment = environment;
-            this.MaxFrequency = maxFrequency;
 
             if (!this.IsRespectingConstraints())
                 throw new Exception("SearchCOnfigSMPSO does not respect constraints");
