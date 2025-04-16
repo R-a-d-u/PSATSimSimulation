@@ -22,19 +22,19 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
     /// <summary>
     /// Block size (cache) or page size (TLB) in bytes.
     /// </summary>
-    public int BlockOrPageSize { get; init; }
+    public IntPowerOf2 BlockOrPageSize { get; init; }
 
     /// <summary>
     /// Associativity of the cache/TLB.
     /// </summary>
-    public int Associativity { get; init; }
+    public IntPowerOf2 Associativity { get; init; }
 
     /// <summary>
     /// Block replacement strategy: 'l' (LRU), 'f' (FIFO), 'r' (Random).
     /// </summary>
     public ReplacementPolicyEnum ReplacementPolicy { get; init; } // Could be an enum
 
-    public CacheTlbConfig(string name, IntPowerOf2 numSets, int blockSize, int associativity, ReplacementPolicyEnum replacementPolicy) {
+    public CacheTlbConfig(string name, IntPowerOf2 numSets, IntPowerOf2 blockSize, IntPowerOf2 associativity, ReplacementPolicyEnum replacementPolicy) {
         Name = name;
         NumSets = numSets;
         BlockOrPageSize = blockSize;
@@ -80,17 +80,6 @@ public class CacheTlbConfig : IEquatable<CacheTlbConfig>
     public static bool operator !=(CacheTlbConfig? left, CacheTlbConfig? right)
     {
         return !(left == right);
-    }
-
-    public bool Validate(int blockOrPageSizeMin, int blockOrPageSizeMax, int associativityMin, int associativityMax)
-    {
-        if (BlockOrPageSize < blockOrPageSizeMin || BlockOrPageSize > blockOrPageSizeMax)
-            throw new ArgumentOutOfRangeException(nameof(BlockOrPageSize), $"BlockOrPageSize {BlockOrPageSize} is out of bounds [{blockOrPageSizeMin}, {blockOrPageSizeMax}]");
-
-        if (Associativity < associativityMin || Associativity > associativityMax)
-            throw new ArgumentOutOfRangeException(nameof(Associativity), $"Associativity {Associativity} is out of bounds [{associativityMin}, {associativityMax}]");
-
-        return true;
     }
 
 }
@@ -176,14 +165,14 @@ public class BtbConfig : IEquatable<BtbConfig>
     /// <summary>
     /// Number of sets in the BTB.
     /// </summary>
-    public int NumSets { get; init; }
+    public IntPowerOf2 NumSets { get; init; }
 
     /// <summary>
     /// Associativity of the BTB.
     /// </summary>
-    public int Associativity { get; init; }
+    public IntPowerOf2 Associativity { get; init; }
 
-    public BtbConfig(int numSets, int associativity) {
+    public BtbConfig(IntPowerOf2 numSets, IntPowerOf2 associativity) {
         NumSets = numSets;
         Associativity = associativity;
     }
@@ -223,17 +212,6 @@ public class BtbConfig : IEquatable<BtbConfig>
     public static bool operator !=(BtbConfig? left, BtbConfig? right)
     {
         return !(left == right);
-    }
-
-    public bool Validate(int numSetsMin, int numSetsMax, int associativityMin, int associativityMax)
-    {
-        if (NumSets < numSetsMin || NumSets > numSetsMax)
-            throw new ArgumentOutOfRangeException(nameof(NumSets), $"NumSets {NumSets} is out of bounds [{numSetsMin}, {numSetsMax}]");
-
-        if (Associativity < associativityMin || Associativity > associativityMax)
-            throw new ArgumentOutOfRangeException(nameof(Associativity), $"Associativity {Associativity} is out of bounds [{associativityMin}, {associativityMax}]");
-
-        return true;
     }
 }
 
@@ -401,7 +379,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// <summary>
     /// bimodal predictor config ("<table size>")
     /// </summary>
-    public int? BpredBimodTableSize { get; set; } // -bpred:bimod <int>
+    public IntPowerOf2? BpredBimodTableSize { get; set; } // -bpred:bimod <int>
 
     /// <summary>
     /// 2-level predictor config (<l1size> <l2size> <hist_size> <xor>)
@@ -411,12 +389,12 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// <summary>
     /// combining predictor config (<meta_table_size>)
     /// </summary>
-    public int? BpredCombMetaTableSize { get; set; } // -bpred:comb <int>
+    public IntPowerOf2? BpredCombMetaTableSize { get; set; } // -bpred:comb <int>
 
     /// <summary>
     /// return address stack size (0 for no return stack)
     /// </summary>
-    public int? BpredReturnAddressStackSize { get; set; } // -bpred:ras <int>
+    public IntPowerOf2? BpredReturnAddressStackSize { get; set; } // -bpred:ras <int>
 
     /// <summary>
     /// BTB config (<num_sets> <associativity>)
@@ -434,7 +412,7 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// <summary>
     /// cache load-latency bimodal predictor config (<table size>)
     /// </summary>
-    public int? CpredBimodTableSize { get; set; } // -cpred:bimod <int>
+    public IntPowerOf2? CpredBimodTableSize { get; set; } // -cpred:bimod <int>
 
     /// <summary>
     /// cache load-latency 2-level predictor config (<l1size> <l2size> <hist_size> <xor>)
@@ -444,12 +422,12 @@ public class SimOutorderConfig : IEquatable<SimOutorderConfig>
     /// <summary>
     /// cache load-latency combining predictor config (<meta_table_size>)
     /// </summary>
-    public int? CpredCombMetaTableSize { get; set; } // -cpred:comb <int>
+    public IntPowerOf2? CpredCombMetaTableSize { get; set; } // -cpred:comb <int>
 
     /// <summary>
     /// return address stack size (0 for no return stack)
     /// </summary>
-    public int? CpredReturnAddressStackSize { get; set; } // -cpred:ras <int> (Note: Default is 0)
+    public IntPowerOf2? CpredReturnAddressStackSize { get; set; } // -cpred:ras <int> (Note: Default is 0)
 
     /// <summary>
     /// cache load-latency BTB config (<num_sets> <associativity>)
