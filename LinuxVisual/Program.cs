@@ -9,6 +9,7 @@ class Program
     {
         // Initialize GTK
         Application.Init();
+        Thread.CurrentThread.Priority = ThreadPriority.Normal;
 
         // Create and show the main window
         var mainWindow = new SMPSOGuiGtk();

@@ -127,36 +127,47 @@ namespace LinuxVisual
         // The existing event handler methods remain largely unchanged
         // ChangeGeneration, ChangeConfig methods remain the same...
 
-        private async void ShowParetoPlot(int generationIndex)
+        private readonly object plotLock = new object();
+        private bool isPlotting = false;
+
+        private void ShowParetoPlot(int generationIndex)
         {
-            // Use a lock object to prevent concurrent modification of shared resources
-            lock (this)
+            // Use a lock to prevent multiple simultaneous plot operations
+            lock (plotLock)
+            {
+                if (isPlotting)
+                {
+                    Console.WriteLine("Plot operation already in progress. Please wait.");
+                    return;
+                }
+
+                isPlotting = true;
+            }
+
+            try
             {
                 // Close previous plot window if it exists
-                if (plotWindow != null)
-                {
-                    try
+                Application.Invoke(delegate {
+                    if (plotWindow != null)
                     {
-                        var windowToDestroy = plotWindow;
-                        plotWindow = null;
-
-                        Application.Invoke(delegate {
+                        try
+                        {
+                            var windowToDestroy = plotWindow;
+                            plotWindow = null;
                             windowToDestroy.Destroy();
-                        });
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Error closing previous plot window: {ex.Message}");
+                            plotWindow = null;
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Error closing previous plot window: {ex.Message}");
-                    }
-                    finally
-                    {
-                        plotWindow = null;
-                    }
-                }
+                });
 
                 if (generationIndex < 0 || generationIndex >= history.Count)
                 {
                     Console.WriteLine("Cannot plot: Invalid generation index.");
+                    lock (plotLock) { isPlotting = false; }
                     return;
                 }
 
@@ -165,6 +176,7 @@ namespace LinuxVisual
                 if (leaders == null || !leaders.Any())
                 {
                     Console.WriteLine($"No leaders to plot for Generation {generationIndex + 1}.");
+                    lock (plotLock) { isPlotting = false; }
                     return;
                 }
 
@@ -172,97 +184,96 @@ namespace LinuxVisual
                 double[] cpiValues = leaders.Select(l => l.Item2[0]).ToArray();
                 double[] energyValues = leaders.Select(l => l.Item2[1]).ToArray();
 
-                // Create the plot - this could be moved to a background task if needed
-                byte[] imageBytes = null;
-
-                try
-                {
-                    // Create the plot on a background thread to avoid UI freezing
-                    imageBytes = Task.Run(() => {
+                // Create the plot in a separate task
+                Task.Run(() => {
+                    try
+                    {
                         var plot = new ScottPlot.Plot();
                         plot.Add.Scatter(cpiValues, energyValues);
                         plot.Title($"Pareto Front - Generation {generationIndex + 1}");
-                        plot.XLabel("CPI (Lower is Better)");
-                        plot.YLabel("Energy (Lower is Better)");
+                        plot.XLabel("CPI");
+                        plot.YLabel("Putere (Watt)");
                         plot.ShowLegend();
 
                         // Render the plot to a byte array
                         int plotWidth = 600;
                         int plotHeight = 400;
-                        return plot.GetImageBytes(plotWidth, plotHeight, ScottPlot.ImageFormat.Png);
-                    }).Result;
+                        byte[] imageBytes = plot.GetImageBytes(plotWidth, plotHeight, ScottPlot.ImageFormat.Png);
 
-                    // Create and show plot window on the UI thread
-                    Application.Invoke(delegate {
-                        try
-                        {
-                            Gdk.Pixbuf pixbuf = null;
+                        // Update UI on the main thread
+                        Application.Invoke(delegate {
                             try
                             {
                                 using (var stream = new MemoryStream(imageBytes))
                                 {
-                                    pixbuf = new Gdk.Pixbuf(stream);
+                                    var pixbuf = new Gdk.Pixbuf(stream);
+
+                                    // Create a new window for displaying the plot
+                                    var newPlotWindow = new Window($"Pareto Plot - Generation {generationIndex + 1}");
+                                    newPlotWindow.SetDefaultSize(620, 420);
+                                    newPlotWindow.WindowPosition = WindowPosition.Center;
+
+                                    var imageWidget = new Gtk.Image(pixbuf);
+                                    newPlotWindow.Add(imageWidget);
+
+                                    // Handle window closing properly
+                                    newPlotWindow.DeleteEvent += (s, a) => {
+                                        try
+                                        {
+                                            lock (plotLock)
+                                            {
+                                                if (plotWindow == (Window)s)
+                                                    plotWindow = null;
+                                            }
+                                            ((Window)s).Destroy();
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Console.WriteLine($"Error in plot window DeleteEvent: {ex.Message}");
+                                        }
+                                        a.RetVal = true;
+                                    };
+
+                                    newPlotWindow.ShowAll();
+
+                                    // Update reference with lock
+                                    lock (plotLock)
+                                    {
+                                        if (plotWindow != null)
+                                        {
+                                            try
+                                            {
+                                                plotWindow.Destroy();
+                                            }
+                                            catch { /* Ignore if already closed */ }
+                                        }
+                                        plotWindow = newPlotWindow;
+                                    }
                                 }
-
-                                if (pixbuf == null)
-                                {
-                                    Console.WriteLine("Failed to create Pixbuf from image data.");
-                                    return;
-                                }
-
-                                // Create a new window for displaying the plot
-                                Window newPlotWindow = new Window($"Pareto Plot - Generation {generationIndex + 1}");
-                                newPlotWindow.SetDefaultSize(620, 420); // Slightly larger than the image
-                                newPlotWindow.WindowPosition = WindowPosition.Center;
-
-                                var imageWidget = new Gtk.Image(pixbuf);
-                                newPlotWindow.Add(imageWidget);
-
-                                // Handle window closing properly
-                                newPlotWindow.DeleteEvent += (s, a) => {
-                                    try
-                                    {
-                                        Window win = (Window)s;
-                                        win.Destroy();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Console.WriteLine($"Error in plot window DeleteEvent: {ex.Message}");
-                                    }
-                                    a.RetVal = true;
-                                };
-
-                                newPlotWindow.Destroyed += (s, a) => {
-                                    plotWindow = null;
-                                    // Explicitly dispose of pixbuf if needed
-                                    if (pixbuf != null)
-                                    {
-                                        pixbuf.Dispose();
-                                    }
-                                };
-
-                                newPlotWindow.ShowAll();
-                                plotWindow = newPlotWindow;
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine($"Error creating plot window: {ex.Message}");
-                                if (pixbuf != null)
-                                {
-                                    pixbuf.Dispose();
-                                }
+                                Console.WriteLine($"Error displaying plot: {ex.Message}");
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error in UI: {ex.Message}");
-                        }
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error creating plot: {ex.Message}");
-                }
+                            finally
+                            {
+                                lock (plotLock) { isPlotting = false; }
+                            }
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error creating plot: {ex.Message}");
+                        Application.Invoke(delegate {
+                            lock (plotLock) { isPlotting = false; }
+                        });
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in ShowParetoPlot: {ex.Message}");
+                lock (plotLock) { isPlotting = false; }
             }
         }
 
