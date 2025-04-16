@@ -42,6 +42,8 @@ public class ResultsProvider
 
     private static bool BreaksConstraints(CPUConfig config)
     {
+        if (config.CacheIl1.BlockOrPageSize.GetValueInt() > config.CacheIl2.BlockOrPageSize.GetValueInt()) return true;
+        if (config.CacheDl1.BlockOrPageSize.GetValueInt() > config.CacheDl2.BlockOrPageSize.GetValueInt()) return true;
         return false;
     }
 
