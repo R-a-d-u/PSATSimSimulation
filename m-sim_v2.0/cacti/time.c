@@ -253,7 +253,7 @@ double *Tdecdrive,*Tdecoder1,*Tdecoder2,*outrisetime;
           case 3: vth = VTHNOR12x4x3; break;
           case 4: vth = VTHNOR12x4x4; break;
           case 5: vth = VTHNOR12x4x4; break;
-          default: printf("error:numstack=%d\n",numstack);
+          default: printf("error:numstack decoder_delay=%d\n",numstack);
 	}
         *Tdecoder1 = horowitz(nextinputtime,tf,VTHNAND60x90,vth,RISE);
         nextinputtime = *Tdecoder1/(1.0-vth);
@@ -337,7 +337,7 @@ double *Tdecdrive,*Tdecoder1,*Tdecoder2,*outrisetime;
           case 4: vth = VTHNOR12x4x4; break;
           case 5: vth = VTHNOR12x4x4; break;
           case 6: vth = VTHNOR12x4x4; break;
-          default: printf("error:numstack=%d\n",numstack);
+          default: printf("error:numstack decoder_tag_delay=%d\n",numstack);
 	}
         *Tdecoder1 = horowitz(nextinputtime,tf,VTHNAND60x90,vth,RISE);
         nextinputtime = *Tdecoder1/(1.0-vth);
