@@ -222,7 +222,9 @@ public class SimOutorderWrapper
         simOutorderConfig.RedirectProgOutput = progout; // Assigns the filename
         simOutorderConfig.PowerPrintStats = true;
 
+        Console.WriteLine($"DEBUGGGGGGGGGGGGGGG to evaluate config : {simOutorderConfig.ToCommandLineString()}");
         RunProcess(simOutorderConfig.ToCommandLineString());
+        
 
         if (currentProcess == null)
         {
@@ -230,6 +232,7 @@ public class SimOutorderWrapper
         }
 
         currentProcess.WaitForExit();
+        Console.WriteLine("Gata evaluatu");
 
         // *** Check Exit Code and Capture STREAMS/FILE on Error ***
         if (currentProcess.ExitCode != 0)
@@ -342,19 +345,19 @@ public class SimOutorderWrapper
 
 
             // Attempt cleanup of potentially unused/incomplete redirected files
-            // Now delete simout (if it exists) and progout
-            try
-            {
-                if (File.Exists(simoutPath))
-                {
-                    File.Delete(simoutPath);
-                }
-            }
-            catch (Exception ex)
-            {
-                errorDetailsBuilder.AppendLine($"\n(Warning: Failed to delete {simoutPath}: {ex.Message})");
-                // Decide if you want to continue or stop here. Continuing might leave files behind.
-            }
+            // // Now delete simout (if it exists) and progout
+            // try
+            // {
+            //     if (File.Exists(simoutPath))
+            //     {
+            //         File.Delete(simoutPath);
+            //     }
+            // }
+            // catch (Exception ex)
+            // {
+            //     errorDetailsBuilder.AppendLine($"\n(Warning: Failed to delete {simoutPath}: {ex.Message})");
+            //     // Decide if you want to continue or stop here. Continuing might leave files behind.
+            // }
             try
             {
                 string progoutPath = Path.Combine(workingDirectory, progout);

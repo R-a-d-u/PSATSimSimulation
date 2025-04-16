@@ -661,13 +661,13 @@ public class CPUConfig : IEquatable<CPUConfig?>
         public static int BranchPredictorTypeMax = (int)BranchPredictorTypeEnum.perfect - 1;
         public static int BranchPredictorTypeMin = 0;
 
-        public static IntPowerOf2 BpredBimodTableSizeMax = new(8192);
+        public static IntPowerOf2 BpredBimodTableSizeMax = new(4096);
         public static IntPowerOf2 BpredBimodTableSizeMin = new(1);
 
-        public static IntPowerOf2 Bpred2LevConfigL1SizeMax = new(8192);
+        public static IntPowerOf2 Bpred2LevConfigL1SizeMax = new(4096);
         public static IntPowerOf2 Bpred2LevConfigL1SizeMin = new(1);
 
-        public static IntPowerOf2 Bpred2LevConfigL2SizeMax = new(8192);
+        public static IntPowerOf2 Bpred2LevConfigL2SizeMax = new(4096);
         public static IntPowerOf2 Bpred2LevConfigL2SizeMin = new(1);
 
         public static IntPowerOf2 Bpred2LevConfigHistorySizeMax = new(16);
@@ -676,16 +676,16 @@ public class CPUConfig : IEquatable<CPUConfig?>
         public static int Bpred2LevConfigUseXorMax = 1;
         public static int Bpred2LevConfigUseXorMin = 0;
 
-        public static IntPowerOf2 BpredCombMetaTableSizeMax = new(8192);
+        public static IntPowerOf2 BpredCombMetaTableSizeMax = new(4096);
         public static IntPowerOf2 BpredCombMetaTableSizeMin = new(1);
 
-        public static IntPowerOf2 BpredReturnAddressStackSizeMax = new(8192);
+        public static IntPowerOf2 BpredReturnAddressStackSizeMax = new(4096);
         public static IntPowerOf2 BpredReturnAddressStackSizeMin = new(1);
 
-        public static IntPowerOf2 BpredBtbConfigNumSetsMax = new(8192);
+        public static IntPowerOf2 BpredBtbConfigNumSetsMax = new(4096);
         public static IntPowerOf2 BpredBtbConfigNumSetsMin = new(1);
 
-        public static IntPowerOf2 BpredBtbConfigAssociativityMax = new(8192);
+        public static IntPowerOf2 BpredBtbConfigAssociativityMax = new(4096);
         public static IntPowerOf2 BpredBtbConfigAssociativityMin = new(1);
 
         public static int BpredSpeculativeUpdateMax = 1;
@@ -694,13 +694,13 @@ public class CPUConfig : IEquatable<CPUConfig?>
         public static int CacheLoadPredictorTypeMax = (int)CacheLoadPredictorTypeEnum.perfect - 1;
         public static int CacheLoadPredictorTypeMin = 0;
 
-        public static IntPowerOf2 CpredBimodTableSizeMax = new(8192);
+        public static IntPowerOf2 CpredBimodTableSizeMax = new(4096);
         public static IntPowerOf2 CpredBimodTableSizeMin = new(1);
 
-        public static IntPowerOf2 Cpred2LevConfigL1SizeMax = new(8192);
+        public static IntPowerOf2 Cpred2LevConfigL1SizeMax = new(4096);
         public static IntPowerOf2 Cpred2LevConfigL1SizeMin = new(1);
 
-        public static IntPowerOf2 Cpred2LevConfigL2SizeMax = new(8192);
+        public static IntPowerOf2 Cpred2LevConfigL2SizeMax = new(4096);
         public static IntPowerOf2 Cpred2LevConfigL2SizeMin = new(1);
 
         public static IntPowerOf2 Cpred2LevConfigHistorySizeMax = new(16);
@@ -709,119 +709,119 @@ public class CPUConfig : IEquatable<CPUConfig?>
         public static int Cpred2LevConfigUseXorMax = 1;
         public static int Cpred2LevConfigUseXorMin = 0;
 
-        public static IntPowerOf2 CpredCombMetaTableSizeMax = new(8192);
+        public static IntPowerOf2 CpredCombMetaTableSizeMax = new(4096);
         public static IntPowerOf2 CpredCombMetaTableSizeMin = new(1);
 
-        public static IntPowerOf2 CpredReturnAddressStackSizeMax = new(8192);
+        public static IntPowerOf2 CpredReturnAddressStackSizeMax = new(4096);
         public static IntPowerOf2 CpredReturnAddressStackSizeMin = new(1);
 
-        public static IntPowerOf2 CpredBtbConfigNumSetsMax = new(8192);
+        public static IntPowerOf2 CpredBtbConfigNumSetsMax = new(4096);
         public static IntPowerOf2 CpredBtbConfigNumSetsMin = new(1);
 
-        public static IntPowerOf2 CpredBtbConfigAssociativityMax = new(8192);
+        public static IntPowerOf2 CpredBtbConfigAssociativityMax = new(4096);
         public static IntPowerOf2 CpredBtbConfigAssociativityMin = new(1);
 
-        public static IntPowerOf2 DecodeWidthMax = new(8192);
+        public static IntPowerOf2 DecodeWidthMax = new(4096);
         public static IntPowerOf2 DecodeWidthMin = new(1);
 
-        public static IntPowerOf2 IssueWidthMax = new(8192);
+        public static IntPowerOf2 IssueWidthMax = new(4096);
         public static IntPowerOf2 IssueWidthMin = new(1);
 
         public static int IssueInOrderMax = 1;
         public static int IssueInOrderMin = 0;
 
-        public static int CommitWidthMax = 9999;
-        public static int CommitWidthMin = 1;
+        public static int CommitWidthMax = 1000;
+        public static int CommitWidthMin = 2;
 
-        public static int ReorderBufferSizeMax = 9999;
-        public static int ReorderBufferSizeMin = 1;
+        public static int ReorderBufferSizeMax = 1000;
+        public static int ReorderBufferSizeMin = 2;
 
-        public static int IssueQueueSizeMax = 9999;
-        public static int IssueQueueSizeMin = 1;
+        public static int IssueQueueSizeMax = 1000;
+        public static int IssueQueueSizeMin = 2;
 
-        public static int RegisterFileSizeMax = 9999;
+        public static int RegisterFileSizeMax = 1000;
         public static int RegisterFileSizeMin = 34;
 
-        public static int LoadStoreQueueSizeMax = 9999;
-        public static int LoadStoreQueueSizeMin = 1;
+        public static int LoadStoreQueueSizeMax = 1000;
+        public static int LoadStoreQueueSizeMin = 2;
 
 
-        public static IntPowerOf2 CacheDl1NumSetsMax = new(8192);
+        public static IntPowerOf2 CacheDl1NumSetsMax = new(4096);
         public static IntPowerOf2 CacheDl1NumSetsMin = new(1);
 
-        public static IntPowerOf2 CacheDl1BlockOrPageSizeMax = new(8192);
+        public static IntPowerOf2 CacheDl1BlockOrPageSizeMax = new(4096);
         public static IntPowerOf2 CacheDl1BlockOrPageSizeMin = new(8);
 
-        public static IntPowerOf2 CacheDl1AssociativityMax = new(8192);
+        public static IntPowerOf2 CacheDl1AssociativityMax = new(128);
         public static IntPowerOf2 CacheDl1AssociativityMin = new(1);
 
         public static int CacheDl1ReplacementPolicyMax = 2;
         public static int CacheDl1ReplacementPolicyMin = 0;
 
 
-        public static IntPowerOf2 CacheDl2NumSetsMax = new(8192);
+        public static IntPowerOf2 CacheDl2NumSetsMax = new(4096);
         public static IntPowerOf2 CacheDl2NumSetsMin = new(1);
 
-        public static IntPowerOf2 CacheDl2BlockOrPageSizeMax = new(8192);
+        public static IntPowerOf2 CacheDl2BlockOrPageSizeMax = new(4096);
         public static IntPowerOf2 CacheDl2BlockOrPageSizeMin = new(8);
 
-        public static IntPowerOf2 CacheDl2AssociativityMax = new(8192);
+        public static IntPowerOf2 CacheDl2AssociativityMax = new(128);
         public static IntPowerOf2 CacheDl2AssociativityMin = new(1);
 
         public static int CacheDl2ReplacementPolicyMax = 2;
         public static int CacheDl2ReplacementPolicyMin = 0;
 
 
-        public static IntPowerOf2 CacheIl1NumSetsMax = new(8192);
+        public static IntPowerOf2 CacheIl1NumSetsMax = new(4096);
         public static IntPowerOf2 CacheIl1NumSetsMin = new(1);
 
-        public static IntPowerOf2 CacheIl1BlockOrPageSizeMax = new(8192);
+        public static IntPowerOf2 CacheIl1BlockOrPageSizeMax = new(4096);
         public static IntPowerOf2 CacheIl1BlockOrPageSizeMin = new(8);
 
-        public static IntPowerOf2 CacheIl1AssociativityMax = new(8192);
+        public static IntPowerOf2 CacheIl1AssociativityMax = new(128);
         public static IntPowerOf2 CacheIl1AssociativityMin = new(1);
 
         public static int CacheIl1ReplacementPolicyMax = 2;
         public static int CacheIl1ReplacementPolicyMin = 0;
 
 
-        public static IntPowerOf2 CacheIl2NumSetsMax = new(8192);
+        public static IntPowerOf2 CacheIl2NumSetsMax = new(4096);
         public static IntPowerOf2 CacheIl2NumSetsMin = new(1);
 
-        public static IntPowerOf2 CacheIl2BlockOrPageSizeMax = new(8192);
+        public static IntPowerOf2 CacheIl2BlockOrPageSizeMax = new(4096);
         public static IntPowerOf2 CacheIl2BlockOrPageSizeMin = new(8);
 
-        public static IntPowerOf2 CacheIl2AssociativityMax = new(8192);
+        public static IntPowerOf2 CacheIl2AssociativityMax = new(128);
         public static IntPowerOf2 CacheIl2AssociativityMin = new(1);
 
         public static int CacheIl2ReplacementPolicyMax = 2;
         public static int CacheIl2ReplacementPolicyMin = 0;
 
 
-        public static IntPowerOf2 MemBusWidthMax = new(8192);
+        public static IntPowerOf2 MemBusWidthMax = new(4096);
         public static IntPowerOf2 MemBusWidthMin = new(1);
 
 
-        public static IntPowerOf2 TlbItlbNumSetsMax = new(8192);
+        public static IntPowerOf2 TlbItlbNumSetsMax = new(4096);
         public static IntPowerOf2 TlbItlbNumSetsMin = new(1);
 
-        public static IntPowerOf2 TlbItlbBlockOrPageSizeMax = new(8192);
-        public static IntPowerOf2 TlbItlbBlockOrPageSizeMin = new(8);
+        public static IntPowerOf2 TlbItlbBlockOrPageSizeMax = new(4096);
+        public static IntPowerOf2 TlbItlbBlockOrPageSizeMin = new(2048);
 
-        public static IntPowerOf2 TlbItlbAssociativityMax = new(8192);
+        public static IntPowerOf2 TlbItlbAssociativityMax = new(128);
         public static IntPowerOf2 TlbItlbAssociativityMin = new(1);
 
         public static int TlbItlbReplacementPolicyMax = 2;
         public static int TlbItlbReplacementPolicyMin = 0;
 
 
-        public static IntPowerOf2 TlbDtlbNumSetsMax = new(8192);
+        public static IntPowerOf2 TlbDtlbNumSetsMax = new(4096);
         public static IntPowerOf2 TlbDtlbNumSetsMin = new(1);
 
-        public static IntPowerOf2 TlbDtlbBlockOrPageSizeMax = new(8192);
-        public static IntPowerOf2 TlbDtlbBlockOrPageSizeMin = new(8);
+        public static IntPowerOf2 TlbDtlbBlockOrPageSizeMax = new(4096);
+        public static IntPowerOf2 TlbDtlbBlockOrPageSizeMin = new(2048);
 
-        public static IntPowerOf2 TlbDtlbAssociativityMax = new(8192);
+        public static IntPowerOf2 TlbDtlbAssociativityMax = new(128);
         public static IntPowerOf2 TlbDtlbAssociativityMin = new(1);
 
         public static int TlbDtlbReplacementPolicyMax = 2;

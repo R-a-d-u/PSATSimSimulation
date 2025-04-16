@@ -8,24 +8,24 @@ namespace SMPSOsimulation
         public static void Main(string[] _)
         {
             var env = new EnvironmentConfig(
-                maxInstructions: 50000,
-                fastForwardInstructions: 1000,
+                maxInstructions: 2000000,
+                fastForwardInstructions: 1000000,
                 fetchSpeed: 1,
                 issueWrongPath: true,
-                issueExecDelay: 6,
-                cacheDl1Latency: 7,
-                cacheDl2Latency: 8,
-                cacheIl1Latency: 9,
-                cacheIl2Latency: 10,
+                issueExecDelay: 8,
+                cacheDl1Latency: 2,
+                cacheDl2Latency: 4,
+                cacheIl1Latency: 2,
+                cacheIl2Latency: 4,
                 cacheFlushOnSyscall: false,
                 cacheInstructionCompress: true,
                 memLatency: new MemLatencyConfig(
-                    firstChunkLatency: 11,
-                    interChunkLatency: 12
+                    firstChunkLatency: 8,
+                    interChunkLatency: 8
                 ),
-                tlbMissLatency: 13,
-                fetchRenameDelay: 14,
-                renameDispatchDelay: 15
+                tlbMissLatency: 8,
+                fetchRenameDelay: 16,
+                renameDispatchDelay: 16
             );
 
             var cfg = new SearchConfigSMPSO(
