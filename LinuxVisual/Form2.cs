@@ -368,7 +368,7 @@ namespace LinuxVisual
                     if (generationIndex >= 0 && generationIndex < history.Count &&
                         configIndex >= 0 && configIndex < history[generationIndex].Count)
                     {
-                        richTextBox1.Buffer.Text = history[generationIndex][configIndex].Item1.ToString();
+                        richTextBox1.Buffer.Text = history[generationIndex][configIndex].Item1.DescribeConfiguration();
                     }
                     else
                     {
