@@ -9,8 +9,8 @@ public class SimOutorderWrapper
     private Process? currentProcess = null; // Variable to store the current process
     private string workingDirectory;
     private string exePath;
-    private const string simout = "results/simout.res";
-    private const string progout = "results/progout.res";
+    private string simout;
+    private string progout;
 
     private string tracePath;
 
@@ -20,11 +20,27 @@ public class SimOutorderWrapper
         this.exePath = exePath;
         this.tracePath = tracePath;
 
+        this.simout = $"results/simout_{GenerateRandomString()}.res";
+        progout = $"results/progout_{GenerateRandomString()}.res";
+
         string resultPath = Path.Combine(this.workingDirectory, "results");
         if (!Directory.Exists(resultPath))
         {
             Directory.CreateDirectory(resultPath);
         }
+    }
+    
+    public static string GenerateRandomString()
+    {
+        const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        Random random = new Random();
+        StringBuilder result = new StringBuilder(6);
+        for (int i = 0; i < 6; i++)
+        {
+            int index = random.Next(characters.Length);
+            result.Append(characters[index]);
+        }
+        return result.ToString();
     }
 
     private void RunProcess(string arguments)
@@ -207,7 +223,7 @@ public class SimOutorderWrapper
         return (new CPI(foundCpi.Value), new Energy(foundEnergy.Value));
     }
 
-    private (CPI cpi, Energy energy) Evaluate(CPUConfig config, EnvironmentConfig environmentConfig)
+    public (CPI cpi, Energy energy) Evaluate(CPUConfig config, EnvironmentConfig environmentConfig)
     {
         // Ensure working directory exists (optional, but good practice)
         Directory.CreateDirectory(workingDirectory);
@@ -383,8 +399,8 @@ public class SimOutorderWrapper
         {
             string simoutPath = Path.Combine(workingDirectory, simout);
             string progoutPath = Path.Combine(workingDirectory, progout);
-            //if (File.Exists(simoutPath)) File.Delete(simoutPath);
-            //if (File.Exists(progoutPath)) File.Delete(progoutPath);
+            if (File.Exists(simoutPath)) File.Delete(simoutPath);
+            if (File.Exists(progoutPath)) File.Delete(progoutPath);
         }
         catch (Exception ex)
         {
@@ -395,14 +411,5 @@ public class SimOutorderWrapper
         }
         return results;
     }
-    public List<(double cpi, double energy, int originalIndex)> Evaluate(List<(CPUConfig config, int originalIndex)> configs, EnvironmentConfig environmentConfig)
-    {
-        List<(double cpi, double energy, int originalIndex)> retlist = new();
-        foreach (var config in configs)
-        {
-            var result = Evaluate(config.config, environmentConfig);
-            retlist.Add((result.cpi.Value, result.energy.Value, config.originalIndex));
-        }
-        return retlist;
-    }
+    
 }

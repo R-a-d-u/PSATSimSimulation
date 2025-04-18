@@ -76,11 +76,23 @@ public class ResultsProvider
         return means;
     }
 
+
+    public List<(double cpi, double energy, int originalIndex)> StartSimulationsForTrace(List<(CPUConfig config, int originalIndex)> configs, EnvironmentConfig environmentConfig, string trace)
+    {
+        List<(double cpi, double energy, int originalIndex)> retlist = new();
+        foreach (var config in configs)
+        {
+            var simOutorderInstance = new SimOutorderWrapper(simOutorderExePath, trace);
+            var result = simOutorderInstance.Evaluate(config.config, environmentConfig);
+            retlist.Add((result.cpi.Value, result.energy.Value, config.originalIndex));
+        }
+        return retlist;
+    }
+
     private List<(double CPI, double Energy)> EvaluateForTrace(List<CPUConfig> configs, (string path, string hash) trace)
     {
         List<(double CPI, double Energy)> results = Enumerable.Repeat((0.0, 0.0), configs.Count).ToList();
         List<(CPUConfig config, int originIndex)> toEvaluate = [];
-        var simoutorder = new SimOutorderWrapper(simOutorderExePath, trace.path);
 
         for (int i = 0; i < configs.Count; i++)
         {
@@ -103,7 +115,7 @@ public class ResultsProvider
 
         if (toEvaluate.Count > 0)
         {
-            var newEvaluations = simoutorder.Evaluate(toEvaluate, env);
+            var newEvaluations = StartSimulationsForTrace(toEvaluate, env, trace.path);
 
             foreach (var eval in newEvaluations)
             {
