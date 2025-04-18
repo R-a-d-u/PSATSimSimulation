@@ -84,7 +84,7 @@ public class EnvironmentConfig {
         if (maxSecondsPerSimulation <= 0)
             throw new ArgumentException("maxSecondsPerSimulation must be greater than 0.");
 
-        if (MaxParallelProcesses <= 0)
+        if (maxParallelProcesses <= 0)
             throw new ArgumentException("MaxParallelProcesses must be greater than 0.");
 
         if (maxInstructions <= 0)
