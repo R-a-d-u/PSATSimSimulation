@@ -83,19 +83,20 @@ public class ResultsProvider
         EnvironmentConfig environmentConfig,
         string trace)
     {
-        // Use ConcurrentBag for thread-safe collection of results.
+
         ConcurrentBag<(double cpi, double energy, int originalIndex)> resultBag = new ConcurrentBag<(double cpi, double energy, int originalIndex)>();
 
-        // Parallel.ForEach to process each configuration in parallel.
-        Parallel.ForEach(configs, config => // Removed the .ToList() here
+        var parallelOptions = new ParallelOptions
         {
-            // Create a new instance of SimOutorderWrapper for each iteration.  This is crucial for thread safety.
-            var simOutorderInstance = new SimOutorderWrapper(simOutorderExePath, trace);
-            var result = simOutorderInstance.Evaluate(config.config, environmentConfig);
-            resultBag.Add((result.cpi.Value, result.energy.Value, config.originalIndex)); // Thread-safe Add
-        });
+            MaxDegreeOfParallelism = Math.Max(1, environmentConfig.MaxParallelProcesses)
+        };
 
-        // Convert the ConcurrentBag to a List.
+        Parallel.ForEach(configs, parallelOptions, configEntry =>
+        {
+            var simOutorderInstance = new SimOutorderWrapper(simOutorderExePath, trace);
+            var result = simOutorderInstance.Evaluate(configEntry.config, environmentConfig);
+            resultBag.Add((result.cpi.Value, result.energy.Value, configEntry.originalIndex));
+        });
         List<(double cpi, double energy, int originalIndex)> retlist = resultBag.ToList();
         return retlist;
     }

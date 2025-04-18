@@ -25,11 +25,13 @@ namespace SMPSOsimulation
                 ),
                 tlbMissLatency: 8,
                 fetchRenameDelay: 16,
-                renameDispatchDelay: 16
+                renameDispatchDelay: 16,
+                maxSecondsPerSimulation: 30,
+                maxParallelProcesses: 100
             );
 
             var cfg = new SearchConfigSMPSO(
-                swarmSize: 10,
+                swarmSize: 100,
                 archiveSize: 10,
                 maxGenerations: 10,
                 turbulenceRate: 0.1,

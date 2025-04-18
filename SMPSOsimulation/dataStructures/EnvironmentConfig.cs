@@ -4,6 +4,9 @@ using System.Security.Cryptography;
 using System.Text;
 
 public class EnvironmentConfig {
+
+    public int MaxSecondsPerSimulation {get; set;}
+    public int MaxParallelProcesses {get; set;}
     /// <summary>
     /// maximum number of inst's to execute
     /// </summary>
@@ -76,8 +79,14 @@ public class EnvironmentConfig {
     public int? RenameDispatchDelay { get; set; } // -rename_dispatch_delay <int>
 
 
-    public EnvironmentConfig(ulong? maxInstructions = null, ulong? fastForwardInstructions = null, int? fetchSpeed = null, bool? issueWrongPath = null, int? issueExecDelay = null, int? cacheDl1Latency = null, int? cacheDl2Latency = null, int? cacheIl1Latency = null, int? cacheIl2Latency = null, bool? cacheFlushOnSyscall = null, bool? cacheInstructionCompress = null, MemLatencyConfig? memLatency = null, int? tlbMissLatency = null, int? fetchRenameDelay = null, int? renameDispatchDelay = null)
+    public EnvironmentConfig(int maxParallelProcesses, int maxSecondsPerSimulation, ulong? maxInstructions = null, ulong? fastForwardInstructions = null, int? fetchSpeed = null, bool? issueWrongPath = null, int? issueExecDelay = null, int? cacheDl1Latency = null, int? cacheDl2Latency = null, int? cacheIl1Latency = null, int? cacheIl2Latency = null, bool? cacheFlushOnSyscall = null, bool? cacheInstructionCompress = null, MemLatencyConfig? memLatency = null, int? tlbMissLatency = null, int? fetchRenameDelay = null, int? renameDispatchDelay = null)
     {
+        if (maxSecondsPerSimulation <= 0)
+            throw new ArgumentException("maxSecondsPerSimulation must be greater than 0.");
+
+        if (MaxParallelProcesses <= 0)
+            throw new ArgumentException("MaxParallelProcesses must be greater than 0.");
+
         if (maxInstructions <= 0)
             throw new ArgumentException("maxInstructions must be greater than 0.");
 
@@ -133,6 +142,8 @@ public class EnvironmentConfig {
         TlbMissLatency = tlbMissLatency;
         FetchRenameDelay = fetchRenameDelay;
         RenameDispatchDelay = renameDispatchDelay;
+        MaxSecondsPerSimulation = maxSecondsPerSimulation;
+        MaxParallelProcesses = maxParallelProcesses;
     }
 
     public string CalculateSha256()
@@ -140,7 +151,7 @@ public class EnvironmentConfig {
         using var sha256 = SHA256.Create();
         var rawData = $"{MaxInstructions}-{FastForwardInstructions}-{FetchSpeed}-{IssueWrongPath}-{IssueExecDelay}-" +
                     $"{CacheDl1Latency}-{CacheDl2Latency}-{CacheIl1Latency}-{CacheIl2Latency}-{CacheFlushOnSyscall}-" +
-                    $"{CacheInstructionCompress}-{MemLatency}-{TlbMissLatency}-{FetchRenameDelay}-{RenameDispatchDelay}";
+                    $"{CacheInstructionCompress}-{MemLatency}-{TlbMissLatency}-{FetchRenameDelay}-{RenameDispatchDelay}-{MaxSecondsPerSimulation}";
 
         var bytes = Encoding.UTF8.GetBytes(rawData);
         var hashBytes = sha256.ComputeHash(bytes);

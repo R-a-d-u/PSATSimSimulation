@@ -43,35 +43,39 @@ public class SimOutorderWrapper
         return result.ToString();
     }
 
+    private void KillProcess() {
+        try
+        {
+            // Use Kill(true) on Windows to attempt killing child processes as well.
+            // On Unix, Kill sends SIGKILL, which doesn't inherently kill children
+            // unless they are part of the same process group and handled appropriately.
+            bool killTree = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            currentProcess!.Kill(killTree);
+            currentProcess.WaitForExit(5000); // Wait up to 5 seconds for termination
+        }
+        catch (InvalidOperationException e)
+        {
+            // Process might have already exited between check and Kill
+            throw new Exception($"Previous process already exited. (exception: {e.Message})");
+        }
+        catch (Exception ex)
+        {
+            // Log failure but continue, maybe the process is already gone or unstoppable
+            throw new Exception($"Warning: Failed to terminate previous process: {ex.Message}");
+        }
+        finally
+        {
+            currentProcess!.Dispose();
+            currentProcess = null;
+        }
+    }
+
     private void RunProcess(string arguments)
     {
         // --- Terminate existing process (generally cross-platform) ---
         if (currentProcess != null && !currentProcess.HasExited)
         {
-            try
-            {
-                // Use Kill(true) on Windows to attempt killing child processes as well.
-                // On Unix, Kill sends SIGKILL, which doesn't inherently kill children
-                // unless they are part of the same process group and handled appropriately.
-                bool killTree = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-                currentProcess.Kill(killTree);
-                currentProcess.WaitForExit(5000); // Wait up to 5 seconds for termination
-            }
-            catch (InvalidOperationException e)
-            {
-                // Process might have already exited between check and Kill
-                throw new Exception($"Previous process already exited. (exception: {e.Message})");
-            }
-            catch (Exception ex)
-            {
-                // Log failure but continue, maybe the process is already gone or unstoppable
-                throw new Exception($"Warning: Failed to terminate previous process: {ex.Message}");
-            }
-            finally
-            {
-                currentProcess.Dispose();
-                currentProcess = null;
-            }
+            KillProcess();
         }
 
         try
@@ -248,14 +252,19 @@ public class SimOutorderWrapper
             throw new InvalidOperationException("Process was not started correctly.");
         }
 
-        currentProcess.WaitForExit();
+        var exited = currentProcess.WaitForExit(environmentConfig.MaxSecondsPerSimulation * 1000);
         Console.WriteLine("Gata evaluatu");
 
         const bool DEBUG = false;
         (CPI cpi, Energy energy) results;
 
         // *** Check Exit Code and Capture STREAMS/FILE on Error ***
-        if (currentProcess.ExitCode != 0)
+        if (!DEBUG && !exited) {
+            results = (new(Double.PositiveInfinity), new(Double.PositiveInfinity));
+            Console.WriteLine("Process Timed Out");
+            KillProcess();
+        }
+        else if (currentProcess.ExitCode != 0)
         {
             if (DEBUG) {
                 StringBuilder errorDetailsBuilder = new StringBuilder();
