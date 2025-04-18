@@ -243,7 +243,7 @@ public class SimOutorderWrapper
         simOutorderConfig.RedirectProgOutput = progout; // Assigns the filename
         simOutorderConfig.PowerPrintStats = true;
 
-        Console.WriteLine($"DEBUGGGGGGGGGGGGGGG to evaluate config : {simOutorderConfig.ToCommandLineString()}");
+        // Console.WriteLine($"DEBUGGGGGGGGGGGGGGG to evaluate config : {simOutorderConfig.ToCommandLineString()}");
         RunProcess(simOutorderConfig.ToCommandLineString());
         
 
