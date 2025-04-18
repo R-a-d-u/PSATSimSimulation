@@ -125,7 +125,8 @@ namespace LinuxVisual
             try
             {
                 // Close previous plot window if it exists
-                Application.Invoke(delegate {
+                Application.Invoke(delegate
+                {
                     if (plotWindow != null)
                     {
                         try
@@ -163,7 +164,8 @@ namespace LinuxVisual
                 double[] energyValues = leaders.Select(l => l.Item2[1]).ToArray();
 
                 // Create the plot in a separate task
-                Task.Run(() => {
+                Task.Run(() =>
+                {
                     try
                     {
                         var plot = new ScottPlot.Plot();
@@ -179,55 +181,48 @@ namespace LinuxVisual
                         byte[] imageBytes = plot.GetImageBytes(plotWidth, plotHeight, ScottPlot.ImageFormat.Png);
 
                         // Update UI on the main thread
-                        Application.Invoke(delegate {
+                        Application.Invoke(delegate
+                        {
                             try
                             {
+                                // Use using for MemoryStream AND Pixbuf
                                 using (var stream = new MemoryStream(imageBytes))
+                                using (var pixbuf = new Gdk.Pixbuf(stream)) // <-- Dispose Pixbuf
                                 {
-                                    var pixbuf = new Gdk.Pixbuf(stream);
-
                                     // Create a new window for displaying the plot
                                     var newPlotWindow = new Window($"Pareto Plot - Generation {generationIndex + 1}");
-                                    newPlotWindow.SetDefaultSize(620, 420);
-                                    newPlotWindow.WindowPosition = WindowPosition.Center;
-
+                                    // ... (rest of window/image creation) ...
                                     var imageWidget = new Gtk.Image(pixbuf);
                                     newPlotWindow.Add(imageWidget);
 
-                                    // Handle window closing properly
-                                    newPlotWindow.DeleteEvent += (s, a) => {
+                                    // ... (DeleteEvent handler setup) ...
+                                    newPlotWindow.DeleteEvent += (s, a) =>
+                                    {
+                                        // ... (existing handler logic - consider a.RetVal = false) ...
                                         try
                                         {
                                             lock (plotLock)
                                             {
-                                                if (plotWindow == (Window)s)
-                                                    plotWindow = null;
+                                                if (plotWindow == (Window)s) plotWindow = null;
                                             }
-                                            ((Window)s).Destroy();
                                         }
-                                        catch (Exception ex)
-                                        {
-                                            Console.WriteLine($"Error in plot window DeleteEvent: {ex.Message}");
-                                        }
-                                        a.RetVal = true;
+                                        catch (Exception ex) { Console.WriteLine($"Error in plot window DeleteEvent: {ex.Message}"); }
+                                        a.RetVal = false; // Allow GTK to destroy the window after handler
                                     };
+
 
                                     newPlotWindow.ShowAll();
 
-                                    // Update reference with lock
+                                    // ... (update plotWindow reference logic within lock) ...
                                     lock (plotLock)
                                     {
                                         if (plotWindow != null)
                                         {
-                                            try
-                                            {
-                                                plotWindow.Destroy();
-                                            }
-                                            catch { /* Ignore if already closed */ }
+                                            try { plotWindow.Destroy(); } catch { /* Ignore */ }
                                         }
                                         plotWindow = newPlotWindow;
                                     }
-                                }
+                                } // <-- pixbuf and stream are disposed here
                             }
                             catch (Exception ex)
                             {
@@ -242,7 +237,8 @@ namespace LinuxVisual
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Error creating plot: {ex.Message}");
-                        Application.Invoke(delegate {
+                        Application.Invoke(delegate
+                        {
                             lock (plotLock) { isPlotting = false; }
                         });
                     }
