@@ -23,6 +23,7 @@ namespace LinuxVisual
         private ListBox listBoxLeaders;
         private TextView richTextBox1;
         private Button button1;
+        private Button buttonShowChart;
         private ScrolledWindow scrolledWindow1;
         private ScrolledWindow scrolledWindow2;
         private ScrolledWindow scrolledWindow3;
@@ -48,6 +49,7 @@ namespace LinuxVisual
             listBoxGeneration.RowSelected += ChangeGeneration;
             listBoxLeaders.RowSelected += ChangeConfig;
             button1.Clicked += OnButton1Clicked;
+            buttonShowChart.Clicked += OnButtonShowChartClicked;
 
             DeleteEvent += OnWindowClosed;
         }
@@ -68,6 +70,7 @@ namespace LinuxVisual
             listBoxLeaders = new ListBox();
             richTextBox1 = new TextView();
             button1 = new Button("Export Last Gen to CSV");
+            buttonShowChart = new Button("Show Chart Selected Gen");
 
             // Configure text view
             richTextBox1.Editable = false;
@@ -89,6 +92,7 @@ namespace LinuxVisual
             vboxLeft.PackStart(new Gtk.Label("Leaders (CPI / Energy)"), false, false, 0);
             vboxLeft.PackStart(scrolledWindow2, true, true, 0);
             vboxLeft.PackStart(button1, false, false, 5);
+            vboxLeft.PackStart(buttonShowChart, false, false, 5);
 
             // Add widgets to right vbox
             vboxRight.PackStart(new Gtk.Label("Selected Configuration Details"), false, false, 0);
@@ -246,9 +250,6 @@ namespace LinuxVisual
                             }
                             listBoxLeaders.ShowAll();
 
-                            // Show Pareto Plot
-                            ShowParetoPlot(generationIndex);
-
                         }
                         else
                         {
@@ -293,6 +294,10 @@ namespace LinuxVisual
                 }
 
             });
+        }
+
+        private void OnButtonShowChartClicked(object sender, EventArgs e) {
+            ShowParetoPlot(listBoxGeneration.SelectedRow.Index);
         }
 
         private void OnButton1Clicked(object sender, EventArgs e)
