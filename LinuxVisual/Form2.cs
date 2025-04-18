@@ -31,7 +31,7 @@ namespace LinuxVisual
         private Window plotWindow = null;
 
         // Constructor SMPSO
-        public ResultsWindow(SearchConfigSMPSO config, string exePath, string gtkPath, List<string> tracePaths)
+        public ResultsWindow(SearchConfigSMPSO config, string exePath, List<string> tracePaths)
             : base("SMPSO Simulation Results")
         {
             InitializeComponents();
@@ -43,29 +43,7 @@ namespace LinuxVisual
             cts = new CancellationTokenSource();
 
             // Start the search as a Task
-            algorithmTask = Task.Run(() => runner.StartSearch(config, exePath, gtkPath, tracePaths), cts.Token);
-
-            listBoxGeneration.RowSelected += ChangeGeneration;
-            listBoxLeaders.RowSelected += ChangeConfig;
-            button1.Clicked += OnButton1Clicked;
-
-            DeleteEvent += OnWindowClosed;
-        }
-
-        // Constructor VEGA
-        public ResultsWindow(SearchConfigVEGA config, string exePath, string gtkPath, List<string> tracePaths)
-            : base("VEGA Simulation Results")
-        {
-            InitializeComponents();
-            history = new List<List<(CPUConfig, double[])>>();
-            var runner = new VEGAOrchestrator();
-            runner.GenerationChanged += OnGenerationChanged;
-
-            // Create a cancellation token source
-            cts = new CancellationTokenSource();
-
-            // Start the search as a Task
-            algorithmTask = Task.Run(() => runner.StartSearch(config, exePath, gtkPath, tracePaths), cts.Token);
+            algorithmTask = Task.Run(() => runner.StartSearch(config, exePath, tracePaths), cts.Token);
 
             listBoxGeneration.RowSelected += ChangeGeneration;
             listBoxLeaders.RowSelected += ChangeConfig;
@@ -304,7 +282,7 @@ namespace LinuxVisual
         }
 
         // Other methods remain unchanged
-        private void OnGenerationChanged(object sender, List<(CPUConfig, double[])> leaders)
+        private void OnGenerationChanged(object? sender, List<(CPUConfig, double[])> leaders)
         {
             Application.Invoke(delegate
             {
@@ -461,22 +439,7 @@ namespace LinuxVisual
                     {
                         var (config, metrics) = history[i];
                         writer.WriteLine($"{i}," +
-                                         $"{config.Superscalar}," +
-                                         $"{config.Rename}," +
-                                         $"{config.Reorder}," +
-                                         $"{config.RsbArchitecture}," +
-                                         $"{config.SeparateDispatch}," +
-                                         $"{config.Iadd}," +
-                                         $"{config.Imult}," +
-                                         $"{config.Idiv}," +
-                                         $"{config.Fpadd}," +
-                                         $"{config.Fpmult}," +
-                                         $"{config.Fpdiv}," +
-                                         $"{config.Fpsqrt}," +
-                                         $"{config.Branch}," +
-                                         $"{config.Load}," +
-                                         $"{config.Store}," +
-                                         $"{config.Freq.ToString(System.Globalization.CultureInfo.InvariantCulture)}");
+                                         $"{config.DescribeConfiguration()}");
                     }
                 }
             }
