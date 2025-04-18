@@ -557,7 +557,7 @@ cache_access(struct cache_t *cp,	/* cache to access */
   /* FIXME:
      ((addr + (nbytes - 1)) > ((addr & ~cp->blk_mask) + (cp->bsize - 1))) */
   if ((addr + nbytes) > ((addr & ~cp->blk_mask) + cp->bsize))
-    fatal("cache: access error: access spans block, addr 0x%08x", addr);
+    fatal("cache: access error: access spans block, addr 0x%08x (DEBUG_cepoiu: cache type [%s] cache bsize [%d] cache mask [%d] nbytes [%d])", addr, cp->name, cp->bsize, cp->blk_mask, nbytes);
 
   /* permissions are checked on cache misses */
 

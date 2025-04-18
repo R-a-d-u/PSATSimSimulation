@@ -1,4 +1,5 @@
 using SMPSOsimulation.dataStructures;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Xml.Linq;
@@ -10,16 +11,15 @@ public class ResultsProvider
     private readonly EnvironmentConfig env;
     private readonly string envHash;
     private readonly ResultsDB cachedb = new();
-    private readonly string psatsimExePath, gtkBinPath;
+    private readonly string simOutorderExePath;
     private readonly List<string> tracePaths;
     private readonly List<string> traceHashes;
 
-    public ResultsProvider(EnvironmentConfig env, string psatsimExePath, string gtkBinPath, List<string> tracePaths)
+    public ResultsProvider(EnvironmentConfig env, string simOutorderExePath, List<string> tracePaths)
     {
         this.env = env;
         this.envHash = env.CalculateSha256();
-        this.psatsimExePath = psatsimExePath;
-        this.gtkBinPath = gtkBinPath;
+        this.simOutorderExePath = simOutorderExePath;
         this.tracePaths = tracePaths;
         this.traceHashes = new List<string>();
         foreach (string path in tracePaths)
@@ -43,8 +43,8 @@ public class ResultsProvider
 
     private static bool BreaksConstraints(CPUConfig config)
     {
-        if (config.RsbArchitecture == RsbArchitectureType.distributed && config.Load != config.Store)
-            return true;
+        if (config.CacheIl1.BlockOrPageSize.GetValueInt() > config.CacheIl2.BlockOrPageSize.GetValueInt()) return true;
+        if (config.CacheDl1.BlockOrPageSize.GetValueInt() > config.CacheDl2.BlockOrPageSize.GetValueInt()) return true;
         return false;
     }
 
@@ -77,11 +77,34 @@ public class ResultsProvider
         return means;
     }
 
+
+    public List<(double cpi, double energy, int originalIndex)> StartSimulationsForTrace(
+        List<(CPUConfig config, int originalIndex)> configs,
+        EnvironmentConfig environmentConfig,
+        string trace)
+    {
+
+        ConcurrentBag<(double cpi, double energy, int originalIndex)> resultBag = new ConcurrentBag<(double cpi, double energy, int originalIndex)>();
+
+        var parallelOptions = new ParallelOptions
+        {
+            MaxDegreeOfParallelism = Math.Max(1, environmentConfig.MaxParallelProcesses)
+        };
+
+        Parallel.ForEach(configs, parallelOptions, configEntry =>
+        {
+            var simOutorderInstance = new SimOutorderWrapper(simOutorderExePath, trace);
+            var result = simOutorderInstance.Evaluate(configEntry.config, environmentConfig);
+            resultBag.Add((result.cpi.Value, result.energy.Value, configEntry.originalIndex));
+        });
+        List<(double cpi, double energy, int originalIndex)> retlist = resultBag.ToList();
+        return retlist;
+    }
+
     private List<(double CPI, double Energy)> EvaluateForTrace(List<CPUConfig> configs, (string path, string hash) trace)
     {
         List<(double CPI, double Energy)> results = Enumerable.Repeat((0.0, 0.0), configs.Count).ToList();
         List<(CPUConfig config, int originIndex)> toEvaluate = [];
-        var psatsim = new PSAtSimWrapper(psatsimExePath, gtkBinPath, trace.path);
 
         for (int i = 0; i < configs.Count; i++)
         {
@@ -104,7 +127,7 @@ public class ResultsProvider
 
         if (toEvaluate.Count > 0)
         {
-            var newEvaluations = psatsim.Evaluate(toEvaluate, env);
+            var newEvaluations = StartSimulationsForTrace(toEvaluate, env, trace.path);
 
             foreach (var eval in newEvaluations)
             {
