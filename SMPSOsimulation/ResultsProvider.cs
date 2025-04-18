@@ -1,4 +1,5 @@
 using SMPSOsimulation.dataStructures;
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Xml.Linq;
@@ -77,15 +78,25 @@ public class ResultsProvider
     }
 
 
-    public List<(double cpi, double energy, int originalIndex)> StartSimulationsForTrace(List<(CPUConfig config, int originalIndex)> configs, EnvironmentConfig environmentConfig, string trace)
+    public List<(double cpi, double energy, int originalIndex)> StartSimulationsForTrace(
+        List<(CPUConfig config, int originalIndex)> configs,
+        EnvironmentConfig environmentConfig,
+        string trace)
     {
-        List<(double cpi, double energy, int originalIndex)> retlist = new();
-        foreach (var config in configs)
+        // Use ConcurrentBag for thread-safe collection of results.
+        ConcurrentBag<(double cpi, double energy, int originalIndex)> resultBag = new ConcurrentBag<(double cpi, double energy, int originalIndex)>();
+
+        // Parallel.ForEach to process each configuration in parallel.
+        Parallel.ForEach(configs, config => // Removed the .ToList() here
         {
+            // Create a new instance of SimOutorderWrapper for each iteration.  This is crucial for thread safety.
             var simOutorderInstance = new SimOutorderWrapper(simOutorderExePath, trace);
             var result = simOutorderInstance.Evaluate(config.config, environmentConfig);
-            retlist.Add((result.cpi.Value, result.energy.Value, config.originalIndex));
-        }
+            resultBag.Add((result.cpi.Value, result.energy.Value, config.originalIndex)); // Thread-safe Add
+        });
+
+        // Convert the ConcurrentBag to a List.
+        List<(double cpi, double energy, int originalIndex)> retlist = resultBag.ToList();
         return retlist;
     }
 
