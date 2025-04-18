@@ -1,4 +1,5 @@
 using System.Configuration;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -977,5 +978,61 @@ public class CPUConfig : IEquatable<CPUConfig?>
             };
         }
 
+    }
+
+    /// <summary>
+    /// Generates a multi-line string describing the current CPU configuration settings.
+    /// </summary>
+    /// <returns>A string detailing each configuration property and its value.</returns>
+    public string DescribeConfiguration()
+    {
+        StringBuilder description = new StringBuilder();
+        description.AppendLine("--- CPU Configuration Details ---");
+
+        // Get all public instance properties of this class
+        PropertyInfo[] properties = this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+        foreach (PropertyInfo prop in properties)
+        {
+            // Skip properties that cannot be read (shouldn't happen for public properties)
+            if (!prop.CanRead) continue;
+
+            string formattedName = FormatPropertyName(prop.Name);
+            object? value = prop.GetValue(this); // Get value from the current instance
+            string valueString = value?.ToString() ?? "null"; // Use ToString() or "null" if value is null
+
+            description.AppendLine($"{formattedName}: {valueString}");
+        }
+
+        description.AppendLine("---------------------------------");
+        return description.ToString();
+    }
+
+    /// <summary>
+    /// Helper method to format PascalCase property names into more readable strings
+    /// by inserting spaces before capital letters.
+    /// </summary>
+    /// <param name="name">The PascalCase property name.</param>
+    /// <returns>A formatted string with spaces.</returns>
+    private static string FormatPropertyName(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return string.Empty;
+
+        StringBuilder result = new StringBuilder();
+        result.Append(name[0]); // Add the first character
+
+        for (int i = 1; i < name.Length; i++)
+        {
+            // Add a space before an uppercase letter, but only if it's not preceded by another uppercase letter
+            // (handles acronyms like "BTB" or "TLB" reasonably well, preventing "B T B").
+            // Also ensures it's not preceded by a space already (though unlikely here).
+            if (char.IsUpper(name[i]) && !char.IsUpper(name[i - 1]) && name[i-1] != ' ')
+            {
+                result.Append(' ');
+            }
+            result.Append(name[i]);
+        }
+        return result.ToString();
     }
 }
