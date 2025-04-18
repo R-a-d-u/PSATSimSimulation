@@ -52,7 +52,7 @@ namespace LinuxVisual
             // Row 2 (Row index 1)
             numericPopulationSize = CreateSpinButton(0, 1000, 1);
             numericPopulationSize.Value = 1;
-            buttonFilePickerExe = new Button("Pick Exe");
+            buttonFilePickerExe = new Button("Pick sim-outorder");
             buttonFilePickerExe.Clicked += OnFilePickerExeClicked;
             labelFilePathExe = new Label("No file selected");
             grid.Attach(new Label("Population Size:"), 0, 1, 1, 1);
@@ -90,11 +90,11 @@ namespace LinuxVisual
 
         private void OnFilePickerExeClicked(object sender, EventArgs e)
         {
-            using (var fileChooser = new FileChooserDialog("Select Executable", this,
+            using (var fileChooser = new FileChooserDialog("Select sim-outorder", this,
                 FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Select", ResponseType.Accept))
             {
                 fileChooser.Filter = new FileFilter();
-                fileChooser.Filter.AddPattern("*.exe");
+                fileChooser.Filter.AddPattern("*sim-outorder");
 
                 if (fileChooser.Run() == (int)ResponseType.Accept)
                 {
@@ -107,11 +107,11 @@ namespace LinuxVisual
 
         private void OnFilePickerTracesClicked(object sender, EventArgs e)
         {
-            using (var fileChooser = new FileChooserDialog("Select Trace Files", this,
+            using (var fileChooser = new FileChooserDialog("Select Benchmark Files", this,
                 FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Select", ResponseType.Accept))
             {
                 fileChooser.Filter = new FileFilter();
-                fileChooser.Filter.AddPattern("*.tra");
+                fileChooser.Filter.AddPattern("*.arg");
                 fileChooser.SelectMultiple = true;
 
                 if (fileChooser.Run() == (int)ResponseType.Accept)
@@ -131,7 +131,7 @@ namespace LinuxVisual
                      DialogFlags.Modal,
                      MessageType.Error,
                      ButtonsType.Ok,
-                     "Must provide all of psatsim_con.exe path, GTK/lib path, and at least one trace file");
+                     "Must provide sim-outorder path and at least one trace file");
                 md.Run();
                 md.Destroy();
                 return;
