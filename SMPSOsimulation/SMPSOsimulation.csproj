@@ -1,25 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="StolenJMetal\**" />
-    <EmbeddedResource Remove="StolenJMetal\**" />
-    <None Remove="StolenJMetal\**" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
+    <PackageReference Include="GtkSharp" Version="3.24.24.95" />
+    <PackageReference Include="OxyPlot.Core" Version="2.2.0" />
+    <PackageReference Include="OxyPlot.GtkSharp" Version="1.0.0" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
   </ItemGroup>
 
 </Project>

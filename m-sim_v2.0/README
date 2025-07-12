@@ -1,0 +1,83 @@
+Welcome to M-Sim!
+
+
+This README briefly describes how to install and run M-Sim. For more details,
+please refer to the M-Sim User's Guide.
+
+This simulator is a modified version of the SimpleScalar toolset. Documentation
+from the origional SimpleScalar tool can be downloaded from:
+
+	http://www.simplescalar.com
+
+This README file documents differences between this version and the origional
+SimpleScalar 3.0d, and offers instructions for getting started with the simulator.
+
+
+TO INSTALL:
+
+The following details how to build and install the simulator:
+
+	a) vi Makefile
+	
+	Make sure all compile options are set for your host, we've listed
+	the options for the OS/compiler combinations that were tested,
+	uncomment one of these if appropriate.  You'll likely not have to
+	change anything for the supported hosts, and if you need to change
+	anything, it will likely be the CC variable (which specifies
+	the ANSI C compiler to use to build the simulators).  NOTE: the
+	simulators must be built with an ANSI-C compatible compiler, if you
+	have problems with your compiler, try using GNU GCC as it is known
+	to build the simulators on all the supported platforms.
+
+	If you are using the Debian machines in the South Pod, these default
+	options in the Makefile work fine. These defaults should also work
+	for most other flavors of Linux. If you are attempting to use a different
+	OS, the it is up to you to determine the correct settings.
+
+	b) make
+
+	Use the make command to build the simulator. It generates an executable
+	called sim-outorder. This is the main executable for the simulator.
+
+
+
+BENCHMARKS:
+
+M-Sim supports the statically linked Alpha AXP binaries. It supports the full set of
+SPEC2000 benchmarks, as well as other benchmarks, as well as other benchmarks supported
+by SimpleScalar. The SPEC2000 Alpha binaries are available from the SimpleScalar website
+<http://www.simplescalar.com>, and can be used as is with M-Sim as well.
+
+In order to run the simulator, you will need to set up some "argument files". The 
+User's Guide describes these files in more detail. A few sample argument files
+have been provided for your reference.
+
+
+RUNNING THE SIMULATOR:
+
+The simpliest way to run the simulator is to change to the directory containing
+the sim-outorder executable, and issue a command as follows:
+
+	../sim-outorder gcc.arg
+
+Where wupwise is the benchmark you would like to run. This will run the simulator
+on the benchmark, using default values for all parameters.
+
+Specifying only one benchmark will run the simulator in single-threaded
+"Superscalar" mode. Alternatively, you may specify more than one argument file:
+
+	../sim-outorder gcc.arg anagram.arg
+
+This will run the simulator in SMT (Simultaneous Multithreaded) mode. You may specify
+up to MAX_CONTEXTS threads (which is specified in smt.h, and has a default value of
+8).
+
+
+Good luck!
+
+Joseph Sharkey
+
+Department of Computer Science
+State University of New York
+Binghamton, NY 13905
+<jsharke@cs.binghamton.edu>
