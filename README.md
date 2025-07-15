@@ -2,7 +2,8 @@
 A cross-platform .NET 8 application that implements the SMPSO genetic algorithm to explore the design space of processor microarchitectures using M-sim.
 Pareto-optimal configurations output based on optimizing two key metrics: CPI (Cycles Per Instruction) and Power consumption.
 <div align="center">
-  <img src="https://raw.githubusercontent.com/R-a-d-u/SMPSO-CPU-Simulation/master/ParetoScreen.png" alt="Screen" width="600">
+  <img src="https://raw.githubusercontent.com/R-a-d-u/SMPSO-CPU-Simulation/master/ParetoScreen.png" alt="Screen" width="325">
+  <img src="https://raw.githubusercontent.com/R-a-d-u/SMPSO-CPU-Simulation/master/hashscreen.png" alt="Screen" width="675">
 </div>
 
 ## ✨ Key Features
